@@ -1,0 +1,15 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<Button android:background="@drawable/green_button" style="@style/ButtonText"
+		android:text="ADD WORD" android:id="@+id/place_details_add_word"
+		android:layout_width="150dip" android:layout_height="45dip"
+		android:layout_gravity="center">
+	</Button>
+
+	<Button android:background="@drawable/green_button" style="@style/ButtonText"
+		android:text="ADD IMAGE" android:id="@+id/place_details_add_image"
+		android:layout_width="150dip" android:layout_height="45dip"
+		android:layout_gravity="center">
+	</Button>
+		
+</merge>

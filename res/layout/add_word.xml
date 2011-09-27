@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="@color/darker_gray" android:layout_gravity="center"
+	android:paddingTop="20dip" android:orientation="vertical">
+
+	<EditText android:hint="..." android:id="@+id/add_word_add_edit_text"
+		android:layout_width="fill_parent" android:layout_height="200dip"
+		android:layout_marginRight="20dip" android:layout_marginLeft="20dip"
+		android:layout_gravity="center" android:imeOptions="actionGo"
+		android:textSize="40sp" android:textStyle="bold">
+	</EditText>
+	<CheckBox android:text="Add word to local dictionary?"
+		android:id="@+id/checkBox1" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_marginRight="20dip"
+		android:layout_marginLeft="20dip" />
+
+</LinearLayout>

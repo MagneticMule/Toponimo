@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@color/background_gray" android:orientation="vertical"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:layout_gravity="center">
+
+	<include android:id="@+id/id_bar_place_list" layout="@layout/inc_action_bar"
+		android:layout_gravity="center_horizontal" android:layout_height="32dp" />
+	<include android:id="@+id/nav_bar_place_list" layout="@layout/info_bar_word_bank"
+		android:layout_height="30dp" />
+
+	<ListView android:id="@+id/wordListView" android:layout_width="fill_parent"
+		android:layout_height="300dip" android:layout_weight="0.8"
+		android:scrollingCache="true" android:fadingEdge="horizontal|none" 
+		android:divider="@drawable/divider_grad"
+		android:dividerHeight="2dip"
+		android:headerDividersEnabled="true"
+		android:footerDividersEnabled="true"
+		/>
+
+	<LinearLayout android:layout_width="fill_parent" android:background="@color/dark_gray"
+		android:layout_height="10dip" android:orientation="horizontal"
+		android:gravity="center" android:layout_weight="0.1">
+		<TextView android:text="Nottingham, UK" android:id="@+id/places_infor_text"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:textSize="9dip"></TextView>
+
+	</LinearLayout>
+
+</LinearLayout>

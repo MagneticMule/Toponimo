@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">This is Toponimo!</string>
+    <string name="words">Words: </string>
+    <string name="app_name">Toponimo</string>
+    <string name="signup">SIGN UP</string>
+    <string name="login">LOG IN</string>
+    <string name="loginViaFacebookInstructions">Or log-in via Facebook.</string>
+    
+    <string name="api_key">0fqJRInbccwZ5L_uedgEHfMUF5V2yL6r7WRHlmw</string>
+</resources>

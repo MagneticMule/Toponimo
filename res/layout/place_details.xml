@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="@drawable/blue_to_blue_grad" android:layout_gravity="center"
+	android:paddingTop="3px" android:orientation="vertical">
+	<LinearLayout android:id="@+id/linearLayout1"
+		android:background="@drawable/black_to_white_grad"
+		android:layout_height="50dip" android:layout_width="fill_parent"
+		android:baselineAligned="false">
+		<ImageView android:src="@drawable/toponimoident100"
+			android:layout_height="wrap_content" android:id="@+id/titleImageView"
+			android:layout_width="wrap_content" android:layout_marginLeft="3dip"
+			android:layout_gravity="center_vertical"></ImageView>
+	</LinearLayout>
+	<TextView android:text="TextView" android:id="@+id/textView1"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+
+
+
+</LinearLayout>

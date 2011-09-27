@@ -1,0 +1,63 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+	<RelativeLayout android:layout_width="match_parent"
+		android:id="@+id/relativeLayout1" android:layout_height="30dip"
+		android:layout_weight="0.1" android:background="@color/brown_green">
+
+		<TextView android:text="TOPONIMO" style="@style/ButtonText"
+			android:paddingLeft="10dip" android:textSize="20dip" android:id="@+id/title_text"
+			android:layout_height="22dip" android:layout_weight="0.8"
+			android:layout_width="wrap_content" android:layout_marginLeft="15dip"
+			android:layout_centerVertical="true">
+		</TextView>
+
+		<View android:id="@+id/place_holder" android:layout_height="32px"
+			android:layout_weight="0.2" android:layout_width="32px"
+			android:layout_alignParentRight="true" android:layout_marginLeft="5dip"
+			android:layout_marginRight="5dip" android:layout_centerVertical="true"
+			android:visibility="invisible" />
+
+
+		<ImageView android:id="@+id/refresh_button" android:src="@drawable/arrow_circle_left_32"
+			android:layout_height="32px" android:layout_weight="0.2"
+			android:layout_width="32px" android:layout_alignParentRight="true"
+			android:layout_marginLeft="5dip" android:layout_marginRight="5dip"
+			android:layout_centerVertical="true">
+		</ImageView>
+
+		<ProgressBar android:id="@+id/refresh_progress_bar"
+			style="?android:attr/progressBarStyleSmall" android:layout_height="32px"
+			android:layout_weight="0.2" android:layout_width="32px"
+			android:layout_alignParentRight="true" android:layout_marginLeft="5dip"
+			android:layout_marginRight="5dip" android:layout_centerVertical="true"
+			android:visibility="invisible" />
+
+		<View android:id="@+id/vertical_bar_1" android:layout_height="fill_parent"
+			android:layout_width="2px" android:background="#90909090"
+			android:layout_toLeftOf="@id/place_holder" />
+
+		<ImageView android:id="@+id/search_button" android:src="@drawable/magnifier_32"
+			android:layout_height="32px" android:layout_weight="0.2"
+			android:layout_width="32px" android:layout_marginLeft="5dip"
+			android:layout_marginRight="5dip" android:layout_centerVertical="true"
+			android:layout_toLeftOf="@id/vertical_bar_1" />
+
+
+		<View android:id="@+id/vertical_bar_2" android:layout_height="fill_parent"
+			android:layout_width="2px" android:background="#90909090"
+			android:layout_toLeftOf="@id/search_button" />
+
+		<ImageView android:id="@+id/word_bank_button" android:src="@drawable/tray_full_32"
+			android:layout_height="32px" android:layout_weight="0.2"
+			android:layout_width="32px" android:layout_marginLeft="5dip"
+			android:layout_marginRight="5dip" android:layout_centerVertical="true"
+			android:layout_toLeftOf="@id/vertical_bar_2" />
+
+		<View android:id="@+id/vertical_bar_3" android:layout_height="fill_parent"
+			android:layout_width="2px" android:background="#90909090"
+			android:layout_toLeftOf="@id/search_button" />
+
+	</RelativeLayout>
+
+
+
+</merge>

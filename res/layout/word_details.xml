@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="#aaaaaa" android:orientation="vertical"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:layout_gravity="center" android:weightSum="1">
+	<LinearLayout android:id="@+id/linearLayout1"
+		android:layout_height="wrap_content" android:layout_width="match_parent"
+		android:background="#bbccbb" android:baselineAligned="false">
+		<TextView android:layout_height="wrap_content"
+			android:textSize="24sp" android:id="@+id/word_details_word_view"
+			android:text="Relevancy" android:textStyle="bold" android:textColor="#335533"
+			android:padding="10dip" android:layout_weight="1"
+			android:layout_width="0dp" android:layout_gravity="center_vertical" />
+		<Button android:id="@+id/word_details_speak_button"
+			android:text="SPEAK" android:layout_width="wrap_content"
+			android:layout_gravity="center_vertical" android:layout_margin="10dip"
+			android:layout_height="wrap_content" />
+	</LinearLayout>
+
+	<TextView android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:textSize="18sp"
+		android:lines="5"
+		android:id="@+id/word_details_definition"
+		android:text=""
+		android:padding="10dip" android:textColor="#232323" android:textStyle="bold" />
+
+	<ImageButton android:src="@drawable/camera" android:id="@+id/word_details_add_picture"
+		android:layout_width="wrap_content" android:layout_margin="10dip"
+		android:layout_height="wrap_content"></ImageButton>
+
+	<Gallery android:id="@+id/word_details_gallery"
+		android:layout_width="match_parent" android:layout_height="100px"
+		android:padding="10dip"
+		android:spacing="100dip"
+		 />		
+
+	<TextView android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:textSize="20sp"
+		android:id="@+id/textView1" android:text="Relevancy"
+		android:textStyle="bold" android:textColor="#335533" android:padding="10dip"
+		android:paddingBottom="1dip" />
+
+	<RatingBar android:id="@+id/ratingBar1" android:padding="10dip"
+		android:paddingTop="1dip" android:layout_height="wrap_content"
+		android:numStars="5" android:rating="2.5" android:stepSize="0.5"
+		android:layout_width="300dip" />
+
+	<Button android:layout_height="wrap_content" android:id="@+id/word_details_add_to_word_bank_button"
+		android:text="ADD TO MY WORD BANK" android:layout_width="fill_parent"
+		android:layout_gravity="center" android:layout_margin="10dip"></Button>
+
+
+
+
+</LinearLayout>
