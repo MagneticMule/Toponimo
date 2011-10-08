@@ -27,7 +27,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
-import com.magneticmule.toponimo.client.database.DBHelper;
 import com.magneticmule.toponimo.client.utils.http.HttpDataUtils;
 
 public class AddWordActivity extends Activity {
@@ -37,7 +36,6 @@ public class AddWordActivity extends Activity {
 	private int									position;
 	private String							upid	= null;
 	private String							placeName;
-	private String							placeNameFromCaller;
 	private String							words	= null;
 
 	@Override
@@ -46,11 +44,8 @@ public class AddWordActivity extends Activity {
 		setContentView(R.layout.add_word);
 
 		application = (ToponimoApplication) this.getApplication();
-
 		Intent sender = getIntent();
-
 		this.position = application.getCurrentPlaceIndex();
-
 		upid = new String(application.getPlaceResults().get(position).getResults().get(position).getId());
 		placeName = new String(application.getPlaceResults().get(position).getResults().get(position).getName());
 		// placeNameFromCaller = new
@@ -60,7 +55,6 @@ public class AddWordActivity extends Activity {
 		Log.i("Name", placeName);
 
 		InputMethodManager imm = (InputMethodManager) AddWordActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-
 		if (imm != null) {
 			imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 		}
@@ -101,7 +95,6 @@ public class AddWordActivity extends Activity {
 				setResult(RESULT_OK, i);
 
 				new Thread(new Runnable() {
-
 					public void run() {
 						try {
 							List<NameValuePair> wordList = new ArrayList<NameValuePair>(1);

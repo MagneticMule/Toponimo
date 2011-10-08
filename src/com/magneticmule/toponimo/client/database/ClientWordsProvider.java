@@ -2,7 +2,6 @@ package com.magneticmule.toponimo.client.database;
 
 import java.util.HashMap;
 
-import com.google.android.maps.MyLocationOverlay;
 import com.magneticmule.toponimo.client.Constants;
 import com.magneticmule.toponimo.client.ToponimoApplication;
 
@@ -17,7 +16,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.provider.UserDictionary.Words;
 import android.util.Log;
 
 public class ClientWordsProvider extends ContentProvider {

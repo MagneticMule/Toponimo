@@ -1,6 +1,5 @@
 package com.magneticmule.toponimo.client.ui.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.magneticmule.toponimo.client.R;

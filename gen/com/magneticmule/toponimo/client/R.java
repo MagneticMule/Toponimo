@@ -26,6 +26,7 @@ public final class R {
         public static final int list_divider_dark_gray=0x7f050009;
         public static final int list_divider_light_gray=0x7f05000a;
         public static final int white=0x7f050000;
+        public static final int yellow=0x7f05000b;
     }
     public static final class drawable {
         public static final int arrow_circle_left_24=0x7f020000;
@@ -62,22 +63,23 @@ public final class R {
         public static final int marker_red=0x7f02001f;
         public static final int movies=0x7f020020;
         public static final int noimage=0x7f020021;
-        public static final int place_list_item_background=0x7f020022;
-        public static final int reload_24=0x7f020023;
-        public static final int reload_48=0x7f020024;
-        public static final int restaurant=0x7f020025;
-        public static final int school=0x7f020026;
-        public static final int shopping=0x7f020027;
-        public static final int staticmap=0x7f020028;
-        public static final int toponimo_ident=0x7f020029;
-        public static final int toponimo_ident_small=0x7f02002a;
-        public static final int toponimoident100=0x7f02002b;
-        public static final int toponimoident300=0x7f02002c;
-        public static final int toponimoidentsmall=0x7f02002d;
-        public static final int travelagent=0x7f02002e;
-        public static final int tray_full_32=0x7f02002f;
-        public static final int university=0x7f020030;
-        public static final int white_to_white_grad=0x7f020031;
+        public static final int noimage180=0x7f020022;
+        public static final int place_list_item_background=0x7f020023;
+        public static final int reload_24=0x7f020024;
+        public static final int reload_48=0x7f020025;
+        public static final int restaurant=0x7f020026;
+        public static final int school=0x7f020027;
+        public static final int shopping=0x7f020028;
+        public static final int staticmap=0x7f020029;
+        public static final int toponimo_ident=0x7f02002a;
+        public static final int toponimo_ident_small=0x7f02002b;
+        public static final int toponimoident100=0x7f02002c;
+        public static final int toponimoident300=0x7f02002d;
+        public static final int toponimoidentsmall=0x7f02002e;
+        public static final int travelagent=0x7f02002f;
+        public static final int tray_full_32=0x7f020030;
+        public static final int university=0x7f020031;
+        public static final int white_to_white_grad=0x7f020032;
     }
     public static final class id {
         public static final int add_word_add_edit_text=0x7f080000;

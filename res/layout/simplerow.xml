@@ -3,7 +3,7 @@
 	android:layout_width="fill_parent" android:layout_height="80dip"
 	android:paddingTop="5dip" android:paddingBottom="5dip"
 	android:paddingLeft="10dip" android:paddingRight="10dip"
-	android:background="@drawable/grey_to_grey_grad" android:gravity="center">
+	android:background="@drawable/place_list_item_background" android:gravity="center">
 
 	<TextView android:id="@+id/label" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:gravity="center_vertical"

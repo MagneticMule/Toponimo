@@ -27,16 +27,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringWriter;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
 
-import com.magneticmule.toponimo.client.Constants;
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
 import com.magneticmule.toponimo.client.placestructure.Place;

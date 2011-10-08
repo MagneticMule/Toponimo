@@ -29,9 +29,9 @@
 		android:layout_height="wrap_content"></ImageButton>
 
 	<Gallery android:id="@+id/word_details_gallery"
-		android:layout_width="match_parent" android:layout_height="100px"
+		android:layout_width="match_parent" android:layout_height="180px"
 		android:padding="10dip"
-		android:spacing="100dip"
+		android:spacing="0dip"
 		 />		
 
 	<TextView android:layout_height="wrap_content"

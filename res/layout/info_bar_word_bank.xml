@@ -4,11 +4,11 @@
 		android:background="@color/black" />
 
 	<LinearLayout android:id="@+id/relativeLayout1"
-		android:layout_weight="0.1" android:background="@color/light_gray"
+		android:layout_weight="0.1" android:background="@color/yellow"
 		android:baselineAligned="true" android:orientation="horizontal"
 		android:layout_width="match_parent" android:layout_height="12dip">
 
-		<TextView android:text="NEARBY PLACES" android:textColor="@color/black"
+		<TextView android:text="WORD BANK" android:textColor="@color/black"
 			android:textStyle="bold" android:paddingLeft="10dip"
 			android:textSize="12dip" android:id="@+id/title_text"
 			android:layout_height="wrap_content" android:layout_width="wrap_content"

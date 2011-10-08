@@ -10,7 +10,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
@@ -21,11 +20,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -97,7 +94,7 @@ public class HttpDataUtils {
 	}
 	
 /**
- * Construct a new GET request. THis method can be used for downloading images from the Toponimo web server as well as
+ * Construct a new GET request. This method can be used for downloading images from the Toponimo web server as well as
  * other services such as Google Maps.
  * @param url
  * @param filename

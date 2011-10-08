@@ -12,4 +12,5 @@
 	<color name="background_gray">#e7ebeb</color>
 	<color name="list_divider_dark_gray">#aaaaaa</color>
 	<color name="list_divider_light_gray">#ffffff</color>
+	<color name="yellow">#ffff22</color>
 </resources>

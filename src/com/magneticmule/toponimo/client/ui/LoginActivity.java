@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.facebook.android.*;
 import com.facebook.android.Facebook.*;
 import com.magneticmule.toponimo.client.R;
-import com.magneticmule.toponimo.client.Constants;
 import com.magneticmule.toponimo.client.Secret;
 
 public class LoginActivity extends Activity {

@@ -1,8 +1,5 @@
 package com.magneticmule.toponimo.client.wordstructure;
 
-
-import java.util.List;
-
 public class Results{
    	private String partOfSpeech;
    	private Number score;

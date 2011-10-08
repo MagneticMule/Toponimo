@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Iterator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
@@ -34,19 +35,16 @@ import com.magneticmule.toponimo.client.utils.maps.Locations;
 @SuppressWarnings("unused")
 public class MapsViewActivity extends MapActivity implements LocationListener {
 
-	private MapView				mapView;
-	private MapController		mapController;
-	private MyLocationOverlay	myLocationOverlay;
+	private MapView							mapView;
+	private MapController				mapController;
+	private MyLocationOverlay		myLocationOverlay;
+	LocationManager							locationManager;
+	Location										location;
+	ToponimoApplication					application;
 
-	LocationManager				locationManager;
-
-	Location					location;
-
-	ToponimoApplication			application;
-
-	private static final short	ZOOM_LEVEL		= 17;	// mapview
-	private static final short	MIN_TIME		= 5000; // milliseconds
-	private static final short	MIN_DISTANCE	= 5;	// distance
+	private static final short	ZOOM_LEVEL		= 18;	// mapview
+	private static final short	MIN_TIME			= 5000; // milliseconds
+	private static final short	MIN_DISTANCE	= 5;		// distance
 
 	/** Called when the activity is first created. */
 	@Override
@@ -55,27 +53,23 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		setContentView(R.layout.mapview);
 		application = (ToponimoApplication) getApplicationContext();
+
+		Intent sender = getIntent();
 		initMap();
 		initLocationManager();
-
 	}
 
 	public void onLocationChanged(Location location) {
 		mapController.animateTo(myLocationOverlay.getMyLocation());
 		mapView.postInvalidate();
-		// myPosCustomOverlay(mLocation);
-		// move map to new mLocation and zoom
-
 	}
 
 	public void onProviderDisabled(String arg0) {
 		locationManager.removeUpdates(this);
-
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see android.app.Activity#onBackPressed()
 	 */
 	@Override
@@ -86,7 +80,6 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see android.app.Activity#onStart()
 	 */
 	@Override
@@ -97,7 +90,6 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -130,8 +122,8 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		mapView = (MapView) findViewById(R.id.mapview_control);
 		mapController = mapView.getController();
 		myLocationOverlay = new MyLocationOverlay(this, mapView);
-		myLocationOverlay.enableMyLocation();
-		myLocationOverlay.enableCompass();
+
+		
 
 		// mapView.getOverlays().clear();
 
@@ -140,13 +132,10 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		myLocationOverlay.runOnFirstFix(new Runnable() {
 
 			public void run() {
-
 				mapController.animateTo(myLocationOverlay.getMyLocation());
 				mapView.getOverlays().add(myLocationOverlay);
 				mapView.postInvalidate();
-
 			}
-
 		});
 
 		mapController.setZoom(ZOOM_LEVEL);
@@ -186,44 +175,32 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		List<Overlay> placeOverlays = mapView.getOverlays();
 		placeOverlays.clear();
 		mapView.invalidate();
-		Integer last = application.getPlaceResults().size();
-		Log.i("LAST", last.toString());
 
-		Drawable drawable = this.getResources().getDrawable(
-				R.drawable.marker_red);
+		Drawable drawable = this.getResources().getDrawable(R.drawable.marker_red);
 		Locations locations = new Locations(drawable, this);
 
-		Number lat = null, lng = null;
+		int position = application.getCurrentPlaceIndex();
+		
+		double lat = 0d;
+		double lng = 0d;
 		OverlayItem customOverlay = null;
-		for (int i = 0; i < last - 1; i++) {
-			Log.i("Started", "For loop");
-			lat = application.getPlaceResults().get(i).getResults().get(i)
-					.getLocation().getLat();
-			lng = application.getPlaceResults().get(i).getResults().get(i)
-					.getLocation().getLng();
 
-			GeoPoint gPoint = new GeoPoint((int) (lat.doubleValue() * 1e6),
-					((int) (lng.doubleValue() * 1e6)));
-			customOverlay = new OverlayItem(gPoint, "", "");
+		lat = (application.getPlaceResults().get(position).getResults().get(position).getLocation().getLat());
+		lng = (application.getPlaceResults().get(position).getResults().get(position).getLocation().getLng());
 
-			// CustomOverlay myOverlay = new CustomOverlay(this, gPoint,
-			// R.drawable.marker_red);
+		GeoPoint gPoint = new GeoPoint((int) (lat * 1e6), ((int) (lng * 1e6)));
+		customOverlay = new OverlayItem(gPoint, "", "");
 
-			locations.addOverlay(customOverlay);
-			// placeOverlays.add(itemizedOverlay);
-			// overlays.add(myOverlay);
-			overlays.add(new CustomOverlay(this, gPoint, R.drawable.marker_red));
-
-		}
+		locations.addOverlay(customOverlay);
+		// placeOverlays.add(itemizedOverlay);
+		// overlays.add(myOverlay);
+		overlays.add(new CustomOverlay(this, gPoint, R.drawable.marker_red));
+		
 		customOverlay.setMarker(drawable);
 		locations.populateNow();
 		overlays.add(locations);
 		mapView.postInvalidate();
 
-		// overlays.addAll(placeOverlays);
-		Log.i("Finished", "For loop");
-		Log.i("LAT", lat.toString());
-		Log.i("LNG", lng.toString());
 	}
 
 	private void initLocationManager() {
@@ -233,8 +210,7 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		Criteria criteria = Constants.fastCriteria();
 		String bestProvider = locationManager.getBestProvider(criteria, true);
 		location = locationManager.getLastKnownLocation(bestProvider);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
-				0, this);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
 	}
 
@@ -242,13 +218,11 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		// TODO Map search implementation
 	}
 
-
 	@Override
 	protected boolean isLocationDisplayed() {
 		// TODO Auto-generated method stub
 		return super.isLocationDisplayed();
 	}
-
 
 	@Override
 	protected void onDestroy() {
@@ -259,28 +233,26 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 
 	}
 
-
 	@Override
 	protected int onGetMapDataSource() {
 		// TODO Auto-generated method stub
 		return super.onGetMapDataSource();
 	}
 
-
 	@Override
 	protected void onPause() {
 		super.onPause();
+		myLocationOverlay.disableMyLocation();
 		locationManager.removeUpdates(this);
 		myLocationOverlay.disableMyLocation();
 
 	}
 
-
 	@Override
 	protected void onResume() {
 		super.onResume();
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
-				0, this);
+		myLocationOverlay.enableMyLocation();
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,Constants.MIN_TIME,Constants.MIN_DISTANCE, this);
 		myLocationOverlay.enableMyLocation();
 	}
 

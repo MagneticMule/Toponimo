@@ -5,7 +5,6 @@ import android.net.Uri;
 
 public class Constants {
 
-
 	// Path to the local client storage which will be used for storing images
 	// after being taken via the camera.
 	public static final String	LOCAL_IMAGE_STORE							= "/data/data/com.magneticmule.toponimo.client/";
@@ -32,7 +31,7 @@ public class Constants {
 	// local cache of places
 	public static final String	DATABASE_TABLE_PLACES					= "placeTable";
 
-	public static final int			DATABASE_VERSION							= 10;
+	public static final int			DATABASE_VERSION							= 11;
 
 	// key used for where clauses
 	public static final String	KEY_ROW_ID										= "_id";
@@ -53,7 +52,7 @@ public class Constants {
 
 	// SQL database to construct database
 	public static final String	DATABASE_CREATE								= "CREATE TABLE IF NOT EXISTS " + DATABASE_TABLE_MY_WORDS + "(" + KEY_ROW_ID
-																																+ " integer primary key autoincrement, " + KEY_WORD + " text not null, "
+																																+ " integer primary key autoincrement not null, " + KEY_WORD + " text not null, "
 																																+ KEY_WORD_LOCATION + " text not null, " + KEY_WORD_DEFINITION
 																																+ " text not null, " + KEY_WORD_LOCATION_LAT + " real not null, "
 																																+ KEY_WORD_LOCATION_LNG + " real not null, " + KEY_WORD_LOCATION_ID

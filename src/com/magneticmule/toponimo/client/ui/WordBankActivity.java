@@ -3,12 +3,9 @@ package com.magneticmule.toponimo.client.ui;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.widget.CursorAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-
-import com.magneticmule.toponimo.client.database.*;
 
 import com.magneticmule.toponimo.client.Constants;
 import com.magneticmule.toponimo.client.R;

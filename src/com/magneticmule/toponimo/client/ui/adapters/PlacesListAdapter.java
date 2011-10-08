@@ -86,6 +86,7 @@ public class PlacesListAdapter extends ArrayAdapter<Place> {
 		return (view);
 	}
 
+	@SuppressWarnings("unused")
 	private void defineIcon(String returnedType, ImageView image) {
 		if ((returnedType.equalsIgnoreCase("locality") || (returnedType.equalsIgnoreCase("sublocality")))) {
 			image.setImageResource(R.drawable.geocode);

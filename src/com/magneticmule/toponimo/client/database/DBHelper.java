@@ -14,8 +14,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	private static final String	TAG	= "DbHelper";
 
-	private SQLiteDatabase			db;
-
 	Context											context;
 
 	public DBHelper(Context _context, String _name, CursorFactory _factory, int _version) {
@@ -27,7 +25,6 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase _db) {
 		try {
 			_db.execSQL(Constants.DATABASE_CREATE);
-			db = _db;
 		} catch (SQLiteException e) {
 			Log.d(TAG, e.getMessage());
 		}
@@ -44,14 +41,6 @@ public class DBHelper extends SQLiteOpenHelper {
 		// create new db
 		onCreate(_db);
 
-	}
-
-	private void insertDummyData(SQLiteDatabase _db) {
-		ContentValues values = new ContentValues();
-		values.put("word", "CheeseCake");
-		values.put("location", "Nottingham");
-		values.put("definition", "Is a word");
-		_db.insert(Constants.DATABASE_TABLE_MY_WORDS, null, values);
 	}
 
 }
