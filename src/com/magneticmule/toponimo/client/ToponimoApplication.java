@@ -8,6 +8,7 @@ import java.util.List;
  */
 
 import com.magneticmule.toponimo.client.placestructure.Place;
+import com.magneticmule.toponimo.client.placestructure.Results;
 
 import android.app.Application;
 import android.content.Context;
@@ -56,22 +57,12 @@ public class ToponimoApplication extends Application {
 		this.placeResults = placeResults;
 	}
 
-	public List<Place> getPlaceResults() {
+	public Results getPlaceResults(int position) {
 		checkInstance();
-		return placeResults;
+		return placeResults.get(position).getResults().get(position);
 
 	}
 
-	public Place getCurrentPlace() {
-		checkInstance();
-		return this.currentPlace;
-	}
-
-	public void setCurrentPlace(Place place) {
-		checkInstance();
-		this.currentPlace = place;
-	}
-	
 	public int getCurrentPlaceIndex() {
 		checkInstance();
 		return currentPlaceIndex;

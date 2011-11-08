@@ -2,17 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	android:background="@color/darker_gray" android:layout_gravity="center"
-	android:paddingTop="20dip" android:orientation="vertical">
+	android:paddingTop="10dip" android:orientation="vertical" android:weightSum="1">
 
-	<EditText android:hint="..." android:id="@+id/add_word_add_edit_text"
-		android:layout_width="fill_parent" android:layout_height="200dip"
-		android:layout_marginRight="20dip" android:layout_marginLeft="20dip"
+	<EditText android:hint="Add a word or phrase."
+		android:id="@+id/add_word_add_edit_text" android:layout_width="fill_parent"
+		android:layout_marginRight="20dip" android:layout_marginTop="10dip"
+		android:layout_marginBottom="10dip" android:layout_marginLeft="20dip"
 		android:layout_gravity="center" android:imeOptions="actionGo"
-		android:textSize="40sp" android:textStyle="bold">
+		android:textSize="28sp" android:textStyle="bold"
+		android:layout_height="96dp" android:layout_weight="0.05">
 	</EditText>
-	<CheckBox android:text="Add word to local dictionary?"
-		android:id="@+id/checkBox1" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_marginRight="20dip"
-		android:layout_marginLeft="20dip" />
+
+	<Button android:background="@drawable/green_button" style="@style/ButtonTextLarge"
+		android:layout_gravity="center_horizontal" android:id="@+id/add_word_add_button"
+		android:text="ADD" android:layout_height="wrap_content"
+		android:layout_marginRight="20dip" android:layout_marginLeft="20dip"
+		android:layout_marginTop="20dip" android:layout_width="275dp"></Button>
+	<LinearLayout android:id="@+id/linearLayout1"
+		android:paddingTop="10dip" android:paddingLeft="20dip"
+		android:paddingRight="20dip" android:layout_height="wrap_content"
+		android:layout_width="match_parent">
+		<CheckBox android:id="@+id/checkBox1" android:layout_width="wrap_content"
+			android:layout_height="wrap_content"></CheckBox>
+		<TextView android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content" android:text="Add to local Dictionary?"
+			android:paddingLeft="8dip" android:id="@+id/textView1"
+			android:layout_height="wrap_content" android:layout_gravity="center_vertical"></TextView>
+	</LinearLayout>
+	<RadioGroup android:layout_height="wrap_content" android:id="@+id/radioGroup1"
+		android:layout_width="wrap_content" android:orientation="horizontal">
+	</RadioGroup>
+
 
 </LinearLayout>

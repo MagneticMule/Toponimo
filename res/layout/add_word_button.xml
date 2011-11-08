@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent" android:layout_height="match_parent"
 	android:baselineAligned="true" android:padding="10dip" android:background="@color/dark_gray">
-	<Button android:background="@drawable/green_button" style="@style/ButtonTextLarge"
+	<Button android:background="@drawable/blue_button" style="@style/ButtonTextLarge"
 		android:text="ADD WORD HERE" android:id="@+id/place_details_add_word_button"
-		android:layout_width="fill_parent" android:layout_height="45dip"
+		android:layout_width="fill_parent" android:layout_height="46dip"
 		android:layout_gravity="center" android:paddingLeft="10dip"
 		android:paddingRight="10dip">
 	</Button>

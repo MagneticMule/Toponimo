@@ -20,6 +20,8 @@ public class LastLocationRequester {
 	protected Criteria					criteria;
 	protected Context						context;
 
+	
+
 	/**
 	 * Request location updates using the quickest method possible. More accurate
 	 * results can be obtained using synchronous location updates with an accurate

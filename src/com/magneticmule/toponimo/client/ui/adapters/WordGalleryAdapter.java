@@ -1,8 +1,11 @@
 package com.magneticmule.toponimo.client.ui.adapters;
 
+import java.util.ArrayList;
+
 import com.magneticmule.toponimo.client.R;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,7 +15,7 @@ public class WordGalleryAdapter extends BaseAdapter {
 	
 	private Context context;
 	
-	public WordGalleryAdapter(Context c){
+	public WordGalleryAdapter(Context c, ArrayList<String> localImage, Uri localStorage){
 		context = c;
 	}
 
@@ -34,7 +37,7 @@ public class WordGalleryAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ImageView imageView = new ImageView(context);
 		
-		imageView.setImageResource(R.drawable.noimage180);
+		imageView.setImageResource(R.drawable.noimage);
 		
 		return imageView;
 	}

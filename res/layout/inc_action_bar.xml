@@ -1,7 +1,8 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 	<RelativeLayout android:layout_width="match_parent"
-		android:id="@+id/relativeLayout1" android:layout_height="30dip"
+		android:id="@+id/relativeLayout1" android:layout_height="32dip"
 		android:layout_weight="0.1" android:background="@color/brown_green">
+		
 
 		<TextView android:text="TOPONIMO" style="@style/ButtonText"
 			android:paddingLeft="10dip" android:textSize="20dip" android:id="@+id/title_text"

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.maps.MapView;
 import com.google.android.maps.MapController;
@@ -53,14 +54,26 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		setContentView(R.layout.mapview);
 		application = (ToponimoApplication) getApplicationContext();
+		
+		int currentPlaceIndex = application.getCurrentPlaceIndex();
+		createInfoView(currentPlaceIndex);
 
 		Intent sender = getIntent();
 		initMap();
 		initLocationManager();
 	}
+	
+	private void createInfoView(int index) {
+		TextView locationName = (TextView) findViewById(R.id.mapview_place_name);
+		TextView locationAddress = (TextView) findViewById(R.id.mapviews_place_address);
+				
+		locationName.setText(application.getPlaceResults(application.getCurrentPlaceIndex()).getName());
+		locationAddress.setText(application.getPlaceResults(application.getCurrentPlaceIndex()).getVicinity());
+		
+	}
 
 	public void onLocationChanged(Location location) {
-		mapController.animateTo(myLocationOverlay.getMyLocation());
+		
 		mapView.postInvalidate();
 	}
 
@@ -132,7 +145,7 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		myLocationOverlay.runOnFirstFix(new Runnable() {
 
 			public void run() {
-				mapController.animateTo(myLocationOverlay.getMyLocation());
+				
 				mapView.getOverlays().add(myLocationOverlay);
 				mapView.postInvalidate();
 			}
@@ -179,14 +192,13 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		Drawable drawable = this.getResources().getDrawable(R.drawable.marker_red);
 		Locations locations = new Locations(drawable, this);
 
-		int position = application.getCurrentPlaceIndex();
-		
+			
 		double lat = 0d;
 		double lng = 0d;
 		OverlayItem customOverlay = null;
 
-		lat = (application.getPlaceResults().get(position).getResults().get(position).getLocation().getLat());
-		lng = (application.getPlaceResults().get(position).getResults().get(position).getLocation().getLng());
+		lat = (application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLat());
+		lng = (application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLng());
 
 		GeoPoint gPoint = new GeoPoint((int) (lat * 1e6), ((int) (lng * 1e6)));
 		customOverlay = new OverlayItem(gPoint, "", "");
@@ -199,6 +211,7 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		customOverlay.setMarker(drawable);
 		locations.populateNow();
 		overlays.add(locations);
+		mapController.animateTo(gPoint);
 		mapView.postInvalidate();
 
 	}

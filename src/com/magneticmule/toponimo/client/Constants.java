@@ -31,7 +31,7 @@ public class Constants {
 	// local cache of places
 	public static final String	DATABASE_TABLE_PLACES					= "placeTable";
 
-	public static final int			DATABASE_VERSION							= 11;
+	public static final int			DATABASE_VERSION							= 12;
 
 	// key used for where clauses
 	public static final String	KEY_ROW_ID										= "_id";
@@ -52,11 +52,11 @@ public class Constants {
 
 	// SQL database to construct database
 	public static final String	DATABASE_CREATE								= "CREATE TABLE IF NOT EXISTS " + DATABASE_TABLE_MY_WORDS + "(" + KEY_ROW_ID
-																																+ " integer primary key autoincrement not null, " + KEY_WORD + " text not null, "
-																																+ KEY_WORD_LOCATION + " text not null, " + KEY_WORD_DEFINITION
-																																+ " text not null, " + KEY_WORD_LOCATION_LAT + " real not null, "
-																																+ KEY_WORD_LOCATION_LNG + " real not null, " + KEY_WORD_LOCATION_ID
-																																+ " text not null)";
+																																+ " integer primary key autoincrement not null, " + KEY_WORD
+																																+ " text not null, " + KEY_WORD_LOCATION + " text not null, "
+																																+ KEY_WORD_DEFINITION + " text not null, " + KEY_WORD_LOCATION_LAT
+																																+ " real not null, " + KEY_WORD_LOCATION_LNG + " real not null, "
+																																+ KEY_WORD_LOCATION_ID + " text not null)";
 
 	// Define constants fro
 	public static final String	LOCAL_WORDS_URI								= "content://com.magneticmule.provider.words/words";
@@ -105,5 +105,42 @@ public class Constants {
 		return criteria;
 
 	}
+
+	/**
+	 * DEBUG: Used for storing user interactions to a local database and remote
+	 * syncing
+	 */
+
+	/**
+	 * Definitions for local SQL database to store user interactions
+	 */
+
+	public static final String	DATABASE_TABLE_INTERACTIONS					= "interactionTable";
+
+	// Key and column pairs for the INTERACTION table
+	public static final String	KEY_INTERACTION											= "interactionid";
+	public static final int			KEY_INTERACTION_COLUMN							= 1;
+	public static final String	KEY_INTERACTION_TIME								= "time";
+	public static final int			KEY_INTERACTION_TIME_COLUMN					= 2;
+	public static final String	KEY_INTERACTION_SCREEN							= "screen";
+	public static final int			KEY_INTERACTION_SCREEN_COLUMN				= 3;
+	public static final String	KEY_INTERACTION_LOCATION_LAT				= "lat";
+	public static final int			KEY_INTERACTION_LOCATION_LAT_COLUMN	= 3;
+	public static final String	KEY_INTERACTION_LOCATION_LNG				= "lng";
+	public static final int			KEY_INTERACTION_LOCATION_LNG_COLUMN	= 4;
+
+	// SQL database to construct database
+	public static final String	DATABASE_INTERACTIONS_CREATE				= "CREATE TABLE IF NOT EXISTS " + DATABASE_TABLE_INTERACTIONS + "("
+																																			+ KEY_ROW_ID + " integer primary key autoincrement not null, "
+																																			+ KEY_INTERACTION + " text not null, " + KEY_INTERACTION_TIME
+																																			+ " text not null, " + KEY_INTERACTION_SCREEN + " text not null, "
+																																			+ KEY_WORD_LOCATION_LAT + " real not null, " + KEY_WORD_LOCATION_LNG
+																																			+ " real not null)";
+
+	// Define constants fro
+	public static final String	LOCAL_INTERACTIONS_URI							= "content://com.magneticmule.provider.words/interactions";
+	public static final Uri			INTERACTIONS_URI										= Uri.parse(LOCAL_INTERACTIONS_URI);
+
+	public static final String	INTERACTIONS_AUTHORITY							= "com.magneticmule.provider.interactions";
 
 }

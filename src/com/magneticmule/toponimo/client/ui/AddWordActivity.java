@@ -14,10 +14,12 @@ import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -27,16 +29,17 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
-import com.magneticmule.toponimo.client.utils.http.HttpDataUtils;
+import com.magneticmule.toponimo.client.utils.http.HttpUtils;
 
 public class AddWordActivity extends Activity {
 
 	private ToponimoApplication	application;
 
-	private int									position;
+	private int									currentPlaceIndex;
 	private String							upid	= null;
 	private String							placeName;
 	private String							words	= null;
+	InputMethodManager					imm;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,18 +48,18 @@ public class AddWordActivity extends Activity {
 
 		application = (ToponimoApplication) this.getApplication();
 		Intent sender = getIntent();
-		this.position = application.getCurrentPlaceIndex();
-		upid = new String(application.getPlaceResults().get(position).getResults().get(position).getId());
-		placeName = new String(application.getPlaceResults().get(position).getResults().get(position).getName());
+		this.currentPlaceIndex = application.getCurrentPlaceIndex();
+		upid = new String(application.getPlaceResults(currentPlaceIndex).getId());
+		placeName = new String(application.getPlaceResults(currentPlaceIndex).getName());
 		// placeNameFromCaller = new
 		// String(application.getPlaceResults().get(position).getResults().get(position).getName().toString());
 
 		Log.i("ID", upid);
 		Log.i("Name", placeName);
 
-		InputMethodManager imm = (InputMethodManager) AddWordActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm = (InputMethodManager) AddWordActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
 		if (imm != null) {
-			imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+			//imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 		}
 
 		final TextView addWordText = (TextView) findViewById(R.id.add_word_add_edit_text);
@@ -64,21 +67,28 @@ public class AddWordActivity extends Activity {
 
 			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
 				if (arg1 == EditorInfo.IME_ACTION_GO) {
-					addWord(addWordText);
+					return true;
+				} else {
+					return false;
 				}
-				return false;
 			}
 
 		});
 
-		// TextView placeTypes = (TextView)
-		// findViewById(R.id.place_details_place_type);
+		final Button addWordButton = (Button) findViewById(R.id.add_word_add_button);
+		addWordButton.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				addWord(addWordText);
+			}
+
+		});
 
 	}
 
 	public void addWord(final TextView addWordText) {
 		String confirmMessage = "";
-
+		imm.hideSoftInputFromInputMethod(addWordText.getWindowToken(), 0);
 		words = addWordText.getText().toString();
 
 		if (!words.equalsIgnoreCase("")) {
@@ -86,14 +96,11 @@ public class AddWordActivity extends Activity {
 				confirmMessage = "Taboo language is not allowed";
 			} else {
 				confirmMessage = "Added '" + words + "' to Place";
-				int currentPlaceIndex = application.getCurrentPlaceIndex();
-				application.getPlaceResults().get(currentPlaceIndex).getResults().get(currentPlaceIndex).addWord(words);
-				Log.i("WORDS", words);
-				Log.i("PlaceResultWord", application.getPlaceResults().get(position).getResults().get(position).getWords().get(0));
+				application.getPlaceResults(application.getCurrentPlaceIndex()).addWord(words);
 				Intent i = new Intent();
 				i.putExtra("words", words);
 				setResult(RESULT_OK, i);
-
+				
 				new Thread(new Runnable() {
 					public void run() {
 						try {
@@ -101,7 +108,7 @@ public class AddWordActivity extends Activity {
 							wordList.add(new BasicNameValuePair("words", words));
 							wordList.add(new BasicNameValuePair("upid", upid));
 							wordList.add(new BasicNameValuePair("uid", "123"));
-							HttpDataUtils.executeHttpPost(wordList);
+							HttpUtils.executeHttpPost(wordList);
 						} catch (UnsupportedEncodingException uce) {
 						} catch (IOException e) {
 						}

@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-
 import com.magneticmule.toponimo.client.BitmapUtils;
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
@@ -20,7 +18,6 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,14 +35,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.magneticmule.toponimo.client.utils.http.HttpDataUtils;
+import com.magneticmule.toponimo.client.utils.http.HttpUtils;
 import com.magneticmule.toponimo.client.utils.location.DistanceCalculator;
 
 public class PlaceDetailsActivity extends Activity {
 
 	protected static final String	TAG						= "PlaceDetailsActivity";
 	private static int						TAKE_PICTURE	= 1;
-	private int										position;
+	private int										currentPlaceIndex;
 	private String								placeName;
 	private String								placeAddress;
 	private String								extraData			= "";
@@ -53,17 +50,13 @@ public class PlaceDetailsActivity extends Activity {
 	private String								currentPosLng;
 	private Double								targetPosLat;
 	private Double								targetPosLng;
-	private ArrayList<String>			words					= new ArrayList<String>();
 	private ListView							wordListView;
 	private ArrayAdapter<String>	wordListArrayAdapter;
 	private ToponimoApplication		application;
 	private ImageView							mapImage;
 	private LinearLayout					headerViewMap;
-	private LinearLayout					headerViewButton;
+	private LinearLayout					headerViewWordButton;
 	private Button								addWordButton;
-
-	// distance between two locations
-	private Double								distance;
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -81,7 +74,7 @@ public class PlaceDetailsActivity extends Activity {
 				// TextView placeWords = (TextView)
 				// findViewById(R.id.place_details_place_words);
 				// placeWords.setText(extraData);
-				words.add(extraData + " *");
+				application.getPlaceResults(application.getCurrentPlaceIndex()).getWords().add(extraData + " *");
 				wordListArrayAdapter.notifyDataSetChanged();
 			}
 
@@ -92,26 +85,21 @@ public class PlaceDetailsActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.homegrid);
-		this.application = (ToponimoApplication) this.getApplication();
 		Intent sender = getIntent();
-		this.position = application.getCurrentPlaceIndex();
-		this.placeName = application.getPlaceResults().get(position).getResults().get(position).getName();
-		this.placeAddress = application.getPlaceResults().get(position).getResults().get(position).getVicinity();
-		this.currentPosLat = sender.getExtras().getString("currentPosLat");
-		this.currentPosLng = sender.getExtras().getString("currentPosLng");
+		application = (ToponimoApplication) getApplication();
 
-		this.targetPosLat = application.getPlaceResults().get(position).getResults().get(position).getLocation().getLat();
-		this.targetPosLng = application.getPlaceResults().get(position).getResults().get(position).getLocation().getLng();
+		placeName = application.getPlaceResults(application.getCurrentPlaceIndex()).getName();
+		placeAddress = application.getPlaceResults(application.getCurrentPlaceIndex()).getVicinity();
+		currentPosLat = sender.getExtras().getString("currentPosLat");
+		currentPosLng = sender.getExtras().getString("currentPosLng");
 
-		// words.addAll(application.getPlaceResults().get(position).getResults().get(position).getWords());
-		// Log.i("Words", words.get(0));
+		targetPosLat = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLat();
+		targetPosLng = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLng();
 
 		wordListView = (ListView) findViewById(R.id.place_details_word_listview);
-		application.getPlaceResults().get(position).getResults().get(position).getWords().add("Place");
-		application.getPlaceResults().get(position).getResults().get(position).getWords().add("Location");
 
-		wordListArrayAdapter = new WordListAdapter(this, R.layout.word_row, application.getPlaceResults().get(position).getResults()
-				.get(position).getWords());
+		wordListArrayAdapter = new WordListAdapter(this, R.layout.word_row, application.getPlaceResults(application.getCurrentPlaceIndex())
+				.getWords());
 
 		// inflate the first listview header view then find and assign the
 		// mapview image
@@ -120,29 +108,32 @@ public class PlaceDetailsActivity extends Activity {
 		mapImage = (ImageView) headerViewMap.findViewById(R.id.place_details_static_map_view);
 
 		// inflate the second listview header and attach the add word button
-		headerViewButton = (LinearLayout) inflater.inflate(R.layout.add_word_button, null);
-		addWordButton = (Button) headerViewButton.findViewById(R.id.place_details_add_word_button);
+		headerViewWordButton = (LinearLayout) inflater.inflate(R.layout.add_word_button, null);
+		addWordButton = (Button) headerViewWordButton.findViewById(R.id.place_details_add_word_button);
 
 		try {
 			wordListView.addHeaderView(headerViewMap);
-			wordListView.addHeaderView(headerViewButton);
+			wordListView.addHeaderView(headerViewWordButton);
 			wordListView.setAdapter(wordListArrayAdapter);
 			if (!(wordListView.getCount() < 1)) {
-				TextView totalWordTextView = (TextView) findViewById(R.id.places_info_text);
-				totalWordTextView.setText((wordListView.getCount() - 1) + " words at this location");
+				TextView wordInfoTextView = (TextView) findViewById(R.id.places_info_text);
+				wordInfoTextView.setText(Integer.toString(application.getPlaceResults(application.getCurrentPlaceIndex()).getWords().size())
+						+ " words at this location");
 			}
 		} catch (Exception e) {
-			Log.i("Exception", "lv.setadapter");
+
 		}
 
 		wordListView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
-				
-				TextView wordView = (TextView) v.findViewById(R.id.word_row_word_view);
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				// TextView wordView = (TextView)
+				// v.findViewById(R.id.word_row_word_view);
 				Intent intent = new Intent(PlaceDetailsActivity.this, WordDetailsActivity.class);
+				Log.d("position", Integer.toString(position));
+				Log.d("ID", Long.toString(id));
+				String word = application.getPlaceResults(application.getCurrentPlaceIndex()).getWords().get((int) id);
 
-				if (wordView.getText() != null) {
-					String word = wordView.getText().toString();
+				if (word != null || word.length() != 0) {
 					intent.putExtra("word", word);
 					startActivity(intent);
 				}
@@ -177,21 +168,21 @@ public class PlaceDetailsActivity extends Activity {
 		addWordButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(PlaceDetailsActivity.this, AddWordActivity.class);
-				intent.putExtra("position", position);
+				intent.putExtra("position", currentPlaceIndex);
 				intent.putExtra("name", placeName);
 				final int result = 1;
 				startActivityForResult(intent, result);
 			}
 		});
-		
-		mapImage.setOnClickListener(new View.OnClickListener() {			
+
+		mapImage.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(PlaceDetailsActivity.this, MapsViewActivity.class);
 				intent.putExtra("targetPosLat", targetPosLat);
 				intent.putExtra("targetPosLng", targetPosLng);
 				startActivity(intent);
 				Log.i(TAG, "MAP PRESSED");
-				
+
 			}
 		});
 
@@ -223,7 +214,7 @@ public class PlaceDetailsActivity extends Activity {
 
 		@Override
 		protected Bitmap doInBackground(Object... params) {
-			File file = HttpDataUtils.getWebImage("http://maps.google.com/maps/api/staticmap?"
+			File file = HttpUtils.getWebImage("http://maps.google.com/maps/api/staticmap?"
 					+ "zoom=16&size=400x180&markers=size:big|color:green|" + targetPosLat.toString() + "," + targetPosLng.toString()
 					+ "&sensor=true&format=png8", "place.png");
 

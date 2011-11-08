@@ -2,7 +2,6 @@ package com.magneticmule.toponimo.client.database;
 
 import com.magneticmule.toponimo.client.Constants;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
@@ -38,6 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		// db (use temp tables).
 		_db.execSQL("DROP TABLE IF EXISTS " + Constants.DATABASE_TABLE_MY_WORDS);
 		_db.execSQL("DROP TABLE IF EXISTS " + Constants.DATABASE_TABLE_PLACES);
+		_db.execSQL("DROP TABLE IF EXISTS " + Constants.DATABASE_TABLE_INTERACTIONS);
 		// create new db
 		onCreate(_db);
 
