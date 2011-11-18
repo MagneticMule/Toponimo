@@ -12,7 +12,7 @@ public class ApiKeys {
 
 	public static final String	FACEBOOK_API_KEY				= "100575183364254";
 
-	public static final String	API_SECRET							= "935c7758a9dd88b349b43ce42d31d20b";
+	public static final String	FACEBOOK_API_SECRET			= "935c7758a9dd88b349b43ce42d31d20b";
 
 	public static final String	DICTIONARY_BASE_ADDRESS	= "http://en.wiktionary.org/w/api.php?action=query&prop=revisions&titles=%s&rvprop=content&format=json%s";
 
@@ -20,8 +20,8 @@ public class ApiKeys {
 
 	public static final String	DOWNLOAD_URL						= "http://api.toponimo.org?";
 
-	// The server hosted PHP file which will handle data uploads from the client
-	// to the server.
 	public static final String	UPLOAD_URL							= "http://api.toponimo.org/upload.php/?";
+
+	public static final String	LOGIN_URL								= "http://www.toponimo.org/toponimo/auth/login";
 
 }

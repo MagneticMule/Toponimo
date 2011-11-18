@@ -183,7 +183,7 @@ public class PlaceListActivity extends Activity {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private class GetPlacesandParse extends AsyncTask {
+	private class GetPlaceList extends AsyncTask {
 
 		@Override
 		protected void onPreExecute() {
@@ -267,7 +267,7 @@ public class PlaceListActivity extends Activity {
 			double dLat = Double.parseDouble(lat);
 			double dLng = Double.parseDouble(lng);
 			LocationGeocoder.getLocationName(dLat, dLng, getApplicationContext(), new ReverseGeocoderHandler());
-			(new GetPlacesandParse()).execute((Object) null);
+			(new GetPlaceList()).execute((Object) null);
 		}
 
 		public class ReverseGeocoderHandler extends Handler {

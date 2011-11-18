@@ -10,21 +10,29 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.ByteArrayBuffer;
+import org.apache.http.util.EntityUtils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -37,6 +45,25 @@ public class HttpUtils {
 
 	public static final String	TAG	= "HttpUtils";	;
 
+	public String md5(String s) {
+		try {
+			// Create MD5 Hash
+			MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+			digest.update(s.getBytes());
+			byte messageDigest[] = digest.digest();
+
+			// Create Hex String
+			StringBuffer hexString = new StringBuffer();
+			for (int i = 0; i < messageDigest.length; i++)
+				hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+			return hexString.toString();
+
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
 	public static Boolean isOnline(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -47,24 +74,44 @@ public class HttpUtils {
 		}
 
 	}
-	
-	/**
-	 * Validate user credentials with server.
-	 * @param userName
-	 * @param password
-	 */
 
-	public static void authenticate(String userName, String password) {
+/**
+ * Passes the login credentials to the server. 
+ * @param userName
+ * @param password
+ * @param rememberMe
+ * @param url
+ * @return is
+ */
+
+	public static InputStream authenticate(String userName, String password, String rememberMe, String url) {
 		DefaultHttpClient httpClient = new DefaultHttpClient();
+		List<NameValuePair> userLogin = new ArrayList<NameValuePair>();
+		InputStream is = null;
+		userLogin.add(new BasicNameValuePair("username", userName));
+		userLogin.add(new BasicNameValuePair("password", password));
+		userLogin.add(new BasicNameValuePair("rememberme", rememberMe));
+		userLogin.add(new BasicNameValuePair("UserLogin", null));
 
 		try {
-			httpClient.getCredentialsProvider().setCredentials(new AuthScope("www.toponimo.org/toponimo", AuthScope.ANY_PORT),
-					new UsernamePasswordCredentials(userName, password));
-			
-
+			HttpPost httpPost = new HttpPost(url);
+			UrlEncodedFormEntity entity = null;
+			try {
+				entity = new UrlEncodedFormEntity(userLogin, "UTF-8");
+				httpPost.setEntity(entity);
+				HttpResponse response = httpClient.execute(httpPost);				
+				String statusCode = Integer.toString(response.getStatusLine().getStatusCode());
+				Log.i("StatusCode", statusCode);
+				is = response.getEntity().getContent();
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} finally {
-
+			httpClient.getConnectionManager().shutdown();
 		}
+		return is;
 	}
 
 	/**
@@ -77,22 +124,24 @@ public class HttpUtils {
 	public static InputStream getJSONData(String url) {
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		URI uri;
-		InputStream data = null;
+		InputStream is = null;
 		try {
 			uri = new URI(url);
-			HttpPost request = new HttpPost(uri);
-			request.addHeader("Accept-Encoding", "gzip");
-			HttpResponse response = httpClient.execute(request);
-			data = response.getEntity().getContent();
+			HttpPost httpPost = new HttpPost(uri);
+			httpPost.addHeader("Accept-Encoding", "gzip");
+			HttpResponse response = httpClient.execute(httpPost);
+			is = response.getEntity().getContent();
 			Header contentEncoding = response.getFirstHeader("Content-Encoding");
 			if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-				data = new GZIPInputStream(data);
+				is = new GZIPInputStream(is);
 			}
 		} catch (Exception e) {
 			Log.d(TAG, e.getMessage());
 			e.printStackTrace();
+		} finally {
+			httpClient.getConnectionManager().shutdown();
 		}
-		return data;
+		return is;
 
 	}
 
@@ -110,11 +159,11 @@ public class HttpUtils {
 		HttpClient httpClient = new DefaultHttpClient();
 		try {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			HttpPost request = new HttpPost(uri);
-			request.addHeader("Accept-Encoding", "gzip");
+			HttpPost httpPost = new HttpPost(uri);
+			httpPost.addHeader("Accept-Encoding", "gzip");
 			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters, "UTF-8");
-			request.setEntity(entity);
-			String response = httpClient.execute(request, responseHandler);
+			httpPost.setEntity(entity);
+			String response = httpClient.execute(httpPost, responseHandler);
 			Log.i(TAG, response);
 		} finally {
 			httpClient.getConnectionManager().shutdown();

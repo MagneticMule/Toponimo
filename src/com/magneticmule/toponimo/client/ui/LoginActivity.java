@@ -1,12 +1,17 @@
 package com.magneticmule.toponimo.client.ui;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,8 +22,13 @@ import android.widget.Toast;
 
 import com.facebook.android.*;
 import com.facebook.android.Facebook.*;
+import com.google.gson.Gson;
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ApiKeys;
+import com.magneticmule.toponimo.client.placestructure.Place;
+import com.magneticmule.toponimo.client.placestructure.Results;
+import com.magneticmule.toponimo.client.structures.userstructure.UserDetails;
+import com.magneticmule.toponimo.client.utils.http.HttpUtils;
 
 public class LoginActivity extends Activity {
 
@@ -34,8 +44,8 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-
 		final ImageView facebookLoginButton = (ImageView) findViewById(R.id.facebookLoginButton);
+
 		// if the facebook button is pressed
 		facebookLoginButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -48,8 +58,9 @@ public class LoginActivity extends Activity {
 		loginButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				Intent i = new Intent(LoginActivity.this, PlaceListActivity.class);
-				startActivity(i);
+				(new ValidateUser()).execute((Object) null);
+				//Intent i = new Intent(LoginActivity.this, PlaceListActivity.class);
+				//startActivity(i);
 			}
 		});
 
@@ -83,7 +94,7 @@ public class LoginActivity extends Activity {
 			 * for a full list of permissions
 			 */
 
-			facebook.authorize(this, new String[] { "user_checkins", "user_about_me", "user_birthday", "user_website", "publish_stream" },
+			facebook.authorize(this, new String[] { "user_about_me", "user_website", "publish_stream" },
 					new DialogListener() {
 
 						public void onComplete(Bundle values) {
@@ -120,4 +131,31 @@ public class LoginActivity extends Activity {
 		window.addFlags(WindowManager.LayoutParams.FLAG_DITHER);
 	}
 
+	@SuppressWarnings("rawtypes")
+	private class ValidateUser extends AsyncTask {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Object doInBackground(Object... arg0) {
+			UserDetails userDetails = null;
+			try {
+				Gson gson = new Gson();				
+				Reader r = new InputStreamReader(HttpUtils.authenticate("admin", "admin", "false", ApiKeys.LOGIN_URL));
+				userDetails = gson.fromJson(r, UserDetails.class);
+				Log.i("Firstname",userDetails.getFirstName().toString());
+				Log.i("Lastname",userDetails.getLastName().toString());
+				Log.i("ID",userDetails.getUserId().toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+			}
+
+			return userDetails;
+		}
+
+	}
 }
