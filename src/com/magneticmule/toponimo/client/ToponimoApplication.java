@@ -2,6 +2,8 @@ package com.magneticmule.toponimo.client;
 
 import java.util.List;
 
+import org.apache.http.impl.client.DefaultHttpClient;
+
 /**
  * Singleton to hold common state of app. As long as app is running, this object
  * will be accessible.
@@ -9,6 +11,7 @@ import java.util.List;
 
 import com.magneticmule.toponimo.client.placestructure.Place;
 import com.magneticmule.toponimo.client.placestructure.Results;
+import com.magneticmule.toponimo.client.structures.userstructure.UserDetails;
 
 import android.app.Application;
 import android.content.Context;
@@ -17,26 +20,34 @@ import android.util.Log;
 public class ToponimoApplication extends Application {
 
 	/**
-	 * placeResults holds a global reference to the PlaceStructure bean. This
+	 * Store a reference to the application object
+	 */
+	private static ToponimoApplication app = null;
+	
+	private static Context context;
+	private DefaultHttpClient httpClient;
+	
+	/**
+	 * placeResults holds a global reference to the PlaceStructure data. This
 	 * allows each class to access the placeResults without resorting to passing
 	 * values via bundled extras.
 	 */
-	private List<Place>									placeResults			= null;
-	private Place												currentPlace			= null;
-	private int													currentPlaceIndex	= 0;
+	private List<Place> placeResults = null;
+	private Place currentPlace = null;
+	private UserDetails userDetails;
+	
+	private int currentPlaceIndex = 0;
 
-	public static final String					APP_NAME					= "ToponimoApplication";
-	public static final String					TAG								= "ToponimoApplication";
-	private static Context							context;
+	public static final String APP_NAME = "ToponimoApplication";
+	public static final String TAG = "ToponimoApplication";
+	
 
-	/**
-	 * Store a reference to the application object
-	 */
-	private static ToponimoApplication	app								= null;
+	public ToponimoApplication() {
+		super();
+		httpClient = new DefaultHttpClient();
+	}
+	
 
-	/**
-	 * Provide an instance to the application object
-	 */
 	public void onCreate() {
 		// checkInstance();
 		super.onCreate();
@@ -49,8 +60,26 @@ public class ToponimoApplication extends Application {
 	@Override
 	public void onTerminate() {
 		super.onTerminate();
+		httpClient.getConnectionManager().shutdown();
 		Log.i(TAG, "Tooponimo application ended.");
 	}
+	
+	public DefaultHttpClient getHttpClient() {
+		return httpClient;
+	}
+
+	public void setHttpClient(DefaultHttpClient httpClient) {
+		this.httpClient = httpClient;
+	}
+
+	public UserDetails getUserDetails() {
+		return userDetails;
+	}
+
+	public void setUserDetails(UserDetails userDetails) {
+		this.userDetails = userDetails;
+	}
+
 
 	public void setPlaceResults(List<Place> placeResults) {
 		checkInstance();
@@ -86,9 +115,9 @@ public class ToponimoApplication extends Application {
 
 	public static void checkInstance() {
 		if (app == null) {
-			throw new IllegalStateException("Application has not been initialized! : " + TAG);
+			throw new IllegalStateException(
+					"Application has not been initialized : " + TAG);
 		}
 	}
-
 
 }

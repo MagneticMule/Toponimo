@@ -1,11 +1,16 @@
 package com.magneticmule.toponimo.client.utils.http;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -20,8 +25,6 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -32,8 +35,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.ByteArrayBuffer;
-import org.apache.http.util.EntityUtils;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -43,12 +44,52 @@ import com.magneticmule.toponimo.client.*;
 
 public class HttpUtils {
 
-	public static final String	TAG	= "HttpUtils";	;
+	public static final String TAG = "HttpUtils";
 
+	/**
+	 * 
+	 * To convert the InputStream to String we use the Reader.read(char[]
+	 * buffer) method. We iterate until the Reader return -1 which means there's
+	 * no more data to read. We use the StringWriter class to produce the
+	 * string.
+	 * 
+	 * @param is
+	 * @return
+	 * @throws IOException
+	 */
+
+	public static String convertStreamToString(InputStream is)
+			throws IOException {
+
+		if (is != null) {
+			Writer writer = new StringWriter();
+			char[] buffer = new char[1024];
+			try {
+				Reader reader = new BufferedReader(new InpUtStreamReader(is,
+						"UTF-8"));
+				int n;
+				while ((n = reader.read(buffer)) != -1) {
+					writer.write(buffer, 0, n);
+				}
+			} finally {
+				is.close();
+			}
+			return writer.toString();
+		} else {
+			return "";
+		}
+	}
+
+	/**
+	 * 
+	 * @param s
+	 * @return
+	 */
 	public String md5(String s) {
 		try {
 			// Create MD5 Hash
-			MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+			MessageDigest digest = java.security.MessageDigest
+					.getInstance("MD5");
 			digest.update(s.getBytes());
 			byte messageDigest[] = digest.digest();
 
@@ -65,7 +106,8 @@ public class HttpUtils {
 	}
 
 	public static Boolean isOnline(Context context) {
-		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager cm = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
 		if (netInfo != null && netInfo.isConnected()) {
 			return true;
@@ -75,19 +117,22 @@ public class HttpUtils {
 
 	}
 
-/**
- * Passes the login credentials to the server. 
- * @param userName
- * @param password
- * @param rememberMe
- * @param url
- * @return is
- */
+	/**
+	 * Passes the login credentials to the server.
+	 * 
+	 * @param userName
+	 * @param password
+	 * @param rememberMe
+	 * @param url
+	 * @return is
+	 */
 
-	public static InputStream authenticate(String userName, String password, String rememberMe, String url) {
-		DefaultHttpClient httpClient = new DefaultHttpClient();
+	public static String authenticate(DefaultHttpClient httpClient,
+			String userName, String password, String rememberMe, String url) {
+		// DefaultHttpClient httpClient = new DefaultHttpClient();
 		List<NameValuePair> userLogin = new ArrayList<NameValuePair>();
 		InputStream is = null;
+		String outputString = "";
 		userLogin.add(new BasicNameValuePair("username", userName));
 		userLogin.add(new BasicNameValuePair("password", password));
 		userLogin.add(new BasicNameValuePair("rememberme", rememberMe));
@@ -99,19 +144,29 @@ public class HttpUtils {
 			try {
 				entity = new UrlEncodedFormEntity(userLogin, "UTF-8");
 				httpPost.setEntity(entity);
-				HttpResponse response = httpClient.execute(httpPost);				
-				String statusCode = Integer.toString(response.getStatusLine().getStatusCode());
-				Log.i("StatusCode", statusCode);
-				is = response.getEntity().getContent();
+				HttpResponse response = httpClient.execute(httpPost);
+				int statusCode = response.getStatusLine().getStatusCode();
+				HttpEntity httpEntity = response.getEntity();
+				if (statusCode == 200 && httpEntity != null) {
+					is = response.getEntity().getContent();
+					outputString = convertStreamToString(is);
+					httpEntity.consumeContent();
+				} else if (statusCode == 400) {
+					outputString = "No account found with that email & password combination";
+				} else if (statusCode == 400) {
+					outputString = "Bad Request";
+				}
+
+				Log.i("StatusCode", Integer.toString(statusCode));
+
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} finally {
-			httpClient.getConnectionManager().shutdown();
 		}
-		return is;
+		return outputString;
 	}
 
 	/**
@@ -121,58 +176,71 @@ public class HttpUtils {
 	 * @param url
 	 * @return
 	 */
-	public static InputStream getJSONData(String url) {
-		DefaultHttpClient httpClient = new DefaultHttpClient();
+	public static String getJSONData(DefaultHttpClient httpClient, String url) {
 		URI uri;
 		InputStream is = null;
+		String outputString = "";
 		try {
 			uri = new URI(url);
-			HttpPost httpPost = new HttpPost(uri);
-			httpPost.addHeader("Accept-Encoding", "gzip");
-			HttpResponse response = httpClient.execute(httpPost);
-			is = response.getEntity().getContent();
-			Header contentEncoding = response.getFirstHeader("Content-Encoding");
-			if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-				is = new GZIPInputStream(is);
+			HttpGet httpGet = new HttpGet(uri);
+			httpGet.addHeader("Accept-Encoding", "gzip");
+			HttpResponse response = httpClient.execute(httpGet);
+			HttpEntity httpEntity = response.getEntity();
+			if (httpEntity != null) {
+				is = httpEntity.getContent();
+				Header contentEncoding = response
+						.getFirstHeader("Content-Encoding");
+				if (contentEncoding != null
+						&& contentEncoding.getValue().equalsIgnoreCase("gzip")) {
+					is = new GZIPInputStream(is);
+				}
+				outputString = convertStreamToString(is);
+				// flush http contents
+				httpEntity.consumeContent();
 			}
 		} catch (Exception e) {
 			Log.d(TAG, e.getMessage());
 			e.printStackTrace();
 		} finally {
-			httpClient.getConnectionManager().shutdown();
 		}
-		return is;
+		return outputString;
 
 	}
 
 	/**
-	 * Construct a new HTTP 'POST' request. This request will be used for posting
-	 * user generated words to the server.
+	 * Construct a new HTTP 'POST' request. This request will be used for
+	 * posting user generated words to the server.
 	 * 
 	 * @param words
 	 * @param pid
 	 * @throws UnsupportedEncodingException
 	 * @throws IOException
 	 */
-	public static void executeHttpPost(List<NameValuePair> postParameters) throws UnsupportedEncodingException, IOException {
+	public static void executeHttpPost(DefaultHttpClient httpClient,
+			List<NameValuePair> postParameters)
+			throws UnsupportedEncodingException, IOException {
 		String uri = ApiKeys.UPLOAD_URL;
-		HttpClient httpClient = new DefaultHttpClient();
+		HttpResponse response;
 		try {
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			HttpPost httpPost = new HttpPost(uri);
 			httpPost.addHeader("Accept-Encoding", "gzip");
-			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters, "UTF-8");
+			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(
+					postParameters, "UTF-8");
 			httpPost.setEntity(entity);
-			String response = httpClient.execute(httpPost, responseHandler);
-			Log.i(TAG, response);
+			response = httpClient.execute(httpPost);
+			HttpEntity httpEntity = response.getEntity();
+			if (httpEntity != null) {
+				httpEntity.consumeContent();
+			}
 		} finally {
-			httpClient.getConnectionManager().shutdown();
+
 		}
 	}
 
 	/**
-	 * Construct a new GET request. This method can be used for downloading images
-	 * from the Toponimo web server as well as other services such as Google Maps.
+	 * Construct a new GET request. This method can be used for downloading
+	 * images from the Toponimo web server as well as other services such as
+	 * Google Maps.
 	 * 
 	 * @param url
 	 * @param filename
@@ -205,12 +273,16 @@ public class HttpUtils {
 			FileOutputStream fileOutStream = new FileOutputStream(file);
 			fileOutStream.write(byteBuffer.toByteArray());
 			fileOutStream.close();
-			Log.d("WebDataHelper.class", "Image read in" + ((System.currentTimeMillis() - startTime / 1000) + " sec"));
+			Log.d("WebDataHelper.class",
+					"Image read in"
+							+ ((System.currentTimeMillis() - startTime / 1000) + " sec"));
 		} catch (MalformedURLException e) {
-			Log.d("MalformedURLException", "when trying to download image @ Webstransaction.class, StackTrace follows:");
+			Log.d("MalformedURLException",
+					"when trying to download image @ Webstransaction.class, StackTrace follows:");
 			e.printStackTrace();
 		} catch (IOException e) {
-			Log.d("IOException", " when trying to download image @ Webstransaction.class, StackTrace follows:");
+			Log.d("IOException",
+					" when trying to download image @ Webstransaction.class, StackTrace follows:");
 			e.printStackTrace();
 		}
 

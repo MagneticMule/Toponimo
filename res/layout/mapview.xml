@@ -1,42 +1,66 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:background="@drawable/grey_to_grey_grad"
-	android:layout_gravity="center">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/grey_to_grey_grad"
+    android:orientation="vertical" >
 
+    <com.google.android.maps.MapView
+        android:id="@+id/mapview_control"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/nav_bar_mapview"
+        android:apiKey="0fqJRInbccwZDYF2GAcYqg7h0gQ7rSyLtmZbxvw"
+        android:clickable="true"
+        android:enabled="true" />
 
-	<com.google.android.maps.MapView
-		android:id="@+id/mapview_control" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:enabled="true"
-		android:clickable="true" android:layout_below="@+id/nav_bar_mapview"
-		android:apiKey="0fqJRInbccwZ5L_uedgEHfMUF5V2yL6r7WRHlmw" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="100dip"
+        android:layout_alignParentTop="true"
+        android:background="#ccffffff"
+        android:gravity="center"
+        android:paddingBottom="5dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="5dip" >
 
-	<RelativeLayout android:background="#ccffffff"
-		android:layout_width="fill_parent" android:layout_height="100dip"
-		android:layout_alignParentTop="true" android:paddingTop="5dip"
-		android:paddingBottom="5dip" android:paddingLeft="10dip"
-		android:paddingRight="10dip" android:gravity="center">
+        <TextView
+            android:id="@+id/mapview_place_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
-		<TextView android:id="@+id/mapview_place_name"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:singleLine="true" android:textColor="@color/black"
-			android:textSize="22sp" android:textStyle="bold" android:ellipsize="marquee"
-			android:text="" />
+        <TextView
+            android:id="@+id/mapviews_place_address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mapview_place_name"
+            android:layout_marginTop="1dip"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="14sp" />
 
-		<TextView android:id="@+id/mapviews_place_address"
-			android:layout_height="wrap_content" android:layout_below="@id/mapview_place_name"
-			android:textColor="@color/black" android:textSize="14sp"
-			android:singleLine="true" android:scrollHorizontally="true"
-			android:layout_marginTop="1dip" android:text=""
-			android:layout_width="fill_parent" />
-
-		<TextView android:id="@+id/mapview_place_distance"
-			android:layout_height="wrap_content" android:layout_below="@+id/mapview_place_address"
-			android:textColor="@color/darker_gray" android:textSize="12sp"
-			android:ellipsize="marquee" android:singleLine="true"
-			android:scrollHorizontally="true" android:text=""
-			android:layout_marginTop="1dip" android:layout_width="fill_parent" />
-
+        <TextView
+            android:id="@+id/mapview_place_distance"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mapview_place_address"
+            android:layout_marginTop="1dip"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/darker_gray"
+            android:textSize="12sp" />
 		/>
+    </RelativeLayout>
 
-	</RelativeLayout>
 </RelativeLayout>

@@ -109,7 +109,7 @@ public class AddPhraseActivity extends Activity {
 							wordList.add(new BasicNameValuePair("words", words));
 							wordList.add(new BasicNameValuePair("upid", upid));
 							wordList.add(new BasicNameValuePair("uid", "123"));
-							HttpUtils.executeHttpPost(wordList);
+							HttpUtils.executeHttpPost(ToponimoApplication.getApp().getHttpClient(),wordList);
 						} catch (UnsupportedEncodingException uce) {
 						} catch (IOException e) {
 						}

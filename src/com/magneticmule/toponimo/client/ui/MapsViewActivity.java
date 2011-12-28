@@ -36,16 +36,16 @@ import com.magneticmule.toponimo.client.utils.maps.Locations;
 @SuppressWarnings("unused")
 public class MapsViewActivity extends MapActivity implements LocationListener {
 
-	private MapView							mapView;
-	private MapController				mapController;
-	private MyLocationOverlay		myLocationOverlay;
-	LocationManager							locationManager;
-	Location										location;
-	ToponimoApplication					application;
+	private MapView mapView;
+	private MapController mapController;
+	private MyLocationOverlay myLocationOverlay;
+	LocationManager locationManager;
+	Location location;
+	ToponimoApplication application;
 
-	private static final short	ZOOM_LEVEL		= 18;	// mapview
-	private static final short	MIN_TIME			= 5000; // milliseconds
-	private static final short	MIN_DISTANCE	= 5;		// distance
+	private static final short ZOOM_LEVEL = 18; // mapview
+	private static final short MIN_TIME = 5000; // milliseconds
+	private static final short MIN_DISTANCE = 5; // distance
 
 	/** Called when the activity is first created. */
 	@Override
@@ -54,7 +54,7 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		setContentView(R.layout.mapview);
 		application = (ToponimoApplication) getApplicationContext();
-		
+
 		int currentPlaceIndex = application.getCurrentPlaceIndex();
 		createInfoView(currentPlaceIndex);
 
@@ -62,18 +62,20 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		initMap();
 		initLocationManager();
 	}
-	
+
 	private void createInfoView(int index) {
 		TextView locationName = (TextView) findViewById(R.id.mapview_place_name);
 		TextView locationAddress = (TextView) findViewById(R.id.mapviews_place_address);
-				
-		locationName.setText(application.getPlaceResults(application.getCurrentPlaceIndex()).getName());
-		locationAddress.setText(application.getPlaceResults(application.getCurrentPlaceIndex()).getVicinity());
-		
+
+		locationName.setText(application.getPlaceResults(
+				application.getCurrentPlaceIndex()).getName());
+		locationAddress.setText(application.getPlaceResults(
+				application.getCurrentPlaceIndex()).getVicinity());
+
 	}
 
 	public void onLocationChanged(Location location) {
-		
+
 		mapView.postInvalidate();
 	}
 
@@ -83,6 +85,7 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onBackPressed()
 	 */
 	@Override
@@ -93,6 +96,7 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onStart()
 	 */
 	@Override
@@ -103,6 +107,7 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -136,8 +141,6 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		mapController = mapView.getController();
 		myLocationOverlay = new MyLocationOverlay(this, mapView);
 
-		
-
 		// mapView.getOverlays().clear();
 
 		// mapView.postInvalidate();
@@ -145,7 +148,7 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		myLocationOverlay.runOnFirstFix(new Runnable() {
 
 			public void run() {
-				
+
 				mapView.getOverlays().add(myLocationOverlay);
 				mapView.postInvalidate();
 			}
@@ -189,16 +192,18 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		placeOverlays.clear();
 		mapView.invalidate();
 
-		Drawable drawable = this.getResources().getDrawable(R.drawable.marker_red);
+		Drawable drawable = this.getResources().getDrawable(
+				R.drawable.marker_red);
 		Locations locations = new Locations(drawable, this);
 
-			
 		double lat = 0d;
 		double lng = 0d;
 		OverlayItem customOverlay = null;
 
-		lat = (application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLat());
-		lng = (application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLng());
+		lat = (application.getPlaceResults(application.getCurrentPlaceIndex())
+				.getLocation().getLat());
+		lng = (application.getPlaceResults(application.getCurrentPlaceIndex())
+				.getLocation().getLng());
 
 		GeoPoint gPoint = new GeoPoint((int) (lat * 1e6), ((int) (lng * 1e6)));
 		customOverlay = new OverlayItem(gPoint, "", "");
@@ -207,7 +212,7 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		// placeOverlays.add(itemizedOverlay);
 		// overlays.add(myOverlay);
 		overlays.add(new CustomOverlay(this, gPoint, R.drawable.marker_red));
-		
+
 		customOverlay.setMarker(drawable);
 		locations.populateNow();
 		overlays.add(locations);
@@ -223,7 +228,8 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		Criteria criteria = Constants.fastCriteria();
 		String bestProvider = locationManager.getBestProvider(criteria, true);
 		location = locationManager.getLastKnownLocation(bestProvider);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+				0, this);
 
 	}
 
@@ -265,7 +271,8 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 	protected void onResume() {
 		super.onResume();
 		myLocationOverlay.enableMyLocation();
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,Constants.MIN_TIME,Constants.MIN_DISTANCE, this);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+				Constants.MIN_TIME, Constants.MIN_DISTANCE, this);
 		myLocationOverlay.enableMyLocation();
 	}
 

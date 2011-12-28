@@ -80,7 +80,7 @@ public class HttpDataUtils {
 	 * @throws IOException
 	 */
 	public static void executeHttpPost(List<NameValuePair> postParameters) throws UnsupportedEncodingException, IOException {
-		String uri = Secret.UPLOAD_URL;
+		String uri = ApiKeys.UPLOAD_URL;
 		//List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		//for (String s:)
 		//postParameters.add(values);

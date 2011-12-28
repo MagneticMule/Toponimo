@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:layout_gravity="center"
-	android:background="@color/dark_gray" android:padding="10dip">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:background="@color/dark_gray"
+    android:orientation="vertical"
+    android:padding="10dip" >
 
-	<ImageView android:id="@+id/place_details_static_map_view"
-		android:layout_width="380px" android:layout_height="180px"
-		android:background="@drawable/image_border" android:src="@drawable/staticmap"		
-		android:layout_gravity="center"></ImageView>
+    <ImageView
+        android:id="@+id/place_details_static_map_view"
+        android:layout_width="380px"
+        android:layout_height="180px"
+        android:layout_gravity="center"
+        android:background="@drawable/image_border"
+        android:src="@drawable/staticmap" >
+    </ImageView>
 
 </LinearLayout>

@@ -103,23 +103,6 @@
                 android:layout_height="1dip"
                 android:background="#a1a1a1" />
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="#3f3f3f" >
-
-                <Button
-                    android:id="@+id/word_details_add_to_word_bank_button"
-                    style="@style/ButtonTextGreyLarge"
-                    android:layout_width="fill_parent"
-                    android:layout_height="48dip"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dip"
-                    android:background="@drawable/blue_button"
-                    android:text="ADD TO WORD BANK" >
-                </Button>
-            </LinearLayout>
-
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1px"
@@ -194,7 +177,7 @@
 
                     <LinearLayout
                         android:id="@+id/wotrd_details_gallery_content"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal" >
 
@@ -308,5 +291,20 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#3f3f3f" >
+
+        <Button
+            android:id="@+id/word_details_add_to_word_bank_button"
+            style="@style/ButtonTextGreyLarge"
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:layout_margin="10dip"
+            android:background="@drawable/blue_button"
+            android:text="ADD TO WORD BANK" />
+    </LinearLayout>
 
 </LinearLayout>

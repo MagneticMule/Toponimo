@@ -1,6 +1,5 @@
 package com.magneticmule.toponimo.client.utils.location;
 
-
 import com.magneticmule.toponimo.client.ToponimoApplication;
 import com.magneticmule.toponimo.client.Constants;
 
@@ -16,14 +15,13 @@ import android.location.LocationManager;
 
 public class LocationUpdateService extends IntentService {
 
-	protected static String					TAG	= "LocationUpdateService";
+	protected static String TAG = "LocationUpdateService";
 
-	protected ConnectivityManager		connectivityManager;
-	protected ContentResolver				contentResolver;
-	protected LastLocationRequester	llr;
-	Location												lastLocation;
-	LocationManager									locationManager;
-
+	protected ConnectivityManager connectivityManager;
+	protected ContentResolver contentResolver;
+	protected LastLocationRequester llr;
+	Location lastLocation;
+	LocationManager locationManager;
 
 	public LocationUpdateService() {
 		super(TAG);
@@ -39,7 +37,8 @@ public class LocationUpdateService extends IntentService {
 	public void onCreate() {
 		super.onCreate();
 		connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		locationManager = (LocationManager) this
+				.getSystemService(Context.LOCATION_SERVICE);
 		Log.d(TAG, "Service Created");
 	}
 
@@ -59,7 +58,8 @@ public class LocationUpdateService extends IntentService {
 		Log.d(TAG, "Service Running");
 		connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		llr = new LastLocationRequester(ToponimoApplication.getGlobalContext());
-		Location location = new Location(llr.lastLocation(Constants.MIN_TIME, Constants.MIN_DISTANCE));	
+		Location location = new Location(llr.lastLocation(Constants.MIN_TIME,
+				Constants.MIN_DISTANCE));
 		broadcastLocation(location);
 
 	}
@@ -69,11 +69,13 @@ public class LocationUpdateService extends IntentService {
 		// extract latitude and longitude from location
 		Double lat = location.getLatitude();
 		Double lng = location.getLongitude();
-				Intent intent = new Intent();
+		Intent intent = new Intent();
 		intent.putExtra("lat", lat.toString());
 		intent.putExtra("lng", lng.toString());
 		intent.putExtra("location", location);
 		intent.setAction("LOCATION");
+		Log.d(TAG, lat.toString());
+		Log.d(TAG, lng.toString());
 
 		// broadcast the intent
 		sendBroadcast(intent);

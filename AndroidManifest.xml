@@ -1,66 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.magneticmule.toponimo.client" android:versionCode="1"
-	android:versionName="1.0">
-	<uses-sdk android:minSdkVersion="8" />
+    package="com.magneticmule.toponimo.client"
+    android:versionCode="1"
+    android:versionName="1.0" >
 
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-sdk android:minSdkVersion="8" />
 
-	<application android:icon="@drawable/icon" android:label="@string/app_name"
-		android:name=".ToponimoApplication" android:debuggable="true">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-		<activity android:name=".ui.LoginActivity" android:label="@string/app_name"
-			android:theme="@android:style/Theme.NoTitleBar"
-			android:configChanges="keyboardHidden|orientation">
+    <application
+        android:name=".ToponimoApplication"
+        android:debuggable="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
-		</activity>
+        <uses-library android:name="com.google.android.maps" />
 
-		<uses-library android:name="com.google.android.maps" />
-		<activity android:name=".ui.PlaceListActivity" android:theme="@android:style/Theme.NoTitleBar"
-			android:configChanges="keyboardHidden|orientation" />
-		<activity android:name=".ui.MapsViewActivity" android:theme="@android:style/Theme.NoTitleBar"
-			android:configChanges="keyboardHidden|orientation" />
-		<activity android:name=".ui.PlaceDetailsActivity"
-			android:theme="@android:style/Theme.NoTitleBar"
-			android:configChanges="keyboardHidden|orientation" />
-		<activity android:name=".ui.AddWordActivity" android:theme="@android:style/Theme.NoTitleBar"
-			android:configChanges="keyboardHidden|orientation"
-			android:windowSoftInputMode="stateAlwaysVisible" />
-		<activity android:name=".ui.WordBankActivity" android:theme="@android:style/Theme.NoTitleBar"
-			android:configChanges="keyboardHidden|orientation" />
-		<activity android:name=".ui.WordDetailsActivity"
-			android:theme="@android:style/Theme.NoTitleBar"
-			android:configChanges="keyboardHidden|orientation" />
+        <activity
+            android:name=".ui.PlaceListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".ui.MapsViewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".ui.PlaceDetailsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".ui.AddWordActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name=".ui.WordBankActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".ui.WordDetailsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar" />
 
-		<receiver android:name="com.magneticmule.toponimo.client.monitor.UserInteractionReceiver" />
+        <receiver android:name="com.magneticmule.toponimo.client.monitor.UserInteractionReceiver" />
 
-		<service
-			android:name="com.magneticmule.toponimo.client.utils.location.LocationUpdateService"></service>
+        <service android:name="com.magneticmule.toponimo.client.utils.location.LocationUpdateService" >
+        </service>
+        <service android:name="com.magneticmule.toponimo.client.monitor.InteractionsLoggerService" >
+        </service>
 
-		<service
-			android:name="com.magneticmule.toponimo.client.monitor.InteractionsLoggerService"></service>
-
-		<provider android:authorities="com.magneticmule.provider.words"
-			android:name=".database.ClientWordsProvider" android:multiprocess="true" />
-		<provider android:authorities="com.magneticmule.provider.interactions"
-			android:name=".database.ClientInteractionsProvider"
-			android:multiprocess="true" />
-
-
-	</application>
-
-
-
+        <provider
+            android:name=".database.ClientWordsProvider"
+            android:authorities="com.magneticmule.provider.words"
+            android:multiprocess="true" />
+        <provider
+            android:name=".database.ClientInteractionsProvider"
+            android:authorities="com.magneticmule.provider.interactions"
+            android:multiprocess="true" />
+    </application>
 
 </manifest>

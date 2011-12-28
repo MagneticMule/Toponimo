@@ -1,51 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:background="@drawable/blue_to_blue_grad"
-	android:layout_gravity="center" android:paddingTop="10px"
-	android:orientation="vertical">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/blue_to_blue_grad"
+    android:gravity="bottom"
+    android:orientation="vertical" >
 
-	<ImageView android:src="@drawable/toponimo_ident" android:id="@+id/titleImageView"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_gravity="center|center_horizontal"
-		android:layout_marginBottom="20dip" android:layout_marginTop="20dip">
-	</ImageView>
+    <ImageView
+        android:id="@+id/titleImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dip"
+        android:layout_marginTop="20dip"
+        android:paddingBottom="50dip"
+        android:paddingTop="50dip"
+        android:src="@drawable/toponimo_ident_360" />
 
-	<EditText android:hint="Username" android:id="@+id/usernameEditText"
-		android:layout_width="220dip" android:layout_height="50dip"
-		android:layout_marginRight="20dip" android:layout_marginLeft="20dip"
-		android:layout_gravity="center">
-	</EditText>
+    <EditText
+        android:id="@+id/usernameEditText"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:hint="Username"
+        android:singleLine="true" >
+    </EditText>
 
-	<EditText android:inputType="textPassword" android:hint="Password"
-		android:id="@+id/passwordEditText" android:layout_width="220dip"
-		android:layout_height="50dip" android:layout_marginRight="20dip"
-		android:layout_marginLeft="20dip" android:layout_gravity="center">
-	</EditText>
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:hint="Password"
+        android:inputType="textPassword" >
+    </EditText>
 
-	<LinearLayout android:layout_width="220dip"
-		android:layout_height="wrap_content" android:paddingTop="10dip"
-		android:paddingBottom="10dip" android:orientation="horizontal" android:layout_gravity="center_horizontal">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="10dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingTop="10dip" >
 
-		<Button android:background="@drawable/green_button" style="@style/ButtonText"
-			android:id="@+id/loginbtn" android:layout_width="100dip"
-			android:layout_height="40dip" android:text="@string/login"
-			android:layout_weight="1">
-		</Button>
+        <Button
+            android:id="@+id/loginbtn"
+            style="@style/ButtonText"
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"
+            android:layout_weight="1"
+            android:background="@drawable/green_button"
+            android:text="@string/login" >
+        </Button>
 
-		<Button android:background="@drawable/blue_button" style="@style/ButtonText"
-			android:id="@+id/signupbtn" android:layout_width="100dip"
-			android:layout_height="40dip" android:text="@string/signup"
-			android:layout_weight="1">
-		</Button>
-	</LinearLayout>
+        <Button
+            android:id="@+id/signupbtn"
+            style="@style/ButtonText"
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"
+            android:layout_weight="1"
+            android:background="@drawable/blue_button"
+            android:text="@string/signup" >
+        </Button>
+    </LinearLayout>
 
-	<ImageView android:src="@drawable/facebookloginbutton"
-		android:id="@+id/facebookLoginButton" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:clickable="true"
-		android:layout_gravity="center|bottom" android:paddingTop="20dip">
-	</ImageView>
+    <ImageView
+        android:id="@+id/facebookLoginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:contentDescription="Login via Facebook"
+        android:paddingTop="20dip"
+        android:src="@drawable/facebookloginbutton" >
+    </ImageView>
 
-
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="3" />
 
 </LinearLayout>

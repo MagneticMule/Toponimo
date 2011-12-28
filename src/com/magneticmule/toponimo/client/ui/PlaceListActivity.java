@@ -49,23 +49,23 @@ import com.magneticmule.toponimo.client.utils.location.LocationUpdateService;
 
 public class PlaceListActivity extends Activity {
 
-	protected static final String			TAG						= "ToponimoActivity";
-	private ListView									placeListView;
-	private ArrayAdapter<Place>				placeArrayAdapter;
-	private ArrayList<Place>					placenameList	= new ArrayList<Place>();
-	private static PlaceListActivity	mainActivity;
+	protected static final String TAG = "ToponimoActivity";
+	private ListView placeListView;
+	private ArrayAdapter<Place> placeArrayAdapter;
+	private ArrayList<Place> placenameList = new ArrayList<Place>();
+	private static PlaceListActivity mainActivity;
 
-	protected String									lat;
-	protected String									lng;
+	protected String lat;
+	protected String lng;
 
-	private ToponimoApplication				application;
-	private ProgressBar								refreshBar;
+	private ToponimoApplication application;
+	private ProgressBar refreshBar;
 
-	private ImageView									refreshButton;
-	private ImageView									wordBankButton;
-	private TextView									emptyView;
+	private ImageView refreshButton;
+	private ImageView wordBankButton;
+	private TextView emptyView;
 
-	private LocationReceiver					receiver;
+	private LocationReceiver receiver;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -80,7 +80,8 @@ public class PlaceListActivity extends Activity {
 
 		mainActivity = this;
 
-		placeArrayAdapter = new PlacesListAdapter(this, R.layout.simplerow, placenameList);
+		placeArrayAdapter = new PlacesListAdapter(this, R.layout.simplerow,
+				placenameList);
 
 		refreshBar = (ProgressBar) findViewById(R.id.refresh_progress_bar);
 		emptyView = (TextView) findViewById(R.id.emptyView);
@@ -90,13 +91,17 @@ public class PlaceListActivity extends Activity {
 		placeListView.setAdapter(placeArrayAdapter);
 
 		placeListView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> a, View v, int currentPlaceIndex, long id) {
+			public void onItemClick(AdapterView<?> a, View v,
+					int currentPlaceIndex, long id) {
 				TextView textView = (TextView) v.findViewById(R.id.label);
 				String placeName = textView.getText().toString();
 				TextView types = (TextView) v.findViewById(R.id.label_words);
 				application.setCurrentPlaceIndex(currentPlaceIndex);
-				String placeAddress = application.getPlaceResults(application.getCurrentPlaceIndex()).getVicinity().toString();				
-				Intent intent = new Intent(PlaceListActivity.this, PlaceDetailsActivity.class);
+				String placeAddress = application
+						.getPlaceResults(application.getCurrentPlaceIndex())
+						.getVicinity().toString();
+				Intent intent = new Intent(PlaceListActivity.this,
+						PlaceDetailsActivity.class);
 				intent.putExtra("position", currentPlaceIndex);
 				intent.putExtra("placeName", placeName);
 				intent.putExtra("placeAddress", placeAddress);
@@ -120,7 +125,8 @@ public class PlaceListActivity extends Activity {
 		wordBankButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				Intent i = new Intent(PlaceListActivity.this, WordBankActivity.class);
+				Intent i = new Intent(PlaceListActivity.this,
+						WordBankActivity.class);
 				startActivity(i);
 
 			}
@@ -144,25 +150,32 @@ public class PlaceListActivity extends Activity {
 		if (HttpUtils.isOnline(application.getApplicationContext())) {
 			refreshLocation();
 		} else {
-			Toast.makeText(mainActivity, "No connection to Toponimo server", Toast.LENGTH_LONG).show();
+			Toast.makeText(mainActivity, "No connection to Toponimo server",
+					Toast.LENGTH_LONG).show();
 
 		}
 	}
 
 	private void refreshLocation() {
-		Intent locationUpdateService = new Intent(PlaceListActivity.this, LocationUpdateService.class);
+		Intent locationUpdateService = new Intent(PlaceListActivity.this,
+				LocationUpdateService.class);
 		startService(locationUpdateService);
 	}
 
 	private void startInteractionAlarm() {
 		// Intent startIntent = new
 		// Intent(this,com.magneticmule.toponimo.client.monitor.UserInteractionReceiver.class);
-		PendingIntent pendingIntent = PendingIntent.getService(PlaceListActivity.this, -1, new Intent(PlaceListActivity.this,
-				UserInteractionReceiver.class), PendingIntent.FLAG_CANCEL_CURRENT);
+		PendingIntent pendingIntent = PendingIntent.getService(
+				PlaceListActivity.this, -1, new Intent(PlaceListActivity.this,
+						UserInteractionReceiver.class),
+				PendingIntent.FLAG_CANCEL_CURRENT);
 
-		AlarmManager alarmManager = (AlarmManager) application.getSystemService(Context.ALARM_SERVICE);
+		AlarmManager alarmManager = (AlarmManager) application
+				.getSystemService(Context.ALARM_SERVICE);
 
-		alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+		alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+				SystemClock.elapsedRealtime()
+						+ AlarmManager.INTERVAL_FIFTEEN_MINUTES,
 				AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
 
 	}
@@ -197,12 +210,14 @@ public class PlaceListActivity extends Activity {
 
 		@Override
 		protected Object doInBackground(Object... arg0) {
-			String urlString = ApiKeys.DOWNLOAD_URL + "lat=" + lat + "&" + "lng=" + lng;
+			String urlString = ApiKeys.DOWNLOAD_URL + "lat=" + lat + "&"
+					+ "lng=" + lng;
 			Place place = null;
 			try {
 				Gson gson = new Gson();
-				Reader r = new InputStreamReader(HttpUtils.getJSONData(urlString));
-				place = gson.fromJson(r, Place.class);
+				String jsonData = HttpUtils.getJSONData(ToponimoApplication
+						.getApp().getHttpClient(), urlString);
+				place = gson.fromJson(jsonData, Place.class);
 				placenameList.clear();
 				for (Results p : place.getResults()) {
 					placenameList.add(place);
@@ -227,6 +242,7 @@ public class PlaceListActivity extends Activity {
 
 		/*
 		 * (non-Javadoc)
+		 * 
 		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
 		 */
 		@Override
@@ -254,11 +270,12 @@ public class PlaceListActivity extends Activity {
 	protected void onStop() {
 		super.onStop();
 		unregisterLocationReceiver();
-		stopService(new Intent(PlaceListActivity.this, LocationUpdateService.class));
+		stopService(new Intent(PlaceListActivity.this,
+				LocationUpdateService.class));
 	}
 
 	public class LocationReceiver extends BroadcastReceiver {
-		public static final String	ACTION	= "LOCATION";
+		public static final String ACTION = "LOCATION";
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -266,7 +283,8 @@ public class PlaceListActivity extends Activity {
 			lng = intent.getStringExtra("lng");
 			double dLat = Double.parseDouble(lat);
 			double dLng = Double.parseDouble(lng);
-			LocationGeocoder.getLocationName(dLat, dLng, getApplicationContext(), new ReverseGeocoderHandler());
+			LocationGeocoder.getLocationName(dLat, dLng,
+					getApplicationContext(), new ReverseGeocoderHandler());
 			(new GetPlaceList()).execute((Object) null);
 		}
 

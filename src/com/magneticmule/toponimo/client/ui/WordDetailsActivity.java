@@ -31,21 +31,23 @@ import java.io.Reader;
 import com.magneticmule.toponimo.client.utils.http.HttpUtils;
 import com.magneticmule.toponimo.client.Constants;
 import com.magneticmule.toponimo.client.R;
+import com.magneticmule.toponimo.client.ToponimoApplication;
 
 import com.magneticmule.toponimo.client.*;
 
-public class WordDetailsActivity extends Activity implements TextToSpeech.OnInitListener {
+public class WordDetailsActivity extends Activity implements
+		TextToSpeech.OnInitListener {
 
-	private static final int						TAKE_PICTURE	= 1;
-	private static final int						DATA_CHECKSUM	= 28031974;
-	private ToponimoApplication					application;
-	private static WordDetailsActivity	mainActivity;
-	private TextToSpeech								tts;
-	private String											word;
-	private String											definition;
-	protected TextView									definitionTextView;
-	private Uri													imageOutputURI;
-	Animation														fadein;
+	private static final int TAKE_PICTURE = 1;
+	private static final int DATA_CHECKSUM = 28031974;
+	private ToponimoApplication application;
+	private static WordDetailsActivity mainActivity;
+	private TextToSpeech tts;
+	private String word;
+	private String definition;
+	protected TextView definitionTextView;
+	private Uri imageOutputURI;
+	Animation fadein;
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -64,7 +66,8 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 			} else {
 				// else, install tts data
 				Intent installIntent = new Intent();
-				installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+				installIntent
+						.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
 				startActivity(installIntent);
 			}
 		}
@@ -81,7 +84,7 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 		application = (ToponimoApplication) this.getApplication();
 		mainActivity = this;
 		definitionTextView = (TextView) findViewById(R.id.word_details_definition);
-		
+
 		ttsCheck();
 		Intent sender = getIntent();
 		word = sender.getExtras().getString("word");
@@ -110,33 +113,41 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 	}
 
 	/**
-	 * Attaches the button from the xml source then assigns a new onClickListener
-	 * to the button. If pressed, the current place details are retrieved from the
-	 * application cache and added to the local database along with the current
-	 * word.
+	 * Attaches the button from the xml source then assigns a new
+	 * onClickListener to the button. If pressed, the current place details are
+	 * retrieved from the application cache and added to the local database
+	 * along with the current word.
 	 */
 	private void createAddToWordBankButton() {
 		Button addToWordbank = (Button) findViewById(R.id.word_details_add_to_word_bank_button);
 		addToWordbank.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				String currentLocation = application.getPlaceResults(application.getCurrentPlaceIndex()).getName();
-				double currentLat = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLat();
-				double currentLng = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLng();
-				String currentLocationID = application.getPlaceResults(application.getCurrentPlaceIndex()).getId();
+				String currentLocation = application.getPlaceResults(
+						application.getCurrentPlaceIndex()).getName();
+				double currentLat = application
+						.getPlaceResults(application.getCurrentPlaceIndex())
+						.getLocation().getLat();
+				double currentLng = application
+						.getPlaceResults(application.getCurrentPlaceIndex())
+						.getLocation().getLng();
+				String currentLocationID = application.getPlaceResults(
+						application.getCurrentPlaceIndex()).getId();
 
-				addWordToBank(word, definition, currentLocation, currentLat, currentLng, currentLocationID);
-				Toast t = Toast.makeText(WordDetailsActivity.this, "Added '" + word + "' to Word Store", Toast.LENGTH_SHORT);
+				addWordToBank(word, definition, currentLocation, currentLat,
+						currentLng, currentLocationID);
+				Toast t = Toast.makeText(WordDetailsActivity.this, "Added '"
+						+ word + "' to Word Store", Toast.LENGTH_SHORT);
 				t.show();
 			}
 		});
 	}
 
 	/**
-	 * Attaches the button from the xml source then assigns a new onClickListener
-	 * to the button. If pressed, a new intent is fired to take a picture from the
-	 * in built camera. The resulting image is stored in the applications solid
-	 * state cache.
+	 * Attaches the button from the xml source then assigns a new
+	 * onClickListener to the button. If pressed, a new intent is fired to take
+	 * a picture from the in built camera. The resulting image is stored in the
+	 * applications solid state cache.
 	 */
 	private void createAddPictureButton() {
 		Button addPictureButton = (Button) findViewById(R.id.word_details_add_picture);
@@ -144,7 +155,8 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 
 			public void onClick(View v) {
 				Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				File file = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+				File file = new File(Environment.getExternalStorageDirectory(),
+						"temp.jpg");
 				imageOutputURI = Uri.fromFile(file);
 				i.putExtra(MediaStore.EXTRA_OUTPUT, imageOutputURI);
 				startActivityForResult(i, TAKE_PICTURE);
@@ -153,8 +165,9 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 	}
 
 	/**
-	 * Attaches the button from the xml source then assigns a new onClickListener
-	 * to the button. If pressed, the current word is spoken via tts.
+	 * Attaches the button from the xml source then assigns a new
+	 * onClickListener to the button. If pressed, the current word is spoken via
+	 * tts.
 	 */
 	private void createSpeakButton() {
 		Button speakButton = (Button) findViewById(R.id.word_details_speak_button);
@@ -162,7 +175,8 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 
 			public void onClick(View v) {
 				TextView wordTextView = (TextView) findViewById(R.id.word_details_word_view);
-				tts.speak(wordTextView.getText().toString() + ".", TextToSpeech.QUEUE_FLUSH, null);
+				tts.speak(wordTextView.getText().toString() + ".",
+						TextToSpeech.QUEUE_FLUSH, null);
 			}
 		});
 	}
@@ -179,8 +193,8 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 	}
 
 	/**
-	 * prevents the view from switching from portrait to landscape when the phone
-	 * is rotated.
+	 * prevents the view from switching from portrait to landscape when the
+	 * phone is rotated.
 	 */
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -210,7 +224,8 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 	 * @param lng
 	 * @param locationID
 	 */
-	private void addWordToBank(String word, String definition, String locationName, Double lat, Double lng, String locationID) {
+	private void addWordToBank(String word, String definition,
+			String locationName, Double lat, Double lng, String locationID) {
 		Uri uri = Constants.WORDS_URI;
 		ContentValues cv = new ContentValues();
 		cv.put(Constants.KEY_WORD, word);
@@ -224,25 +239,22 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 
 	private class DownloadDefinition extends AsyncTask {
 
-		String	definition	= "";
+		String definition = "";
+
 		@Override
-		protected Object doInBackground(Object... params) {
+		protected String doInBackground(Object... params) {
 			try {
 				String completeUrl = (ApiKeys.DEFINITION_URL + word);
-				Log.d("Word",word);
-				Reader reader = new InputStreamReader(HttpUtils.getJSONData(completeUrl));
-				BufferedReader in = new BufferedReader(reader);
-				String current;
-				while ((current = in.readLine()) != null) {
-					definition += current;
-					}
-				Log.i("Definition", definition.toString());
+				Log.d("Word", word);
+				definition = HttpUtils.getJSONData(ToponimoApplication
+						.getApp().getHttpClient(), completeUrl);
+				Log.i("Definition", definition);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 			}
-			
-			return null;
+
+			return definition;
 
 		}
 
@@ -251,7 +263,7 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 			mainActivity.definitionTextView.setText(definition);
 			mainActivity.definitionTextView.startAnimation(fadein);
 			mainActivity.definition = definition;
-			super.onPostExecute(result);
+			super.onPostExecute(definition);
 		}
 
 	}
