@@ -2,9 +2,6 @@ package com.magneticmule.toponimo.client.database;
 
 import java.util.HashMap;
 
-import com.magneticmule.toponimo.client.Constants;
-import com.magneticmule.toponimo.client.ToponimoApplication;
-
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -18,28 +15,32 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
+import com.magneticmule.toponimo.client.Constants;
+import com.magneticmule.toponimo.client.ToponimoApplication;
+
 public class ClientWordsProvider extends ContentProvider {
 
-	private static final String							TAG					= "ClientWordsProvider";
-	private static Uri											CONTENT_URI	= Constants.WORDS_URI;
-	private Context													context;
-	ToponimoApplication											application;
+	private static final String TAG = "ClientWordsProvider";
+	private static Uri CONTENT_URI = Constants.WORDS_URI;
+	private Context context;
+	ToponimoApplication application;
 	// Instantiate custom DBHelper;
-	private DBHelper												dbHelper;
-	private static UriMatcher								uriMatcher;
+	private DBHelper dbHelper;
+	private static UriMatcher uriMatcher;
 
 	// words database projection map
-	private static HashMap<String, String>	wordsProjectionMap;
+	private static HashMap<String, String> wordsProjectionMap;
 
 	/**
-	 * Start by getting a reference to the global application context. Instantiate
-	 * a new DBHelper object which will open the database if exists else create
-	 * one.
+	 * Start by getting a reference to the global application context.
+	 * Instantiate a new DBHelper object which will open the database if exists
+	 * else create one.
 	 */
 	@Override
 	public boolean onCreate() {
 		context = getContext();
-		dbHelper = new DBHelper(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+		dbHelper = new DBHelper(context, Constants.DATABASE_NAME, null,
+				Constants.DATABASE_VERSION);
 		try {
 			SQLiteDatabase db = dbHelper.getWritableDatabase();
 		} catch (SQLiteException s) {
@@ -63,11 +64,16 @@ public class ClientWordsProvider extends ContentProvider {
 		wordsProjectionMap = new HashMap<String, String>();
 		wordsProjectionMap.put(Constants.KEY_ROW_ID, Constants.KEY_ROW_ID);
 		wordsProjectionMap.put(Constants.KEY_WORD, Constants.KEY_WORD);
-		wordsProjectionMap.put(Constants.KEY_WORD_LOCATION, Constants.KEY_WORD_LOCATION);
-		wordsProjectionMap.put(Constants.KEY_WORD_DEFINITION, Constants.KEY_WORD_DEFINITION);
-		wordsProjectionMap.put(Constants.KEY_WORD_LOCATION_LAT, Constants.KEY_WORD_LOCATION_LAT);
-		wordsProjectionMap.put(Constants.KEY_WORD_LOCATION_LNG, Constants.KEY_WORD_LOCATION_LNG);
-		wordsProjectionMap.put(Constants.KEY_WORD_LOCATION_ID, Constants.KEY_WORD_LOCATION_ID);
+		wordsProjectionMap.put(Constants.KEY_WORD_LOCATION,
+				Constants.KEY_WORD_LOCATION);
+		wordsProjectionMap.put(Constants.KEY_WORD_DEFINITION,
+				Constants.KEY_WORD_DEFINITION);
+		wordsProjectionMap.put(Constants.KEY_WORD_LOCATION_LAT,
+				Constants.KEY_WORD_LOCATION_LAT);
+		wordsProjectionMap.put(Constants.KEY_WORD_LOCATION_LNG,
+				Constants.KEY_WORD_LOCATION_LNG);
+		wordsProjectionMap.put(Constants.KEY_WORD_LOCATION_ID,
+				Constants.KEY_WORD_LOCATION_ID);
 	}
 
 	/**
@@ -95,14 +101,17 @@ public class ClientWordsProvider extends ContentProvider {
 		}
 
 		if (values.containsKey(Constants.KEY_WORD) == false) {
-			throw new SQLException("Failed to add to the Database due to empty Key Word" + uri);
+			throw new SQLException(
+					"Failed to add to the Database due to empty Key Word" + uri);
 		}
 
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		long rowID = db.insert(Constants.DATABASE_TABLE_MY_WORDS, null, contentValues);
+		long rowID = db.insert(Constants.DATABASE_TABLE_MY_WORDS, null,
+				contentValues);
 
 		if (rowID > 0) {
-			Uri wordURI = ContentUris.withAppendedId(Constants.WORDS_URI, rowID);
+			Uri wordURI = ContentUris
+					.withAppendedId(Constants.WORDS_URI, rowID);
 			getContext().getContentResolver().notifyChange(wordURI, null);
 			return wordURI;
 		}
@@ -110,7 +119,8 @@ public class ClientWordsProvider extends ContentProvider {
 	}
 
 	@Override
-	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+	public Cursor query(Uri uri, String[] projection, String selection,
+			String[] selectionArgs, String sortOrder) {
 
 		SQLiteQueryBuilder sqlBuilder = new SQLiteQueryBuilder();
 
@@ -118,7 +128,8 @@ public class ClientWordsProvider extends ContentProvider {
 		case Constants.SINGLE_ROW:
 			sqlBuilder.setTables(Constants.DATABASE_TABLE_MY_WORDS);
 			sqlBuilder.setProjectionMap(wordsProjectionMap);
-			sqlBuilder.appendWhere(Constants.KEY_ROW_ID + "=" + uri.getPathSegments().get(1));
+			sqlBuilder.appendWhere(Constants.KEY_ROW_ID + "="
+					+ uri.getPathSegments().get(1));
 			break;
 
 		case Constants.ALL_ROWS:
@@ -130,19 +141,22 @@ public class ClientWordsProvider extends ContentProvider {
 			throw new IllegalArgumentException(TAG + " : Unknown URI");
 		}
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		Cursor cursor = sqlBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+		Cursor cursor = sqlBuilder.query(db, projection, selection,
+				selectionArgs, null, null, sortOrder);
 		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 		return cursor;
 	}
 
 	@Override
-	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+	public int update(Uri uri, ContentValues values, String selection,
+			String[] selectionArgs) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		int count;
 
 		switch (uriMatcher.match(uri)) {
 		case Constants.ALL_ROWS:
-			count = db.update(Constants.DATABASE_TABLE_MY_WORDS, values, selection, selectionArgs);
+			count = db.update(Constants.DATABASE_TABLE_MY_WORDS, values,
+					selection, selectionArgs);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknow URI");

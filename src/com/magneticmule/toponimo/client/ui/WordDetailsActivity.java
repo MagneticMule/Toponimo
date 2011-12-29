@@ -1,5 +1,9 @@
 package com.magneticmule.toponimo.client.ui;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -24,22 +28,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import com.magneticmule.toponimo.client.utils.http.HttpUtils;
+import com.magneticmule.toponimo.client.ApiKeys;
 import com.magneticmule.toponimo.client.Constants;
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
-
-import com.magneticmule.toponimo.client.*;
+import com.magneticmule.toponimo.client.utils.http.HttpUtils;
 
 public class WordDetailsActivity extends Activity implements
 		TextToSpeech.OnInitListener {
 
 	private static final int TAKE_PICTURE = 1;
 	private static final int DATA_CHECKSUM = 28031974;
+	protected static final String TAG = "WordDetailsActivity";
 	private ToponimoApplication application;
 	private static WordDetailsActivity mainActivity;
 	private TextToSpeech tts;
@@ -47,16 +47,23 @@ public class WordDetailsActivity extends Activity implements
 	private String definition;
 	protected TextView definitionTextView;
 	private Uri imageOutputURI;
-	Animation fadein;
+	private Animation fadein;
+
+	private List<Pair> images = new ArrayList<Pair>();
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+
+		if (resultCode == RESULT_CANCELED) {
+			return;
+		}
 
 		if (requestCode == TAKE_PICTURE) {
 			Uri imageUri = null;
 			if (data != null) {
 				if (data.hasExtra("data")) {
 					Bitmap thumbnail = data.getParcelableExtra("data");
+
 				}
 			}
 		} else if (requestCode == DATA_CHECKSUM) {
@@ -159,7 +166,11 @@ public class WordDetailsActivity extends Activity implements
 						"temp.jpg");
 				imageOutputURI = Uri.fromFile(file);
 				i.putExtra(MediaStore.EXTRA_OUTPUT, imageOutputURI);
-				startActivityForResult(i, TAKE_PICTURE);
+				try {
+					startActivityForResult(i, TAKE_PICTURE);
+				} catch (Exception e) {
+					Log.d(TAG, e.toString());
+				}
 			}
 		});
 	}
@@ -246,8 +257,8 @@ public class WordDetailsActivity extends Activity implements
 			try {
 				String completeUrl = (ApiKeys.DEFINITION_URL + word);
 				Log.d("Word", word);
-				definition = HttpUtils.getJSONData(ToponimoApplication
-						.getApp().getHttpClient(), completeUrl);
+				definition = HttpUtils.getJSONData(ToponimoApplication.getApp()
+						.getHttpClient(), completeUrl);
 				Log.i("Definition", definition);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -270,6 +281,34 @@ public class WordDetailsActivity extends Activity implements
 
 	public void onInit(int status) {
 		// TODO Auto-generated method stub
+
+	}
+
+	private class Pair {
+
+		private String path;
+		private Bitmap bitmap;
+
+		public Pair(String _path, Bitmap _bitmap) {
+			path = _path;
+			bitmap = _bitmap;
+		}
+
+		public String getPath() {
+			return path;
+		}
+
+		public void setPath(String path) {
+			this.path = path;
+		}
+
+		public Bitmap getBitmap() {
+			return bitmap;
+		}
+
+		public void setBitmap(Bitmap bitmap) {
+			this.bitmap = bitmap;
+		}
 
 	}
 

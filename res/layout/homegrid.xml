@@ -1,77 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:background="@color/background_gray" android:orientation="vertical"
-	android:layout_height="fill_parent" android:layout_gravity="center"
-	android:layout_width="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:background="@color/background_gray"
+    android:orientation="vertical" >
 
+    <include
+        android:id="@+id/id_bar_place_list"
+        android:layout_height="32dp"
+        android:layout_gravity="center_horizontal"
+        layout="@layout/inc_action_bar" />
 
-	<include android:id="@+id/id_bar_place_list" layout="@layout/inc_action_bar"
-		android:layout_gravity="center_horizontal" android:layout_height="32dp" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@drawable/divider_grad" />
 
-	<View android:layout_width="fill_parent" android:layout_height="1dip"
-		android:background="@drawable/divider_grad" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dark_gray"
+        android:gravity="center"
+        android:paddingBottom="5dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="5dip" >
 
-	<RelativeLayout android:background="@color/dark_gray"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:paddingTop="5dip" android:paddingBottom="5dip"
-		android:paddingLeft="10dip" android:paddingRight="10dip"
-		android:gravity="center">
+        <TextView
+            android:id="@+id/place_details_place_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="The Spire Cafe"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
-		<TextView android:id="@+id/place_details_place_name"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:singleLine="true" android:textColor="@color/black"
-			android:textSize="22sp" android:textStyle="bold" android:ellipsize="marquee"
-			android:text="The Spire Cafe" />
+        <TextView
+            android:id="@+id/place_details_place_address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/place_details_place_name"
+            android:layout_marginTop="1dip"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="Jubilee Campus"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
 
-		<TextView android:id="@+id/place_details_place_address"
-			android:layout_height="wrap_content" android:layout_below="@id/place_details_place_name"
-			android:textColor="@color/black" android:textSize="14sp"
-			android:singleLine="true" android:scrollHorizontally="true"
-			android:layout_marginTop="1dip" android:text="Jubilee Campus"
-			android:layout_width="fill_parent" />
+        <TextView
+            android:id="@+id/place_details_place_distance"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/place_details_place_address"
+            android:layout_marginTop="1dip"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="0.1 miles away"
+            android:textColor="@color/darker_gray"
+            android:textSize="12sp" />
 
-		<TextView android:id="@+id/place_details_place_distance"
-			android:layout_height="wrap_content" android:layout_below="@+id/place_details_place_address"
-			android:textColor="@color/darker_gray" android:textSize="12sp"
-			android:ellipsize="marquee" android:singleLine="true"
-			android:scrollHorizontally="true" android:text="0.1 miles away"
-			android:layout_marginTop="1dip" android:layout_width="fill_parent" />
+        <CheckBox
+            android:id="@+id/CheckBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/place_details_place_distance"
+            android:text="Highlight"
+            android:textColor="#000000" >
+        </CheckBox>
+    </RelativeLayout>
 
-		<CheckBox android:id="@+id/CheckBox1" android:text="Highlight"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_alignParentBottom="false"
-			android:layout_alignParentLeft="true" 
-			android:textColor="#000000"			
-			android:layout_below="@+id/place_details_place_distance">
-		</CheckBox>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@drawable/divider_grad" />
 
+    <ListView
+        android:id="@+id/place_details_word_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="300dip"
+        android:layout_weight="0.8"
+        android:divider="@drawable/divider_grad"
+        android:dividerHeight="2dip"
+        android:fadingEdge="horizontal|none"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true"
+        android:scrollingCache="false" />
 
+    <LinearLayout
+        android:id="@+id/place_details_bottom_location_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="10dip"
+        android:layout_weight="0.1"
+        android:background="@color/dark_gray"
+        android:gravity="center"
+        android:orientation="horizontal" >
 
-	</RelativeLayout>
-	<View android:layout_width="fill_parent" android:layout_height="1dip"
-		android:background="@drawable/divider_grad" />
-
-	<ListView android:id="@+id/place_details_word_listview"
-		android:layout_width="fill_parent" android:layout_height="300dip"
-		android:layout_weight="0.8" android:scrollingCache="true"
-		android:fadingEdge="horizontal|none" android:divider="@drawable/divider_grad"
-		android:dividerHeight="2dip" android:headerDividersEnabled="true"
-		android:footerDividersEnabled="true" />
-
-
-	<LinearLayout android:id="@+id/place_details_bottom_location_bar"
-		android:layout_width="fill_parent" android:background="@color/dark_gray"
-		android:layout_height="10dip" android:orientation="horizontal"
-		android:gravity="center" android:layout_weight="0.1">
-		<TextView android:text="" android:id="@+id/places_info_text"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:textColor="@color/black" android:textSize="9dip"></TextView>
-
-
+        <TextView
+            android:id="@+id/places_info_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="9dip" >
+        </TextView>
 		/>
-	</LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
-
-
-

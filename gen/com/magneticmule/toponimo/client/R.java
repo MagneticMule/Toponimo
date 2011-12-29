@@ -10,8 +10,10 @@ package com.magneticmule.toponimo.client;
 public final class R {
     public static final class anim {
         public static final int fadein=0x7f040000;
-        public static final int fadeout=0x7f040001;
-        public static final int scalein=0x7f040002;
+        public static final int fadein_controller=0x7f040001;
+        public static final int fadein_quick=0x7f040002;
+        public static final int fadeout=0x7f040003;
+        public static final int scalein=0x7f040004;
     }
     public static final class attr {
     }
@@ -58,34 +60,33 @@ public final class R {
         public static final int icon=0x7f020019;
         public static final int image_border=0x7f02001a;
         public static final int imagebackground=0x7f02001b;
-        public static final int lodging=0x7f02001c;
-        public static final int magnifier_24=0x7f02001d;
-        public static final int magnifier_32=0x7f02001e;
-        public static final int magnifier_48=0x7f02001f;
-        public static final int marker_red=0x7f020020;
-        public static final int movies=0x7f020021;
-        public static final int noimage=0x7f020022;
-        public static final int noimage180=0x7f020023;
-        public static final int place_list_item_background=0x7f020024;
-        public static final int red_button=0x7f020025;
-        public static final int reload_24=0x7f020026;
-        public static final int reload_48=0x7f020027;
-        public static final int restaurant=0x7f020028;
-        public static final int school=0x7f020029;
-        public static final int shadow_grad=0x7f02002a;
-        public static final int shadow_grad_bottom=0x7f02002b;
-        public static final int shopping=0x7f02002c;
-        public static final int smallweave=0x7f02002d;
-        public static final int staticmap=0x7f02002e;
-        public static final int title_grad=0x7f02002f;
-        public static final int toponimo_ident=0x7f020030;
-        public static final int toponimo_ident_240=0x7f020031;
-        public static final int toponimo_ident_360=0x7f020032;
-        public static final int toponimoidentsmall=0x7f020033;
-        public static final int travelagent=0x7f020034;
-        public static final int tray_full_32=0x7f020035;
-        public static final int university=0x7f020036;
-        public static final int white_to_white_grad=0x7f020037;
+        public static final int magnifier_24=0x7f02001c;
+        public static final int magnifier_32=0x7f02001d;
+        public static final int magnifier_48=0x7f02001e;
+        public static final int marker_red=0x7f02001f;
+        public static final int movies=0x7f020020;
+        public static final int noimage=0x7f020021;
+        public static final int noimage180=0x7f020022;
+        public static final int place_list_item_background=0x7f020023;
+        public static final int red_button=0x7f020024;
+        public static final int reload_24=0x7f020025;
+        public static final int reload_48=0x7f020026;
+        public static final int restaurant=0x7f020027;
+        public static final int school=0x7f020028;
+        public static final int shadow_grad=0x7f020029;
+        public static final int shadow_grad_bottom=0x7f02002a;
+        public static final int shopping=0x7f02002b;
+        public static final int smallweave=0x7f02002c;
+        public static final int staticmap=0x7f02002d;
+        public static final int title_grad=0x7f02002e;
+        public static final int toponimo_ident=0x7f02002f;
+        public static final int toponimo_ident_240=0x7f020030;
+        public static final int toponimo_ident_360=0x7f020031;
+        public static final int toponimoidentsmall=0x7f020032;
+        public static final int travelagent=0x7f020033;
+        public static final int tray_full_32=0x7f020034;
+        public static final int university=0x7f020035;
+        public static final int white_to_white_grad=0x7f020036;
     }
     public static final class id {
         public static final int CheckBox1=0x7f080011;
@@ -94,7 +95,6 @@ public final class R {
         public static final int add_word_header=0x7f080000;
         public static final int checkBox1=0x7f080002;
         public static final int emptyView=0x7f080023;
-        public static final int facebookLoginButton=0x7f08002a;
         public static final int forward=0x7f080034;
         public static final int icon=0x7f080009;
         public static final int id_bar_place_list=0x7f08000d;
@@ -102,7 +102,12 @@ public final class R {
         public static final int label_address=0x7f080032;
         public static final int label_words=0x7f080033;
         public static final int linearLayout1=0x7f080005;
-        public static final int loginbtn=0x7f080028;
+        public static final int login_activity_facebook_img=0x7f08002a;
+        public static final int login_activity_logo_iv=0x7f080025;
+        public static final int login_activity_password_et=0x7f080027;
+        public static final int login_activity_signin_btn=0x7f080028;
+        public static final int login_activity_signup_btn=0x7f080029;
+        public static final int login_activity_username_et=0x7f080026;
         public static final int map_button=0x7f080020;
         public static final int mapview_control=0x7f08002c;
         public static final int mapview_place_address=0x7f080031;
@@ -111,7 +116,6 @@ public final class R {
         public static final int mapviews_place_address=0x7f08002f;
         public static final int nav_bar_mapview=0x7f08002d;
         public static final int nav_bar_place_list=0x7f080021;
-        public static final int passwordEditText=0x7f080027;
         public static final int place_details_add_image=0x7f08000c;
         public static final int place_details_add_phrase_button=0x7f080004;
         public static final int place_details_add_word=0x7f08000b;
@@ -120,9 +124,9 @@ public final class R {
         public static final int place_details_place_address=0x7f08000f;
         public static final int place_details_place_distance=0x7f080010;
         public static final int place_details_place_name=0x7f08000e;
-        public static final int place_details_static_map_view=0x7f08002b;
         public static final int place_details_word_listview=0x7f080012;
         public static final int place_holder=0x7f080017;
+        public static final int place_list_activity_mapview=0x7f08002b;
         public static final int place_list_bottom_location_bar=0x7f080024;
         public static final int places_info_text=0x7f080014;
         public static final int places_infor_text=0x7f080035;
@@ -133,11 +137,8 @@ public final class R {
         public static final int refresh_progress_bar=0x7f080019;
         public static final int relativeLayout1=0x7f080015;
         public static final int search_button=0x7f08001b;
-        public static final int signupbtn=0x7f080029;
         public static final int textView1=0x7f080006;
-        public static final int titleImageView=0x7f080025;
         public static final int title_text=0x7f080016;
-        public static final int usernameEditText=0x7f080026;
         public static final int vertical_bar_1=0x7f08001a;
         public static final int vertical_bar_2=0x7f08001c;
         public static final int vertical_bar_3=0x7f08001e;
@@ -182,12 +183,15 @@ public final class R {
         public static final int word_row=0x7f030016;
     }
     public static final class string {
-        public static final int api_key=0x7f060006;
+        public static final int api_key=0x7f060005;
         public static final int app_name=0x7f060002;
         public static final int hello=0x7f060000;
         public static final int login=0x7f060004;
-        public static final int loginViaFacebookInstructions=0x7f060005;
-        public static final int signup=0x7f060003;
+        public static final int login_activity_facebook_description=0x7f060009;
+        public static final int login_activity_logo_description=0x7f060007;
+        public static final int login_activity_password_et=0x7f060008;
+        public static final int login_activity_signup_btn=0x7f060003;
+        public static final int login_activity_username_et=0x7f060006;
         public static final int words=0x7f060001;
     }
     public static final class style {

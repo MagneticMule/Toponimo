@@ -6,22 +6,18 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-//import com.facebook.android.*;
-//import com.facebook.android.Facebook.*;
 import com.google.gson.Gson;
-import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ApiKeys;
+import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
 import com.magneticmule.toponimo.client.structures.userstructure.UserDetails;
 import com.magneticmule.toponimo.client.utils.http.HttpUtils;
@@ -40,11 +36,11 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.login);
 
 		// the text boxes for user name and password
-		final EditText userNameEditText = (EditText) findViewById(R.id.usernameEditText);
-		final EditText passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+		final EditText userNameEditText = (EditText) findViewById(R.id.login_activity_username_et);
+		final EditText passwordEditText = (EditText) findViewById(R.id.login_activity_password_et);
 
 		// the image file used as a button for login via facebook
-		final ImageView facebookLoginButton = (ImageView) findViewById(R.id.facebookLoginButton);
+		final ImageView facebookLoginButton = (ImageView) findViewById(R.id.login_activity_facebook_img);
 
 		// if the facebook button is pressed
 		facebookLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -53,8 +49,8 @@ public class LoginActivity extends Activity {
 			}
 		});
 
-		// if the LOGIN button is pressed
-		final Button loginButton = (Button) findViewById(R.id.loginbtn);
+		// if the Sign in button is pressed
+		final Button loginButton = (Button) findViewById(R.id.login_activity_signin_btn);
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				String username = userNameEditText.getText().toString();
@@ -78,7 +74,7 @@ public class LoginActivity extends Activity {
 		});
 
 		// when the Signup button is pressed
-		final Button signupButton = (Button) findViewById(R.id.signupbtn);
+		final Button signupButton = (Button) findViewById(R.id.login_activity_signup_btn);
 		signupButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
@@ -162,15 +158,14 @@ public class LoginActivity extends Activity {
 		ProgressDialog dialog;
 
 		public ValidateUser(String _username, String _password) {
-			this.username = _username;
-			this.password = _password;
+			username = _username;
+			password = _password;
 		}
 
 		@Override
 		protected void onPreExecute() {
 			dialog = new ProgressDialog(LoginActivity.this);
-			dialog.setTitle("Please wait");
-			dialog.setMessage("Logging in");
+			dialog.setMessage("Signing in");
 			dialog.setIndeterminate(true);
 			dialog.setCancelable(false);
 			dialog.show();

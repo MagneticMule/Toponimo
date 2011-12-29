@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="white">#ffffff</color>
-	<color name="black">#000000</color>
-	<color name="light_gray">#cccccc</color>
-	<color name="dark_gray">#e5e5e5</color>
 
-	<color name="darker_gray">#222222</color>
-	<color name="dark_blue">#00438F</color>
-	<color name="brown_green">#31492a</color>
-	<color name="brown_green_light">#4f7743</color>
-	<color name="background_gray">#e7ebeb</color>
-	<color name="list_divider_dark_gray">#aaaaaa</color>
-	<color name="list_divider_light_gray">#ffffff</color>
-	<color name="yellow">#ffff22</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="light_gray">#cccccc</color>
+    <color name="dark_gray">#e5e5e5</color>
+    <color name="darker_gray">#222222</color>
+    <color name="dark_blue">#00438F</color>
+    <color name="brown_green">#31492a</color>
+    <color name="brown_green_light">#4f7743</color>
+    <color name="background_gray">#e4e4e4</color>
+    <color name="list_divider_dark_gray">#aaaaaa</color>
+    <color name="list_divider_light_gray">#ffffff</color>
+    <color name="yellow">#ffff22</color>
+
 </resources>

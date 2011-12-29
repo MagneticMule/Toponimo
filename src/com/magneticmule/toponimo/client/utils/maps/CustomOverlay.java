@@ -15,51 +15,32 @@ import android.graphics.Shader;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Projection;
 
 @SuppressWarnings("unused")
-public class CustomOverlay extends Overlay implements Overlay.Snappable {
+public class CustomOverlay extends Overlay {
 
-	private static final int	CIRCLERADIUS		= 12;
-	private static final int	CIRCLE_STROKE_WIDTH	= 1;
+	private static final int CIRCLERADIUS = 12;
+	private static final int CIRCLE_STROKE_WIDTH = 1;
 
-	private boolean				languageCount		= true;
+	private boolean languageCount = true;
 
-	private int					drawable			= 0;
+	private int drawable = 0;
 
-	private GeoPoint			geopoint			= null;
-	private Context				context				= null;
+	private GeoPoint geopoint = null;
+	private Context context = null;
 
-	Bitmap						bitmapMarker		= null;
+	Bitmap bitmapMarker = null;
 
 	// shaders for gps icons
-	private static final Shader	redIconShader		= new LinearGradient(
-															8f,
-															80f,
-															30f,
-															20f,
-															Color.RED,
-															Color.WHITE,
-															Shader.TileMode.MIRROR);
+	private static final Shader redIconShader = new LinearGradient(8f, 80f,
+			30f, 20f, Color.RED, Color.WHITE, Shader.TileMode.MIRROR);
 
-	final Shader				blueIconShader		= new LinearGradient(
-															8f,
-															80f,
-															30f,
-															10f,
-															Color.BLUE,
-															Color.WHITE,
-															Shader.TileMode.MIRROR);
+	final Shader blueIconShader = new LinearGradient(8f, 80f, 30f, 10f,
+			Color.BLUE, Color.WHITE, Shader.TileMode.MIRROR);
 
-	final Shader				greenIconShader		= new LinearGradient(
-															8f,
-															80f,
-															30f,
-															20f,
-															Color.GREEN,
-															Color.WHITE,
-															Shader.TileMode.MIRROR);
+	final Shader greenIconShader = new LinearGradient(8f, 80f, 30f, 20f,
+			Color.GREEN, Color.WHITE, Shader.TileMode.MIRROR);
 
 	public CustomOverlay(Context context, GeoPoint point, int drawable) {
 		this.geopoint = point;
@@ -72,6 +53,7 @@ public class CustomOverlay extends Overlay implements Overlay.Snappable {
 
 	@Override
 	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+		super.draw(canvas, mapView, shadow);
 		// Transfrom geoposition to Point on canvas
 		Projection projection = mapView.getProjection();
 		Point point = new Point();
@@ -85,7 +67,9 @@ public class CustomOverlay extends Overlay implements Overlay.Snappable {
 				point.x + 90, point.y + 12);
 
 		// drawMarker(canvas, point);
-		canvas.drawBitmap(bitmapMarker, point.x, point.y, null);
+		canvas.drawBitmap(bitmapMarker,
+				point.x - (bitmapMarker.getWidth() / 2), point.y
+						- (bitmapMarker.getHeight()), null);
 
 		// text "My Location"
 		// Paint text = new Paint();

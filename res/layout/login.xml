@@ -8,34 +8,35 @@
     android:orientation="vertical" >
 
     <ImageView
-        android:id="@+id/titleImageView"
-        android:layout_width="match_parent"
+        android:id="@+id/login_activity_logo_iv"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dip"
         android:layout_marginTop="20dip"
+        android:contentDescription="@string/login_activity_logo_description"
         android:paddingBottom="50dip"
         android:paddingTop="50dip"
         android:src="@drawable/toponimo_ident_360" />
 
     <EditText
-        android:id="@+id/usernameEditText"
+        android:id="@+id/login_activity_username_et"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
         android:layout_gravity="center"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
-        android:hint="Username"
+        android:hint="@string/login_activity_username_et"
         android:singleLine="true" >
     </EditText>
 
     <EditText
-        android:id="@+id/passwordEditText"
+        android:id="@+id/login_activity_password_et"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
         android:layout_gravity="center"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
-        android:hint="Password"
+        android:hint="@string/login_activity_password_et"
         android:inputType="textPassword" >
     </EditText>
 
@@ -50,7 +51,7 @@
         android:paddingTop="10dip" >
 
         <Button
-            android:id="@+id/loginbtn"
+            android:id="@+id/login_activity_signin_btn"
             style="@style/ButtonText"
             android:layout_width="fill_parent"
             android:layout_height="40dip"
@@ -60,23 +61,23 @@
         </Button>
 
         <Button
-            android:id="@+id/signupbtn"
+            android:id="@+id/login_activity_signup_btn"
             style="@style/ButtonText"
             android:layout_width="fill_parent"
             android:layout_height="40dip"
             android:layout_weight="1"
             android:background="@drawable/blue_button"
-            android:text="@string/signup" >
+            android:text="@string/login_activity_signup_btn" >
         </Button>
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/facebookLoginButton"
+        android:id="@+id/login_activity_facebook_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:clickable="true"
-        android:contentDescription="Login via Facebook"
+        android:contentDescription="@string/login_activity_facebook_description"
         android:paddingTop="20dip"
         android:src="@drawable/facebookloginbutton" >
     </ImageView>

@@ -1,62 +1,64 @@
 package com.magneticmule.toponimo.client.ui;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import com.magneticmule.toponimo.client.BitmapUtils;
-import com.magneticmule.toponimo.client.R;
-import com.magneticmule.toponimo.client.ToponimoApplication;
-import com.magneticmule.toponimo.client.ui.adapters.WordListAdapter;
+import java.util.Iterator;
+import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
-import android.os.AsyncTask;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
-import com.magneticmule.toponimo.client.utils.http.HttpUtils;
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
+import com.magneticmule.toponimo.client.R;
+import com.magneticmule.toponimo.client.ToponimoApplication;
+import com.magneticmule.toponimo.client.ui.adapters.WordListAdapter;
 import com.magneticmule.toponimo.client.utils.location.DistanceCalculator;
+import com.magneticmule.toponimo.client.utils.maps.CustomOverlay;
 
-public class PlaceDetailsActivity extends Activity {
+public class PlaceDetailsActivity extends MapActivity {
 
-	protected static final String	TAG						= "PlaceDetailsActivity";
-	private static int						TAKE_PICTURE	= 1;
-	private int										currentPlaceIndex;
-	private String								placeName;
-	private String								placeAddress;
-	private String								extraData			= "";
-	private String								currentPosLat;
-	private String								currentPosLng;
-	private Double								targetPosLat;
-	private Double								targetPosLng;
-	private ListView							wordListView;
-	private ArrayAdapter<String>	wordListArrayAdapter;
-	private ToponimoApplication		application;
-	private ImageView							mapImage;
-	private LinearLayout					headerViewMap;
-	private LinearLayout					headerViewWordButton;
-	private Button								addWordButton;
+	protected static final String TAG = "PlaceDetailsActivity";
+	private static int TAKE_PICTURE = 1;
+	private int currentPlaceIndex;
+	private String placeName;
+	private String placeAddress;
+	private String extraData = "";
+	private String currentPosLat;
+	private String currentPosLng;
+	private Double targetPosLat;
+	private Double targetPosLng;
+	private ListView wordListView;
+	private ArrayAdapter<String> wordListArrayAdapter;
+	private ToponimoApplication application;
+	private ImageView mapImage;
+	private LinearLayout headerViewMap;
+	private LinearLayout headerViewWordButton;
+	private Button addWordButton;
+	private MapView mapView;
+	private MapController mapController;
+
+	private static final short ZOOM_LEVEL = 18; // mapview
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -71,10 +73,8 @@ public class PlaceDetailsActivity extends Activity {
 		} else {
 			if (data != null) {
 				extraData = data.getStringExtra("words");
-				// TextView placeWords = (TextView)
-				// findViewById(R.id.place_details_place_words);
-				// placeWords.setText(extraData);
-				application.getPlaceResults(application.getCurrentPlaceIndex()).getWords().add(extraData + " *");
+				application.getPlaceResults(application.getCurrentPlaceIndex())
+						.getWords().add(extraData + " *");
 				wordListArrayAdapter.notifyDataSetChanged();
 			}
 
@@ -85,31 +85,37 @@ public class PlaceDetailsActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.homegrid);
+
 		Intent sender = getIntent();
 		application = (ToponimoApplication) getApplication();
 
-		placeName = application.getPlaceResults(application.getCurrentPlaceIndex()).getName();
-		placeAddress = application.getPlaceResults(application.getCurrentPlaceIndex()).getVicinity();
+		placeName = application.getPlaceResults(
+				application.getCurrentPlaceIndex()).getName();
+		placeAddress = application.getPlaceResults(
+				application.getCurrentPlaceIndex()).getVicinity();
 		currentPosLat = sender.getExtras().getString("currentPosLat");
 		currentPosLng = sender.getExtras().getString("currentPosLng");
 
-		targetPosLat = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLat();
-		targetPosLng = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLng();
+		targetPosLat = application
+				.getPlaceResults(application.getCurrentPlaceIndex())
+				.getLocation().getLat();
+		targetPosLng = application
+				.getPlaceResults(application.getCurrentPlaceIndex())
+				.getLocation().getLng();
 
 		wordListView = (ListView) findViewById(R.id.place_details_word_listview);
 
-		wordListArrayAdapter = new WordListAdapter(this, R.layout.word_row, application.getPlaceResults(application.getCurrentPlaceIndex())
-				.getWords());
+		wordListArrayAdapter = new WordListAdapter(this, R.layout.word_row,
+				application.getPlaceResults(application.getCurrentPlaceIndex())
+						.getWords());
 
-		// inflate the first listview header view then find and assign the
-		// mapview image
-		LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		headerViewMap = (LinearLayout) inflater.inflate(R.layout.map_image, null);
-		mapImage = (ImageView) headerViewMap.findViewById(R.id.place_details_static_map_view);
+		LayoutInflater inflater = initMap();
 
 		// inflate the second listview header and attach the add word button
-		headerViewWordButton = (LinearLayout) inflater.inflate(R.layout.add_word_button, null);
-		addWordButton = (Button) headerViewWordButton.findViewById(R.id.place_details_add_word_button);
+		headerViewWordButton = (LinearLayout) inflater.inflate(
+				R.layout.add_word_button, null);
+		addWordButton = (Button) headerViewWordButton
+				.findViewById(R.id.place_details_add_word_button);
 
 		try {
 			wordListView.addHeaderView(headerViewMap);
@@ -117,7 +123,9 @@ public class PlaceDetailsActivity extends Activity {
 			wordListView.setAdapter(wordListArrayAdapter);
 			if (!(wordListView.getCount() < 1)) {
 				TextView wordInfoTextView = (TextView) findViewById(R.id.places_info_text);
-				wordInfoTextView.setText(Integer.toString(application.getPlaceResults(application.getCurrentPlaceIndex()).getWords().size())
+				wordInfoTextView.setText(Integer.toString(application
+						.getPlaceResults(application.getCurrentPlaceIndex())
+						.getWords().size())
 						+ " words at this location");
 			}
 		} catch (Exception e) {
@@ -125,13 +133,17 @@ public class PlaceDetailsActivity extends Activity {
 		}
 
 		wordListView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position, long id) {
 				// TextView wordView = (TextView)
 				// v.findViewById(R.id.word_row_word_view);
-				Intent intent = new Intent(PlaceDetailsActivity.this, WordDetailsActivity.class);
+				Intent intent = new Intent(PlaceDetailsActivity.this,
+						WordDetailsActivity.class);
 				Log.d("position", Integer.toString(position));
 				Log.d("ID", Long.toString(id));
-				String word = application.getPlaceResults(application.getCurrentPlaceIndex()).getWords().get((int) id);
+				String word = application
+						.getPlaceResults(application.getCurrentPlaceIndex())
+						.getWords().get((int) id);
 
 				if (word != null || word.length() != 0) {
 					intent.putExtra("word", word);
@@ -149,7 +161,8 @@ public class PlaceDetailsActivity extends Activity {
 
 		double lat = Double.parseDouble(currentPosLat);
 		double lng = Double.parseDouble(currentPosLng);
-		double distance = DistanceCalculator.haverSine(lat, lng, targetPosLat, targetPosLng);
+		double distance = DistanceCalculator.haverSine(lat, lng, targetPosLat,
+				targetPosLng);
 
 		String distanceIndicator = " Kilometers from here";
 		Double d = (double) Math.round(distance * 1000);
@@ -161,13 +174,13 @@ public class PlaceDetailsActivity extends Activity {
 		}
 		int roundedDistance = d.intValue();
 
-		placeDistanceView.setText(Integer.toString(roundedDistance) + distanceIndicator);
-		// final Button addWordButton = (Button)
-		// findViewById(R.id.place_details_add_word);c
+		placeDistanceView.setText(Integer.toString(roundedDistance)
+				+ distanceIndicator);
 
 		addWordButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(PlaceDetailsActivity.this, AddWordActivity.class);
+				Intent intent = new Intent(PlaceDetailsActivity.this,
+						AddWordActivity.class);
 				intent.putExtra("position", currentPlaceIndex);
 				intent.putExtra("name", placeName);
 				final int result = 1;
@@ -175,9 +188,10 @@ public class PlaceDetailsActivity extends Activity {
 			}
 		});
 
-		mapImage.setOnClickListener(new View.OnClickListener() {
+		mapView.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(PlaceDetailsActivity.this, MapsViewActivity.class);
+				Intent intent = new Intent(PlaceDetailsActivity.this,
+						MapsViewActivity.class);
 				intent.putExtra("targetPosLat", targetPosLat);
 				intent.putExtra("targetPosLng", targetPosLng);
 				startActivity(intent);
@@ -185,8 +199,47 @@ public class PlaceDetailsActivity extends Activity {
 
 			}
 		});
+	}
 
-		(new DownloadMapImage()).execute((Object) null);
+	private LayoutInflater initMap() {
+		// inflate the first listview header view then find and attach the
+		// mapview
+		LayoutInflater inflater = (LayoutInflater) getBaseContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		headerViewMap = (LinearLayout) inflater.inflate(R.layout.map_image,
+				null);
+		mapView = (MapView) headerViewMap
+				.findViewById(R.id.place_list_activity_mapview);
+
+		mapController = mapView.getController();
+		mapController.setZoom(ZOOM_LEVEL);
+
+		List<Overlay> placeOverlays = mapView.getOverlays();
+		placeOverlays.clear();
+		mapView.invalidate();
+
+		GeoPoint targetLocation = new GeoPoint((int) (targetPosLat * 1e6),
+				((int) (targetPosLng * 1e6)));
+
+		Drawable drawable = this.getResources().getDrawable(
+				R.drawable.marker_red);
+
+		List<Overlay> overlays = mapView.getOverlays();
+
+		// remove old overlays
+		if (overlays.size() > 0) {
+			for (Iterator<Overlay> it = overlays.iterator(); it.hasNext();) {
+				it.next();
+				it.remove();
+			}
+		}
+
+		overlays.add(new CustomOverlay(this, targetLocation,
+				R.drawable.marker_red));
+
+		mapController.animateTo(targetLocation);
+		mapView.postInvalidate();
+		return inflater;
 	}
 
 	@Override
@@ -209,41 +262,9 @@ public class PlaceDetailsActivity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 
-	private class DownloadMapImage extends AsyncTask {
-		Bitmap	bitmap;
-
-		@Override
-		protected Bitmap doInBackground(Object... params) {
-			File file = HttpUtils.getWebImage("http://maps.google.com/maps/api/staticmap?"
-					+ "zoom=16&size=400x180&markers=size:big|color:green|" + targetPosLat.toString() + "," + targetPosLng.toString()
-					+ "&sensor=true&format=png8", "place.png");
-
-			FileInputStream is;
-			BufferedInputStream bis;
-			try {
-				String savePath = Environment.getExternalStorageDirectory().toString();
-				is = new FileInputStream(file);
-				bis = new BufferedInputStream(is);
-				bitmap = BitmapFactory.decodeStream(bis);
-				if (is != null) {
-					is.close();
-				}
-				if (bis != null) {
-					bis.close();
-				}
-			} catch (FileNotFoundException e) {
-				Log.d("PlaceDetailsActivity.class", "FileNotFoundException, Stacktrace follows:");
-				e.printStackTrace();
-			} catch (IOException e) {
-				Log.d("PlaceDetailsActivity.class", "IOException, Stacktrace follows:");
-				e.printStackTrace();
-			}
-			return bitmap;
-		}
-
-		protected void onPostExecute(Object result) {
-			mapImage.setImageBitmap(BitmapUtils.getRoundedCornerBitmap(bitmap));
-		}
+	@Override
+	protected boolean isRouteDisplayed() {
+		return false;
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.magneticmule.toponimo.client.ui;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,29 +11,21 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.maps.MapView;
-import com.google.android.maps.MapController;
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MyLocationOverlay;
+import com.magneticmule.toponimo.client.Constants;
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
-import com.magneticmule.toponimo.client.R.anim;
-import com.magneticmule.toponimo.client.R.drawable;
-import com.magneticmule.toponimo.client.R.id;
-import com.magneticmule.toponimo.client.R.layout;
-import com.magneticmule.toponimo.client.Constants;
 import com.magneticmule.toponimo.client.utils.maps.CustomOverlay;
 import com.magneticmule.toponimo.client.utils.maps.Locations;
 
-@SuppressWarnings("unused")
 public class MapsViewActivity extends MapActivity implements LocationListener {
 
 	private MapView mapView;
@@ -187,10 +179,6 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		// redraw map
 
 		// locationManager.removeUpdates(this);
-
-		List<Overlay> placeOverlays = mapView.getOverlays();
-		placeOverlays.clear();
-		mapView.invalidate();
 
 		Drawable drawable = this.getResources().getDrawable(
 				R.drawable.marker_red);

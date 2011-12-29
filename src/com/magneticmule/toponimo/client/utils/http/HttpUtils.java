@@ -26,21 +26,20 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.ByteArrayBuffer;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.magneticmule.toponimo.client.*;
+import com.magneticmule.toponimo.client.ApiKeys;
+import com.magneticmule.toponimo.client.Constants;
 
 public class HttpUtils {
 
@@ -65,7 +64,7 @@ public class HttpUtils {
 			Writer writer = new StringWriter();
 			char[] buffer = new char[1024];
 			try {
-				Reader reader = new BufferedReader(new InpUtStreamReader(is,
+				Reader reader = new BufferedReader(new InputStreamReader(is,
 						"UTF-8"));
 				int n;
 				while ((n = reader.read(buffer)) != -1) {

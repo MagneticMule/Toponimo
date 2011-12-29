@@ -21,8 +21,8 @@
 
         <View
             android:id="@+id/place_holder"
-            android:layout_width="32px"
-            android:layout_height="32px"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dip"
