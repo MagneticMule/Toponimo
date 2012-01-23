@@ -21,7 +21,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/dark_gray"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:paddingBottom="5dip"
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
@@ -109,7 +109,6 @@
             android:textColor="@color/black"
             android:textSize="9dip" >
         </TextView>
-		/>
     </LinearLayout>
 
 </LinearLayout>

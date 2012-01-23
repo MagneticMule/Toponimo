@@ -2,14 +2,17 @@ package com.magneticmule.toponimo.client;
 
 import java.util.List;
 
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.HttpParams;
 
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.magneticmule.toponimo.client.placestructure.Place;
-import com.magneticmule.toponimo.client.placestructure.Results;
+import com.magneticmule.toponimo.client.structures.placestructure.Place;
+import com.magneticmule.toponimo.client.structures.placestructure.Results;
 import com.magneticmule.toponimo.client.structures.userstructure.UserDetails;
 
 public class ToponimoApplication extends Application {
@@ -30,6 +33,8 @@ public class ToponimoApplication extends Application {
 	private List<Place> placeResults = null;
 	private UserDetails userDetails;
 
+	private String currentPlaceId = null;
+
 	private int currentPlaceIndex = 0;
 
 	public static final String APP_NAME = "ToponimoApplication";
@@ -38,6 +43,10 @@ public class ToponimoApplication extends Application {
 	public ToponimoApplication() {
 		super();
 		httpClient = new DefaultHttpClient();
+		ClientConnectionManager manager = httpClient.getConnectionManager();
+		HttpParams params = httpClient.getParams();
+		httpClient = new DefaultHttpClient(new ThreadSafeClientConnManager(
+				params, manager.getSchemeRegistry()), params);
 	}
 
 	public void onCreate() {
@@ -88,6 +97,16 @@ public class ToponimoApplication extends Application {
 	public int getCurrentPlaceIndex() {
 		checkInstance();
 		return currentPlaceIndex;
+	}
+
+	public String getCurrentPlaceId() {
+		checkInstance();
+		return currentPlaceId;
+	}
+
+	public void setCurrentPlaceId(String currentPlaceId) {
+		checkInstance();
+		this.currentPlaceId = currentPlaceId;
 	}
 
 	public void setCurrentPlaceIndex(int currentPlaceIndex) {

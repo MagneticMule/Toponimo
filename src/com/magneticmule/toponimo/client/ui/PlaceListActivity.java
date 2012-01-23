@@ -1,9 +1,9 @@
 package com.magneticmule.toponimo.client.ui;
 
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
+import java.util.ArrayList;
+import java.util.List;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,33 +15,25 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.ArrayList;
-
 import com.google.gson.Gson;
-
 import com.magneticmule.toponimo.client.ApiKeys;
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
-import com.magneticmule.toponimo.client.monitor.UserInteractionReceiver;
-import com.magneticmule.toponimo.client.placestructure.Place;
-import com.magneticmule.toponimo.client.placestructure.Results;
+import com.magneticmule.toponimo.client.structures.placestructure.Place;
+import com.magneticmule.toponimo.client.structures.placestructure.Results;
 import com.magneticmule.toponimo.client.ui.adapters.PlacesListAdapter;
 import com.magneticmule.toponimo.client.utils.http.HttpUtils;
 import com.magneticmule.toponimo.client.utils.location.LocationGeocoder;
@@ -52,7 +44,7 @@ public class PlaceListActivity extends Activity {
 	protected static final String TAG = "ToponimoActivity";
 	private ListView placeListView;
 	private ArrayAdapter<Place> placeArrayAdapter;
-	private ArrayList<Place> placenameList = new ArrayList<Place>();
+	private List<Place> placenameList = new ArrayList<Place>();
 	private static PlaceListActivity mainActivity;
 
 	protected String lat;
@@ -162,24 +154,6 @@ public class PlaceListActivity extends Activity {
 		startService(locationUpdateService);
 	}
 
-	private void startInteractionAlarm() {
-		// Intent startIntent = new
-		// Intent(this,com.magneticmule.toponimo.client.monitor.UserInteractionReceiver.class);
-		PendingIntent pendingIntent = PendingIntent.getService(
-				PlaceListActivity.this, -1, new Intent(PlaceListActivity.this,
-						UserInteractionReceiver.class),
-				PendingIntent.FLAG_CANCEL_CURRENT);
-
-		AlarmManager alarmManager = (AlarmManager) application
-				.getSystemService(Context.ALARM_SERVICE);
-
-		alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-				SystemClock.elapsedRealtime()
-						+ AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-				AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
-
-	}
-
 	@Override
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
@@ -217,12 +191,15 @@ public class PlaceListActivity extends Activity {
 				Gson gson = new Gson();
 				String jsonData = HttpUtils.getJSONData(ToponimoApplication
 						.getApp().getHttpClient(), urlString);
-				place = gson.fromJson(jsonData, Place.class);
-				placenameList.clear();
-				for (Results p : place.getResults()) {
-					placenameList.add(place);
+
+				if (jsonData != null) {
+					place = gson.fromJson(jsonData, Place.class);
+					placenameList.clear();
+					for (Results p : place.getResults()) {
+						placenameList.add(place);
+					}
+					mainActivity.application.setPlaceResults(placenameList);
 				}
-				mainActivity.application.setPlaceResults(placenameList);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -274,7 +251,7 @@ public class PlaceListActivity extends Activity {
 				LocationUpdateService.class));
 	}
 
-	public class LocationReceiver extends BroadcastReceiver {
+	private class LocationReceiver extends BroadcastReceiver {
 		public static final String ACTION = "LOCATION";
 
 		@Override
@@ -288,7 +265,7 @@ public class PlaceListActivity extends Activity {
 			(new GetPlaceList()).execute((Object) null);
 		}
 
-		public class ReverseGeocoderHandler extends Handler {
+		private class ReverseGeocoderHandler extends Handler {
 			@Override
 			public void handleMessage(Message message) {
 				String result;

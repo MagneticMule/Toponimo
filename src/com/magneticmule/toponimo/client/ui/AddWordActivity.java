@@ -5,6 +5,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,22 +27,19 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
 import com.magneticmule.toponimo.client.utils.http.HttpUtils;
 
 public class AddWordActivity extends Activity {
 
-	private ToponimoApplication	application;
+	private ToponimoApplication application;
 
-	private int									currentPlaceIndex;
-	private String							upid	= null;
-	private String							placeName;
-	private String							words	= null;
-	InputMethodManager					imm;
+	private int currentPlaceIndex;
+	private String upid = null;
+	private String placeName;
+	private String words = null;
+	InputMethodManager imm;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,17 +49,20 @@ public class AddWordActivity extends Activity {
 		application = (ToponimoApplication) this.getApplication();
 		Intent sender = getIntent();
 		this.currentPlaceIndex = application.getCurrentPlaceIndex();
-		upid = new String(application.getPlaceResults(currentPlaceIndex).getId());
-		placeName = new String(application.getPlaceResults(currentPlaceIndex).getName());
+		upid = new String(application.getPlaceResults(currentPlaceIndex)
+				.getId());
+		placeName = new String(application.getPlaceResults(currentPlaceIndex)
+				.getName());
 		// placeNameFromCaller = new
 		// String(application.getPlaceResults().get(position).getResults().get(position).getName().toString());
 
 		Log.i("ID", upid);
 		Log.i("Name", placeName);
 
-		imm = (InputMethodManager) AddWordActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm = (InputMethodManager) AddWordActivity.this
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		if (imm != null) {
-			//imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+			// imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 		}
 
 		final TextView addWordText = (TextView) findViewById(R.id.add_word_add_edit_text);
@@ -96,19 +99,29 @@ public class AddWordActivity extends Activity {
 				confirmMessage = "Taboo language is not allowed";
 			} else {
 				confirmMessage = "Added '" + words + "' to Place";
-				application.getPlaceResults(application.getCurrentPlaceIndex()).addWord(words);
+				application.getPlaceResults(application.getCurrentPlaceIndex())
+						.addWord(words);
 				Intent i = new Intent();
 				i.putExtra("words", words);
 				setResult(RESULT_OK, i);
-				
+
 				new Thread(new Runnable() {
 					public void run() {
 						try {
-							List<NameValuePair> wordList = new ArrayList<NameValuePair>(1);
-							wordList.add(new BasicNameValuePair("words", words));
-							wordList.add(new BasicNameValuePair("upid", upid));
-							wordList.add(new BasicNameValuePair("uid", "123"));
-							HttpUtils.executeHttpPost(ToponimoApplication.getApp().getHttpClient(),wordList);
+							List<NameValuePair> wordList = new ArrayList<NameValuePair>(
+									1);
+							wordList.add(new BasicNameValuePair(
+									"postobject[word]", words));
+							wordList.add(new BasicNameValuePair(
+									"postobject[placeid]", upid));
+							wordList.add(new BasicNameValuePair(
+									"postobject[userid]", "123"));
+
+							HttpUtils
+									.executeHttpPost(ToponimoApplication
+											.getApp().getHttpClient(),
+											wordList,
+											"http://www.toponimo.org/toponimo/api/words/");
 						} catch (UnsupportedEncodingException uce) {
 						} catch (IOException e) {
 						}
@@ -119,7 +132,8 @@ public class AddWordActivity extends Activity {
 		} else {
 			confirmMessage = "No words to add";
 		}
-		Toast toast = Toast.makeText(AddWordActivity.this, confirmMessage, Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(AddWordActivity.this, confirmMessage,
+				Toast.LENGTH_SHORT);
 		toast.show();
 		finish();
 

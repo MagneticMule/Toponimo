@@ -58,20 +58,12 @@
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.NoTitleBar" />
 
-        <receiver android:name="com.magneticmule.toponimo.client.monitor.UserInteractionReceiver" />
-
-        <service android:name="com.magneticmule.toponimo.client.utils.location.LocationUpdateService" >
-        </service>
-        <service android:name="com.magneticmule.toponimo.client.monitor.InteractionsLoggerService" >
+        <service android:name=".utils.location.LocationUpdateService" >
         </service>
 
         <provider
             android:name=".database.ClientWordsProvider"
             android:authorities="com.magneticmule.provider.words"
-            android:multiprocess="true" />
-        <provider
-            android:name=".database.ClientInteractionsProvider"
-            android:authorities="com.magneticmule.provider.interactions"
             android:multiprocess="true" />
     </application>
 

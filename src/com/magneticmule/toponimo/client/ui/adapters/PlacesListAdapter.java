@@ -2,9 +2,6 @@ package com.magneticmule.toponimo.client.ui.adapters;
 
 import java.util.List;
 
-import com.magneticmule.toponimo.client.R;
-import com.magneticmule.toponimo.client.placestructure.Place;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,23 +10,27 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.magneticmule.toponimo.client.R;
+import com.magneticmule.toponimo.client.structures.placestructure.Place;
+
 public class PlacesListAdapter extends ArrayAdapter<Place> {
 
-	private static List<Place>	objects;
-	private Context							context;
+	private static List<Place> objects;
+	private Context context;
 
-
-	public PlacesListAdapter(Context context, int textViewResourceId, List<Place> _objects) {
-		super(context, textViewResourceId, _objects);
-		this.context = context;
-		PlacesListAdapter.objects = _objects;
+	public PlacesListAdapter(Context _context, int textViewResourceId,
+			List<Place> _objects) {
+		super(_context, textViewResourceId, _objects);
+		this.context = _context;
+		objects = _objects;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
 		if (view == null) {
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.simplerow, null);
 		}
 
@@ -42,7 +43,8 @@ public class PlacesListAdapter extends ArrayAdapter<Place> {
 				tvName.setText(place.getResults().get(position).getName());
 			}
 
-			TextView tvAddress = (TextView) view.findViewById(R.id.label_address);
+			TextView tvAddress = (TextView) view
+					.findViewById(R.id.label_address);
 			tvAddress.setText(place.getResults().get(position).getVicinity());
 
 			Log.i("PlistAdapter", place.getResults().get(position).getName());
@@ -59,13 +61,14 @@ public class PlacesListAdapter extends ArrayAdapter<Place> {
 					punct = ".";
 				}
 
-				String currentType = place.getResults().get(position).getTypes().get(i);
+				String currentType = place.getResults().get(position)
+						.getTypes().get(i);
 				if (currentType != null && currentType != "establishment") {
 					concatPlaceTypes = (concatPlaceTypes + currentType + punct);
 				}
 			}
 
-			String finalPlaceTypes = concatPlaceTypes.replace('_', ' ');			
+			String finalPlaceTypes = concatPlaceTypes.replace('_', ' ');
 			TextView wordName = (TextView) view.findViewById(R.id.label_words);
 			wordName.setText(finalPlaceTypes);
 
@@ -73,6 +76,5 @@ public class PlacesListAdapter extends ArrayAdapter<Place> {
 
 		return (view);
 	}
-
 
 }

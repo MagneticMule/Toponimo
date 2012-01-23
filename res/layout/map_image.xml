@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="100dip"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="3dip"
+    android:layout_margin="5dip"
     android:background="@color/white"
-    android:orientation="vertical" >
+    android:gravity="center"
+    android:orientation="horizontal" >
 
     <com.google.android.maps.MapView
         android:id="@+id/place_list_activity_mapview"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="140dip"
         android:layout_margin="5dip"
         android:apiKey="0fqJRInbccwZDYF2GAcYqg7h0gQ7rSyLtmZbxvw"
         android:clickable="false"
-        android:enabled="false" />
+        android:enabled="true" />
 
-</LinearLayout>
+    <View
+        android:id="@+id/place_list_activity_click_view"
+        android:layout_width="match_parent"
+        android:layout_height="140dip"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dip" />
+
+</RelativeLayout>

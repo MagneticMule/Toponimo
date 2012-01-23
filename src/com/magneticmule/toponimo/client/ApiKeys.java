@@ -22,7 +22,9 @@ public class ApiKeys {
 
 	public static final String DOWNLOAD_URL = "http://api.toponimo.org?";
 
-	public static final String UPLOAD_URL = "http://api.toponimo.org/upload.php/?";
+	public static final String UPLOAD_WORD_URL = "http://api.toponimo.org/upload.php/?";
+
+	public static final String UPLOAD_IMAGE_URL = "http://www.toponimo.org/toponimo/api/images";
 
 	public static final String LOGIN_URL = "http://www.toponimo.org/toponimo/auth/login";
 

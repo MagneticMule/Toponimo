@@ -167,63 +167,11 @@
                     android:layout_height="8px"
                     android:background="@drawable/shadow_grad" />
 
-                <HorizontalScrollView
+                <Gallery
                     android:id="@+id/word_details_gallery"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="80px"
-                    android:fadingEdgeLength="0dp"
-                    android:scrollbars="none"
-                    android:spacing="0dip" >
-
-                    <LinearLayout
-                        android:id="@+id/wotrd_details_gallery_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal" >
-
-                        <ImageView
-                            android:layout_width="80px"
-                            android:layout_height="80px"
-                            android:layout_marginLeft="1dip"
-                            android:layout_marginRight="1dip"
-                            android:background="#aaaaaa" />
-
-                        <ImageView
-                            android:layout_width="80px"
-                            android:layout_height="80px"
-                            android:layout_marginLeft="1dip"
-                            android:layout_marginRight="1dip"
-                            android:background="#aaaaaa" />
-
-                        <ImageView
-                            android:layout_width="80px"
-                            android:layout_height="80px"
-                            android:layout_marginLeft="1dip"
-                            android:layout_marginRight="1dip"
-                            android:background="#aaaaaa" />
-
-                        <ImageView
-                            android:layout_width="80px"
-                            android:layout_height="80px"
-                            android:layout_marginLeft="1dip"
-                            android:layout_marginRight="1dip"
-                            android:background="#aaaaaa" />
-
-                        <ImageView
-                            android:layout_width="80px"
-                            android:layout_height="80px"
-                            android:layout_marginLeft="1dip"
-                            android:layout_marginRight="1dip"
-                            android:background="#aaaaaa" />
-
-                        <ImageView
-                            android:layout_width="80px"
-                            android:layout_height="80px"
-                            android:layout_marginLeft="1dip"
-                            android:layout_marginRight="1dip"
-                            android:background="#aaaaaa" />
-                    </LinearLayout>
-                </HorizontalScrollView>
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <View

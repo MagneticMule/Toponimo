@@ -24,21 +24,27 @@ import java.util.zip.GZIPInputStream;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.ByteArrayBuffer;
+import org.apache.http.util.EntityUtils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.util.Log;
 
-import com.magneticmule.toponimo.client.ApiKeys;
 import com.magneticmule.toponimo.client.Constants;
 
 public class HttpUtils {
@@ -184,9 +190,9 @@ public class HttpUtils {
 			HttpGet httpGet = new HttpGet(uri);
 			httpGet.addHeader("Accept-Encoding", "gzip");
 			HttpResponse response = httpClient.execute(httpGet);
-			HttpEntity httpEntity = response.getEntity();
-			if (httpEntity != null) {
-				is = httpEntity.getContent();
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				is = entity.getContent();
 				Header contentEncoding = response
 						.getFirstHeader("Content-Encoding");
 				if (contentEncoding != null
@@ -195,7 +201,7 @@ public class HttpUtils {
 				}
 				outputString = convertStreamToString(is);
 				// flush http contents
-				httpEntity.consumeContent();
+				entity.consumeContent();
 			}
 		} catch (Exception e) {
 			Log.d(TAG, e.getMessage());
@@ -208,29 +214,96 @@ public class HttpUtils {
 
 	/**
 	 * Construct a new HTTP 'POST' request. This request will be used for
-	 * posting user generated words to the server.
+	 * posting user generated words to the server and images.
 	 * 
-	 * @param words
-	 * @param pid
+	 * @param httpClient
+	 * @param postParameters
+	 * @param uri
 	 * @throws UnsupportedEncodingException
 	 * @throws IOException
 	 */
 	public static void executeHttpPost(DefaultHttpClient httpClient,
-			List<NameValuePair> postParameters)
+			List<NameValuePair> postParameters, String uri)
 			throws UnsupportedEncodingException, IOException {
-		String uri = ApiKeys.UPLOAD_URL;
+
 		HttpResponse response;
 		try {
 			HttpPost httpPost = new HttpPost(uri);
 			httpPost.addHeader("Accept-Encoding", "gzip");
 			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(
 					postParameters, "UTF-8");
+
 			httpPost.setEntity(entity);
 			response = httpClient.execute(httpPost);
 			HttpEntity httpEntity = response.getEntity();
+
+			// if the server returned anything other than 200 OK status
+			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+				throw new IOException(response.getStatusLine()
+						.getReasonPhrase());
+			}
 			if (httpEntity != null) {
 				httpEntity.consumeContent();
+
 			}
+		} finally {
+
+		}
+	}
+
+	/**
+	 * Construct new multipart post request.
+	 * 
+	 * @param httpClient
+	 * @param postParameters
+	 * @param uri
+	 * @throws UnsupportedEncodingException
+	 * @throws IOException
+	 */
+	public static void executeHttpMultipartPost(DefaultHttpClient httpClient,
+			List<NameValuePair> postParameters, String uri, Uri fileName)
+			throws UnsupportedEncodingException, IOException {
+
+		File file = new File(fileName.getPath());
+
+		HttpResponse response;
+
+		try {
+			HttpPost httpPost = new HttpPost(uri);
+			httpPost.addHeader("Accept-Encoding", "gzip");
+
+			MultipartEntity entity = new MultipartEntity(
+					HttpMultipartMode.BROWSER_COMPATIBLE);
+
+			FileBody fileBody = new FileBody(file);
+
+			entity.addPart("userimage", fileBody);
+
+			// insert the name value pairs in to the form entity
+			for (int i = 0; i < postParameters.size(); i++) {
+				entity.addPart(postParameters.get(i).getName(), new StringBody(
+						postParameters.get(i).getValue()));
+			}
+
+			httpPost.setEntity(entity);
+			response = httpClient.execute(httpPost);
+
+			// if the server returned anything other than 200 OK status
+			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+				if (entity != null)
+					entity.consumeContent();
+				String errorBody = EntityUtils.toString(response.getEntity());
+
+				throw new IOException("Server returned: "
+						+ response.getStatusLine().getStatusCode() + ": "
+						+ response.getStatusLine().getReasonPhrase()
+						+ errorBody);
+			}
+			if (entity != null) {
+				entity.consumeContent();
+
+			}
+
 		} finally {
 
 		}
@@ -272,7 +345,7 @@ public class HttpUtils {
 			FileOutputStream fileOutStream = new FileOutputStream(file);
 			fileOutStream.write(byteBuffer.toByteArray());
 			fileOutStream.close();
-			Log.d("WebDataHelper.class",
+			Log.d("HttpUtils.class",
 					"Image read in"
 							+ ((System.currentTimeMillis() - startTime / 1000) + " sec"));
 		} catch (MalformedURLException e) {

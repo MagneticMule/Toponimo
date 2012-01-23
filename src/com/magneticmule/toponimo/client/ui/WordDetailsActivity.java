@@ -1,8 +1,13 @@
 package com.magneticmule.toponimo.client.ui;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -23,33 +28,44 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.magneticmule.toponimo.client.ApiKeys;
+import com.magneticmule.toponimo.client.BitmapUtils;
 import com.magneticmule.toponimo.client.Constants;
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
+import com.magneticmule.toponimo.client.ui.adapters.WordGalleryAdapter;
 import com.magneticmule.toponimo.client.utils.http.HttpUtils;
 
 public class WordDetailsActivity extends Activity implements
 		TextToSpeech.OnInitListener {
 
+	protected static final String TAG = "WordDetailsActivity";
 	private static final int TAKE_PICTURE = 1;
 	private static final int DATA_CHECKSUM = 28031974;
-	protected static final String TAG = "WordDetailsActivity";
 	private ToponimoApplication application;
 	private static WordDetailsActivity mainActivity;
 	private TextToSpeech tts;
 	private String word;
 	private String definition;
 	protected TextView definitionTextView;
-	private Uri imageOutputURI;
+	private Uri imageOutputURI = null;
+
 	private Animation fadein;
 
-	private List<Pair> images = new ArrayList<Pair>();
+	private List<String> imageList = new ArrayList<String>();
+
+	private Gallery gallery;
+	private WordGalleryAdapter galleryAdapter;
+
+	// private List<Pair> images = new ArrayList<Pair>();
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -59,13 +75,19 @@ public class WordDetailsActivity extends Activity implements
 		}
 
 		if (requestCode == TAKE_PICTURE) {
-			Uri imageUri = null;
-			if (data != null) {
-				if (data.hasExtra("data")) {
-					Bitmap thumbnail = data.getParcelableExtra("data");
+			Log.d(TAG, "Got to TAKE PICTURE");
+			if (imageOutputURI != null) {
+				Log.d(TAG, "Data is not NULL");
+				Log.d("BitmapString: ", imageOutputURI.toString());
+				String thumbnailPath = BitmapUtils.createThumbnail(
+						imageOutputURI, 80);
+				Log.d(TAG + ": ThumbnailPath=", thumbnailPath);
 
-				}
+				imageList.add(thumbnailPath);
+				galleryAdapter.notifyDataSetChanged();
+				(new ImageUploader()).execute((Object) null);
 			}
+
 		} else if (requestCode == DATA_CHECKSUM) {
 			if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
 				// if tts data exists, create a new tts instance
@@ -78,18 +100,22 @@ public class WordDetailsActivity extends Activity implements
 				startActivity(installIntent);
 			}
 		}
+
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.word_details);
-
-		LinearLayout galleryContainer = (LinearLayout) findViewById(R.id.word_details_gallery_container);
-		fadein = AnimationUtils.loadAnimation(this, R.anim.fadein);
-
 		application = (ToponimoApplication) this.getApplication();
 		mainActivity = this;
+
+		LinearLayout galleryContainer = (LinearLayout) findViewById(R.id.word_details_gallery_container);
+
+		galleryAdapter = new WordGalleryAdapter(this, imageList);
+
+		fadein = AnimationUtils.loadAnimation(this, R.anim.fadein);
+
 		definitionTextView = (TextView) findViewById(R.id.word_details_definition);
 
 		ttsCheck();
@@ -102,15 +128,31 @@ public class WordDetailsActivity extends Activity implements
 
 		createSpeakButton();
 		createAddPictureButton();
+		createGallery();
 		createAddToWordBankButton();
 
 		galleryContainer.startAnimation(fadein);
 
 	}
 
+	private void createGallery() {
+		gallery = (Gallery) findViewById(R.id.word_details_gallery);
+		gallery.setAdapter(galleryAdapter);
+		gallery.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> adapterView, View v,
+					int position, long id) {
+				Toast.makeText(WordDetailsActivity.this, position,
+						Toast.LENGTH_SHORT);
+
+			}
+
+		});
+	}
+
 	/**
 	 * Checks if the tts data has been installed. If not, a new activity is
-	 * launched to install the missing data.
+	 * launched to install the tts data.
 	 */
 	private void ttsCheck() {
 		// check for tts data
@@ -162,9 +204,10 @@ public class WordDetailsActivity extends Activity implements
 
 			public void onClick(View v) {
 				Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				File file = new File(Environment.getExternalStorageDirectory(),
-						"temp.jpg");
-				imageOutputURI = Uri.fromFile(file);
+				File path = new File(Environment.getExternalStorageDirectory(),
+						"ToponimoTemp3.jpg");
+				imageOutputURI = Uri.fromFile(path);
+
 				i.putExtra(MediaStore.EXTRA_OUTPUT, imageOutputURI);
 				try {
 					startActivityForResult(i, TAKE_PICTURE);
@@ -248,6 +291,9 @@ public class WordDetailsActivity extends Activity implements
 		Uri newWord = getContentResolver().insert(uri, cv);
 	}
 
+	/*
+	 * download current word definitions
+	 */
 	private class DownloadDefinition extends AsyncTask {
 
 		String definition = "";
@@ -279,11 +325,6 @@ public class WordDetailsActivity extends Activity implements
 
 	}
 
-	public void onInit(int status) {
-		// TODO Auto-generated method stub
-
-	}
-
 	private class Pair {
 
 		private String path;
@@ -310,6 +351,59 @@ public class WordDetailsActivity extends Activity implements
 			this.bitmap = bitmap;
 		}
 
+	}
+
+	public void onInit(int arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private class ImageUploader extends AsyncTask<Object, Object, Object> {
+
+		@Override
+		protected String doInBackground(Object... params) {
+
+			String thumbnailPath = null;
+
+			if (imageOutputURI != null) {
+				Log.d(TAG, "Data is not NULL");
+				Log.d("BitmapString: ", imageOutputURI.toString());
+
+				try {
+					int currentPlaceIndex = ToponimoApplication.getApp()
+							.getCurrentPlaceIndex();
+					String currentPlaceId = ToponimoApplication.getApp()
+							.getPlaceResults(currentPlaceIndex).getId();
+					List<NameValuePair> postParameters = new ArrayList<NameValuePair>(
+							1);
+					postParameters.add(new BasicNameValuePair(
+							"postobject[placeid]", "4543jk4jh5j4k3j4h5"));
+					postParameters.add(new BasicNameValuePair(
+							"postobject[word]", "word"));
+					postParameters.add(new BasicNameValuePair(
+							"postobject[wordno]", "23"));
+					postParameters.add(new BasicNameValuePair(
+							"postobject[synsetno]", "7"));
+					postParameters.add(new BasicNameValuePair(
+							"postobject[ownerid]", "3"));
+
+					HttpUtils.executeHttpMultipartPost(ToponimoApplication
+							.getApp().getHttpClient(), postParameters,
+							"http://www.toponimo.org/toponimo/api/images/",
+							imageOutputURI);
+				} catch (UnsupportedEncodingException uce) {
+					uce.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+			return thumbnailPath;
+		}
+
+		protected void onPostExecute(String thumbnailPath) {
+
+		}
 	}
 
 }

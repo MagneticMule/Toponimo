@@ -2,7 +2,6 @@ package com.magneticmule.toponimo.client.ui.adapters;
 
 import java.util.List;
 
-import com.magneticmule.toponimo.client.R;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,17 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.magneticmule.toponimo.client.R;
+
 public class WordListAdapter extends ArrayAdapter<String> {
 
-	private static final String	TAG	= "WordListAdapter";
+	private static final String TAG = "WordListAdapter";
 
-	private static List<String>	words;
-	private Context							context;
+	private static List<String> words;
+	private Context context;
 
-	public WordListAdapter(Context _context, int textViewResourceId, List<String> list) {
-		super(_context, textViewResourceId, list);
-		this.context = _context;
-		words = list;
+	public WordListAdapter(Context _context, int textViewResourceId,
+			List<String> _words) {
+		super(_context, textViewResourceId, _words);
+		context = _context;
+		words = _words;
 	}
 
 	@Override
@@ -31,6 +33,7 @@ public class WordListAdapter extends ArrayAdapter<String> {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View,
 	 * android.view.ViewGroup)
 	 */
@@ -38,7 +41,8 @@ public class WordListAdapter extends ArrayAdapter<String> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
 		if (view == null) {
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.word_row, null);
 		}
 

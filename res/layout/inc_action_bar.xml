@@ -3,7 +3,7 @@
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="32dip"
+        android:layout_height="36dip"
         android:layout_weight="0.1"
         android:background="@color/brown_green" >
 
@@ -15,7 +15,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dip"
             android:paddingLeft="10dip"
-            android:text="TOPONIMO"
+            android:text="toponimo"
             android:textSize="20dip" >
         </TextView>
 

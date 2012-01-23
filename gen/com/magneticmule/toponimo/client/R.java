@@ -95,12 +95,12 @@ public final class R {
         public static final int add_word_header=0x7f080000;
         public static final int checkBox1=0x7f080002;
         public static final int emptyView=0x7f080023;
-        public static final int forward=0x7f080034;
+        public static final int forward=0x7f080035;
         public static final int icon=0x7f080009;
         public static final int id_bar_place_list=0x7f08000d;
         public static final int label=0x7f08000a;
-        public static final int label_address=0x7f080032;
-        public static final int label_words=0x7f080033;
+        public static final int label_address=0x7f080033;
+        public static final int label_words=0x7f080034;
         public static final int linearLayout1=0x7f080005;
         public static final int login_activity_facebook_img=0x7f08002a;
         public static final int login_activity_logo_iv=0x7f080025;
@@ -109,12 +109,12 @@ public final class R {
         public static final int login_activity_signup_btn=0x7f080029;
         public static final int login_activity_username_et=0x7f080026;
         public static final int map_button=0x7f080020;
-        public static final int mapview_control=0x7f08002c;
-        public static final int mapview_place_address=0x7f080031;
-        public static final int mapview_place_distance=0x7f080030;
-        public static final int mapview_place_name=0x7f08002e;
-        public static final int mapviews_place_address=0x7f08002f;
-        public static final int nav_bar_mapview=0x7f08002d;
+        public static final int mapview_control=0x7f08002d;
+        public static final int mapview_place_address=0x7f080032;
+        public static final int mapview_place_distance=0x7f080031;
+        public static final int mapview_place_name=0x7f08002f;
+        public static final int mapviews_place_address=0x7f080030;
+        public static final int nav_bar_mapview=0x7f08002e;
         public static final int nav_bar_place_list=0x7f080021;
         public static final int place_details_add_image=0x7f08000c;
         public static final int place_details_add_phrase_button=0x7f080004;
@@ -126,12 +126,13 @@ public final class R {
         public static final int place_details_place_name=0x7f08000e;
         public static final int place_details_word_listview=0x7f080012;
         public static final int place_holder=0x7f080017;
+        public static final int place_list_activity_click_view=0x7f08002c;
         public static final int place_list_activity_mapview=0x7f08002b;
         public static final int place_list_bottom_location_bar=0x7f080024;
         public static final int places_info_text=0x7f080014;
-        public static final int places_infor_text=0x7f080035;
+        public static final int places_infor_text=0x7f080036;
         public static final int radioGroup1=0x7f080007;
-        public static final int ratingBar1=0x7f08003b;
+        public static final int ratingBar1=0x7f08003c;
         public static final int rating_bar=0x7f080042;
         public static final int refresh_button=0x7f080018;
         public static final int refresh_progress_bar=0x7f080019;
@@ -144,18 +145,17 @@ public final class R {
         public static final int vertical_bar_3=0x7f08001e;
         public static final int wordListView=0x7f080022;
         public static final int word_bank_button=0x7f08001d;
-        public static final int word_details_add_picture=0x7f08003c;
+        public static final int word_details_add_picture=0x7f08003d;
         public static final int word_details_add_to_word_bank_button=0x7f080040;
-        public static final int word_details_definition=0x7f08003a;
-        public static final int word_details_gallery=0x7f08003e;
-        public static final int word_details_gallery_container=0x7f08003d;
-        public static final int word_details_gallery_content=0x7f080039;
-        public static final int word_details_scrollview=0x7f080038;
-        public static final int word_details_speak_button=0x7f080037;
-        public static final int word_details_word_view=0x7f080036;
+        public static final int word_details_definition=0x7f08003b;
+        public static final int word_details_gallery=0x7f08003f;
+        public static final int word_details_gallery_container=0x7f08003e;
+        public static final int word_details_gallery_content=0x7f08003a;
+        public static final int word_details_scrollview=0x7f080039;
+        public static final int word_details_speak_button=0x7f080038;
+        public static final int word_details_word_view=0x7f080037;
         public static final int word_row_word_view=0x7f080041;
         public static final int words_button=0x7f08001f;
-        public static final int wotrd_details_gallery_content=0x7f08003f;
     }
     public static final class layout {
         public static final int add_phrase=0x7f030000;
@@ -181,6 +181,7 @@ public final class R {
         public static final int word_bank=0x7f030014;
         public static final int word_details=0x7f030015;
         public static final int word_row=0x7f030016;
+        public static final int word_type_buttons=0x7f030017;
     }
     public static final class string {
         public static final int api_key=0x7f060005;

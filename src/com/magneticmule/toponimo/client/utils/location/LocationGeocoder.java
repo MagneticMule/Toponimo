@@ -14,15 +14,17 @@ import android.util.Log;
 
 public class LocationGeocoder {
 
-	private static final String	TAG	= "LocationGeocoder";
+	private static final String TAG = "LocationGeocoder";
 
-	public static void getLocationName(final double lat, final double lng, final Context context, final Handler handler) {
+	public static void getLocationName(final double lat, final double lng,
+			final Context context, final Handler handler) {
 		Thread thread = new Thread() {
 			public void run() {
 				Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 				String result = null;
 				try {
-					List<Address> addressList = geocoder.getFromLocation(lat, lng, 1);
+					List<Address> addressList = geocoder.getFromLocation(lat,
+							lng, 1);
 					if (addressList != null && addressList.size() > 0) {
 						Address address = addressList.get(0);
 						result = address.getAddressLine(0);

@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -23,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
@@ -52,11 +52,15 @@ public class PlaceDetailsActivity extends MapActivity {
 	private ArrayAdapter<String> wordListArrayAdapter;
 	private ToponimoApplication application;
 	private ImageView mapImage;
-	private LinearLayout headerViewMap;
+	private RelativeLayout headerViewMap;
 	private LinearLayout headerViewWordButton;
 	private Button addWordButton;
 	private MapView mapView;
+	private View mapViewClickReciever;
 	private MapController mapController;
+	private GeoPoint targetLocation;
+
+	private LayoutInflater inflater;
 
 	private static final short ZOOM_LEVEL = 18; // mapview
 
@@ -64,21 +68,14 @@ public class PlaceDetailsActivity extends MapActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == TAKE_PICTURE) {
-			if (data != null) {
-				if (data.hasExtra("data")) {
-					Bitmap thumbnail = data.getParcelableExtra("data");
-				}
-			}
-		} else {
-			if (data != null) {
-				extraData = data.getStringExtra("words");
-				application.getPlaceResults(application.getCurrentPlaceIndex())
-						.getWords().add(extraData + " *");
-				wordListArrayAdapter.notifyDataSetChanged();
-			}
+		if (data != null) {
+			// extraData = data.getStringExtra("words");
 
+			// application.getPlaceResults(application.getCurrentPlaceIndex())
+			// .getWords().add(extraData + " *");
+			wordListArrayAdapter.notifyDataSetChanged();
 		}
+
 	}
 
 	@Override
@@ -109,7 +106,10 @@ public class PlaceDetailsActivity extends MapActivity {
 				application.getPlaceResults(application.getCurrentPlaceIndex())
 						.getWords());
 
-		LayoutInflater inflater = initMap();
+		inflater = (LayoutInflater) getBaseContext().getSystemService(
+				Context.LAYOUT_INFLATER_SERVICE);
+
+		initMap();
 
 		// inflate the second listview header and attach the add word button
 		headerViewWordButton = (LinearLayout) inflater.inflate(
@@ -188,7 +188,7 @@ public class PlaceDetailsActivity extends MapActivity {
 			}
 		});
 
-		mapView.setOnClickListener(new View.OnClickListener() {
+		mapViewClickReciever.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(PlaceDetailsActivity.this,
 						MapsViewActivity.class);
@@ -201,15 +201,16 @@ public class PlaceDetailsActivity extends MapActivity {
 		});
 	}
 
-	private LayoutInflater initMap() {
+	private void initMap() {
 		// inflate the first listview header view then find and attach the
 		// mapview
-		LayoutInflater inflater = (LayoutInflater) getBaseContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		headerViewMap = (LinearLayout) inflater.inflate(R.layout.map_image,
+		headerViewMap = (RelativeLayout) inflater.inflate(R.layout.map_image,
 				null);
 		mapView = (MapView) headerViewMap
 				.findViewById(R.id.place_list_activity_mapview);
+
+		mapViewClickReciever = (View) headerViewMap
+				.findViewById(R.id.place_list_activity_click_view);
 
 		mapController = mapView.getController();
 		mapController.setZoom(ZOOM_LEVEL);
@@ -218,7 +219,7 @@ public class PlaceDetailsActivity extends MapActivity {
 		placeOverlays.clear();
 		mapView.invalidate();
 
-		GeoPoint targetLocation = new GeoPoint((int) (targetPosLat * 1e6),
+		targetLocation = new GeoPoint((int) (targetPosLat * 1e6),
 				((int) (targetPosLng * 1e6)));
 
 		Drawable drawable = this.getResources().getDrawable(
@@ -239,12 +240,14 @@ public class PlaceDetailsActivity extends MapActivity {
 
 		mapController.animateTo(targetLocation);
 		mapView.postInvalidate();
-		return inflater;
+
 	}
 
 	@Override
 	protected void onResume() {
 		wordListArrayAdapter.notifyDataSetChanged();
+		mapController.setZoom(ZOOM_LEVEL);
+		mapController.animateTo(targetLocation);
 		super.onResume();
 	}
 
