@@ -3,18 +3,14 @@ package com.magneticmule.toponimo.client.structures.wordstructure;
 import java.util.List;
 
 public class Definition {
-	private List<Results> results;
+    private List<Results> results;
 
-	public List<Results> getResults() {
-		return results;
-	}
+    public List<Results> getResults() {
+	return results;
+    }
 
-	public void setResults(List<Results> results) {
-		this.results = results;
-	}
+    public void setResults(List<Results> results) {
+	this.results = results;
+    }
 
 }
-
-
-
-

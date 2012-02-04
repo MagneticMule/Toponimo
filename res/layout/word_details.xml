@@ -171,7 +171,12 @@
                     android:id="@+id/word_details_gallery"
                     android:layout_width="fill_parent"
                     android:layout_height="80px"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:spacing="6dip" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="8px" />
             </LinearLayout>
 
             <View

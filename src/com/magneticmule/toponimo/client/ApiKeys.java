@@ -8,24 +8,24 @@ package com.magneticmule.toponimo.client;
 
 public class ApiKeys {
 
-	public static final String GOOGLE_API_KEY_LINUX_DESKTOP = "AIzaSyARV2mbzLBlF697bCAa03UysnaF2FK2eec";
+    public static final String GOOGLE_API_KEY_LINUX_DESKTOP = "AIzaSyARV2mbzLBlF697bCAa03UysnaF2FK2eec";
 
-	public static final String GOOGLE_API_KEY_MACBOOK_I7 = "0fqJRInbccwZDYF2GAcYqg7h0gQ7rSyLtmZbxvw";
+    public static final String GOOGLE_API_KEY_MACBOOK_I7 = "0fqJRInbccwZDYF2GAcYqg7h0gQ7rSyLtmZbxvw";
 
-	public static final String FACEBOOK_API_KEY = "100575183364254";
+    public static final String FACEBOOK_API_KEY = "100575183364254";
 
-	public static final String FACEBOOK_API_SECRET = "935c7758a9dd88b349b43ce42d31d20b";
+    public static final String FACEBOOK_API_SECRET = "935c7758a9dd88b349b43ce42d31d20b";
 
-	public static final String DICTIONARY_BASE_ADDRESS = "http://en.wiktionary.org/w/api.php?action=query&prop=revisions&titles=%s&rvprop=content&format=json%s";
+    public static final String DICTIONARY_BASE_ADDRESS = "http://en.wiktionary.org/w/api.php?action=query&prop=revisions&titles=%s&rvprop=content&format=json%s";
 
-	public static final String DEFINITION_URL = "http://www.api.toponimo.org/definition.php?word=";
+    public static final String DEFINITION_URL = "http://www.api.toponimo.org/definition.php?word=";
 
-	public static final String DOWNLOAD_URL = "http://api.toponimo.org?";
+    public static final String DOWNLOAD_URL = "http://api.toponimo.org?";
 
-	public static final String UPLOAD_WORD_URL = "http://api.toponimo.org/upload.php/?";
+    public static final String UPLOAD_WORD_URL = "http://api.toponimo.org/upload.php/?";
 
-	public static final String UPLOAD_IMAGE_URL = "http://www.toponimo.org/toponimo/api/images";
+    public static final String UPLOAD_IMAGE_URL = "http://www.toponimo.org/toponimo/api/images";
 
-	public static final String LOGIN_URL = "http://www.toponimo.org/toponimo/auth/login";
+    public static final String LOGIN_URL = "http://www.toponimo.org/toponimo/auth/login";
 
 }

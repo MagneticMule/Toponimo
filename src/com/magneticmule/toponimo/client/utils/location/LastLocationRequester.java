@@ -1,7 +1,6 @@
 package com.magneticmule.toponimo.client.utils.location;
 
 import java.util.List;
-import com.magneticmule.toponimo.client.Constants;
 
 import android.content.Context;
 import android.location.Criteria;
@@ -11,94 +10,98 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.magneticmule.toponimo.client.Constants;
+
 public class LastLocationRequester {
 
-	private static String				TAG	= "LastLocationRequester";
+    private static String TAG = "LastLocationRequester";
 
-	protected LocationListener	locationListener;
-	protected LocationManager		locationManager;
-	protected Criteria					criteria;
-	protected Context						context;
+    protected LocationListener locationListener;
+    protected LocationManager locationManager;
+    protected Criteria criteria;
+    protected Context context;
 
-	
+    /**
+     * Request location updates using the quickest method possible. More
+     * accurate results can be obtained using synchronous location updates with
+     * an accurate criteria.
+     * 
+     * @param context
+     */
 
-	/**
-	 * Request location updates using the quickest method possible. More accurate
-	 * results can be obtained using synchronous location updates with an accurate
-	 * criteria.
-	 * 
-	 * @param context
-	 */
+    public LastLocationRequester(Context context) {
+	locationManager = (LocationManager) context
+		.getSystemService(Context.LOCATION_SERVICE);
+	criteria = new Criteria();
+	criteria = Constants.fastCriteria();
+	this.context = context;
+    }
 
-	public LastLocationRequester(Context context) {
-		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		criteria = new Criteria();
-		criteria = Constants.fastCriteria();
-		this.context = context;
-	}
+    public Location lastLocation(long minTime, float minDistance) {
+	Location bestLocation = null;
+	float bestAccuracy = Float.MAX_VALUE;
+	long bestTime = Long.MAX_VALUE;
 
-	public Location lastLocation(long minTime, float minDistance) {
-		Location bestLocation = null;
-		float bestAccuracy = Float.MAX_VALUE;
-		long bestTime = Long.MAX_VALUE;
+	List<String> providers = locationManager.getAllProviders();
+	for (String provider : providers) {
+	    Location location = locationManager.getLastKnownLocation(provider);
+	    if (location != null) {
+		float accuracy = location.getAccuracy();
+		long time = location.getTime();
+		Log.i("Provider", location.getProvider().toString());
 
-		List<String> providers = locationManager.getAllProviders();
-		for (String provider : providers) {
-			Location location = locationManager.getLastKnownLocation(provider);
-			if (location != null) {
-				float accuracy = location.getAccuracy();
-				long time = location.getTime();
-				Log.i("Provider", location.getProvider().toString());
-
-				if (time < minTime && accuracy < bestAccuracy) {
-					bestLocation = location;
-					bestAccuracy = accuracy;
-					bestTime = time;
-				} else if (time > minTime && bestAccuracy == Float.MAX_VALUE && time < bestTime) {
-					bestLocation = location;
-					bestTime = time;
-				}
-			}
+		if (time < minTime && accuracy < bestAccuracy) {
+		    bestLocation = location;
+		    bestAccuracy = accuracy;
+		    bestTime = time;
+		} else if (time > minTime && bestAccuracy == Float.MAX_VALUE
+			&& time < bestTime) {
+		    bestLocation = location;
+		    bestTime = time;
 		}
-
-		if ((locationListener != null) && (bestTime > minTime) || (bestAccuracy > minDistance)) {
-			String provider = locationManager.getBestProvider(criteria, true);
-			if (provider != null) {
-				locationManager.requestLocationUpdates(provider, 0, 0, oneShotLocationListener, context.getMainLooper());
-			}
-
-		}
-		return bestLocation;
-
+	    }
 	}
 
-	public LocationListener	oneShotLocationListener	= new LocationListener() {
+	if ((locationListener != null) && (bestTime > minTime)
+		|| (bestAccuracy > minDistance)) {
+	    String provider = locationManager.getBestProvider(criteria, true);
+	    if (provider != null) {
+		locationManager.requestLocationUpdates(provider, 0, 0,
+			oneShotLocationListener, context.getMainLooper());
+	    }
 
-																										public void onLocationChanged(Location location) {
-																											if ((location != null) && (locationListener != null)) {
-																												locationListener.onLocationChanged(location);
-																												locationManager.removeUpdates(oneShotLocationListener);
-
-																											}
-
-																										}
-
-																										public void onProviderDisabled(String provider) {
-																										}
-
-																										public void onProviderEnabled(String provider) {
-																										}
-
-																										public void onStatusChanged(String provider, int status, Bundle extras) {
-																										}
-
-																									};
-
-	public void setChangedLocationListener(LocationListener l) {
-		locationListener = l;
 	}
+	return bestLocation;
 
-	public void cancel() {
+    }
+
+    public LocationListener oneShotLocationListener = new LocationListener() {
+
+	public void onLocationChanged(Location location) {
+	    if ((location != null) && (locationListener != null)) {
+		locationListener.onLocationChanged(location);
 		locationManager.removeUpdates(oneShotLocationListener);
+
+	    }
+
 	}
+
+	public void onProviderDisabled(String provider) {
+	}
+
+	public void onProviderEnabled(String provider) {
+	}
+
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+	}
+
+    };
+
+    public void setChangedLocationListener(LocationListener l) {
+	locationListener = l;
+    }
+
+    public void cancel() {
+	locationManager.removeUpdates(oneShotLocationListener);
+    }
 }
