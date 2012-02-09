@@ -19,8 +19,10 @@
         android:debuggable="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
+        <uses-library android:name="com.google.android.maps" />
+
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.LoginCheckActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
@@ -29,9 +31,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <uses-library android:name="com.google.android.maps" />
-
+        <activity
+            android:name=".ui.LoginActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ui.PlaceListActivity"
             android:configChanges="keyboardHidden|orientation"

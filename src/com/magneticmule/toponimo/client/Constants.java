@@ -5,6 +5,15 @@ import android.net.Uri;
 
 public class Constants {
 
+    // Shared preferences file for login details storage
+    public static final String USER_DETAILS_PREFS = "USP";
+
+    // User details preferences
+    public static final String IS_LOGGED_IN = "isLoggedIn";
+    public static final String FIRST_NAME = "firstName";
+    public static final String LAST_NAME = "lastName";
+    public static final String USER_ID = "userId";
+
     // Path to the local client storage which will be used for storing images
     // after being taken via the camera.
     public static final String LOCAL_IMAGE_STORE = "/data/data/com.magneticmule.toponimo.client/";

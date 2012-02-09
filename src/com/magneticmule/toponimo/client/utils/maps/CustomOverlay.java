@@ -17,13 +17,12 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
 
-@SuppressWarnings("unused")
 public class CustomOverlay extends Overlay {
 
     private static final int CIRCLERADIUS = 12;
     private static final int CIRCLE_STROKE_WIDTH = 1;
 
-    private boolean languageCount = true;
+    private final boolean languageCount = true;
 
     private int drawable = 0;
 

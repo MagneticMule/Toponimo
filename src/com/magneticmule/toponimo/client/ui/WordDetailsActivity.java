@@ -11,7 +11,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -90,14 +92,37 @@ public class WordDetailsActivity extends Activity implements
 
 	} else if (requestCode == DATA_CHECKSUM) {
 	    if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-		// if tts data exists, create a new tts instance
+
+		// if TTS data exists, create a new TTS instance
 		tts = new TextToSpeech(this, this);
 	    } else {
-		// else, install tts data
-		Intent installIntent = new Intent();
-		installIntent
-			.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-		startActivity(installIntent);
+		// TTS data is not installed. Ask user if they would like to
+		// install it.
+		DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+
+		    public void onClick(DialogInterface dialog, int which) {
+			switch (which) {
+			case DialogInterface.BUTTON_POSITIVE:
+
+			    // install TTS data
+			    Intent installIntent = new Intent();
+			    installIntent
+				    .setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+			    startActivity(installIntent);
+			    break;
+			}
+
+		    }
+		};
+
+		// Display alert dialog asking to install TTS data
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+			WordDetailsActivity.this);
+		builder.setMessage("Google Text to Speech needs to be installed. Install it?");
+		builder.setPositiveButton("Yes", clickListener);
+		builder.setNegativeButton("No", clickListener);
+		builder.show();
+
 	    }
 	}
 

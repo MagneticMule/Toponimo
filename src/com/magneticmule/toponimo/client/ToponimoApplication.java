@@ -9,6 +9,7 @@ import org.apache.http.params.HttpParams;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.magneticmule.toponimo.client.structures.placestructure.Place;
@@ -17,10 +18,15 @@ import com.magneticmule.toponimo.client.structures.userstructure.UserDetails;
 
 public class ToponimoApplication extends Application {
 
+    public static final String APP_NAME = "ToponimoApplication";
+    public static final String TAG = "ToponimoApplication";
+
     /**
      * Store a reference to the application object
      */
     private static ToponimoApplication app = null;
+
+    private SharedPreferences userDetailsPrefs;
 
     private static Context context;
     private DefaultHttpClient httpClient;
@@ -37,16 +43,9 @@ public class ToponimoApplication extends Application {
 
     private int currentPlaceIndex = 0;
 
-    public static final String APP_NAME = "ToponimoApplication";
-    public static final String TAG = "ToponimoApplication";
-
     public ToponimoApplication() {
 	super();
-	httpClient = new DefaultHttpClient();
-	ClientConnectionManager manager = httpClient.getConnectionManager();
-	HttpParams params = httpClient.getParams();
-	httpClient = new DefaultHttpClient(new ThreadSafeClientConnManager(
-		params, manager.getSchemeRegistry()), params);
+
     }
 
     @Override
@@ -55,6 +54,16 @@ public class ToponimoApplication extends Application {
 	super.onCreate();
 	ToponimoApplication.context = getApplicationContext();
 	ToponimoApplication.app = this;
+
+	// Reference to the login details shared preferences file
+	userDetailsPrefs = getSharedPreferences(Constants.USER_DETAILS_PREFS, 0);
+
+	// Httpclient object which will be used throughout the application
+	httpClient = new DefaultHttpClient();
+	ClientConnectionManager manager = httpClient.getConnectionManager();
+	HttpParams params = httpClient.getParams();
+	httpClient = new DefaultHttpClient(new ThreadSafeClientConnManager(
+		params, manager.getSchemeRegistry()), params);
 	Log.i(TAG, "Tooponimo app started");
 
     }
@@ -124,6 +133,10 @@ public class ToponimoApplication extends Application {
 	checkInstance();
 	return app;
 
+    }
+
+    public SharedPreferences getUserDetailsPrefs() {
+	return this.userDetailsPrefs;
     }
 
     public static void checkInstance() {

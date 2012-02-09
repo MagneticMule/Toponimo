@@ -154,20 +154,22 @@ public class HttpUtils {
 		entity = new UrlEncodedFormEntity(userLogin, "UTF-8");
 		httpPost.setEntity(entity);
 		HttpResponse response = httpClient.execute(httpPost);
-		int statusCode = response.getStatusLine().getStatusCode();
-		returnVals.firstVal = statusCode;
+		int statusCode = 0;
+		try {
+		    statusCode = response.getStatusLine().getStatusCode();
+		    returnVals.firstVal = statusCode;
+		} catch (NumberFormatException nfe) {
+
+		}
 		HttpEntity httpEntity = response.getEntity();
 		if (statusCode == 200 && httpEntity != null) {
 		    is = response.getEntity().getContent();
 		    outputString = convertStreamToString(is);
 		    returnVals.secondVal = outputString;
 		    httpEntity.consumeContent();
-		} else if (statusCode == 401) {
-		    outputString = "No account found with that email & password combination";
-		} else if (statusCode == 400) {
-		    outputString = "Bad Request";
+		} else {
+		    outputString = response.getStatusLine().getReasonPhrase();
 		}
-
 		Log.i("StatusCode", Integer.toString(statusCode));
 
 	    } catch (ClientProtocolException e) {
