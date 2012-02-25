@@ -1,5 +1,7 @@
 package com.magneticmule.toponimo.client.ui;
 
+import org.apache.http.HttpStatus;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -204,7 +206,7 @@ public class LoginActivity extends Activity {
 		int httpCode = authenticateData.getFirstVal();
 		String jsonData = authenticateData.getSecondVal();
 
-		if (httpCode == 200) { // if OK
+		if (httpCode == HttpStatus.SC_OK) {
 
 		    userDetails = gson.fromJson(jsonData, UserDetails.class);
 		    Log.i("Firstname", userDetails.getFirstName().toString());
@@ -213,8 +215,8 @@ public class LoginActivity extends Activity {
 		    application.setUserDetails(userDetails);
 
 		    // Write user details to shared preferences file
-		    SharedPreferences userDetailsPrefs = application
-			    .getUserDetailsPrefs();
+		    SharedPreferences userDetailsPrefs = getSharedPreferences(
+			    Constants.USER_DETAILS_PREFS, 0);
 		    SharedPreferences.Editor editor = userDetailsPrefs.edit();
 		    editor.putBoolean(Constants.IS_LOGGED_IN, true);
 		    editor.putString(Constants.FIRST_NAME,
@@ -222,6 +224,7 @@ public class LoginActivity extends Activity {
 		    editor.putString(Constants.LAST_NAME,
 			    userDetails.getLastName());
 		    editor.putString(Constants.USER_ID, userDetails.getUserId());
+
 		    editor.commit();
 
 		} else {

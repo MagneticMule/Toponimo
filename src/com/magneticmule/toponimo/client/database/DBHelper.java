@@ -38,8 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	// db (use temp tables).
 	_db.execSQL("DROP TABLE IF EXISTS " + Constants.DATABASE_TABLE_MY_WORDS);
 	_db.execSQL("DROP TABLE IF EXISTS " + Constants.DATABASE_TABLE_PLACES);
-	_db.execSQL("DROP TABLE IF EXISTS "
-		+ Constants.DATABASE_TABLE_INTERACTIONS);
+
 	// create new db
 	onCreate(_db);
 

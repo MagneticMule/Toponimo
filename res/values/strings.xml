@@ -5,7 +5,7 @@
     <string name="words">Words: </string>
     <string name="app_name">Toponimo</string>
     <string name="login_activity_signup_btn">SIGN UP</string>
-    <string name="login">LOG IN</string>
+    <string name="signin">SIGN IN</string>
     <string name="api_key">0fqJRInbccwZ5L_uedgEHfMUF5V2yL6r7WRHlmw</string>
     <string name="login_activity_username_et">username</string>
     <string name="login_activity_logo_description">Toponimo logo</string>

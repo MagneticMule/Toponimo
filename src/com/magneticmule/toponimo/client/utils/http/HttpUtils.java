@@ -138,7 +138,7 @@ public class HttpUtils {
 	    String rememberMe, String url) {
 	// DefaultHttpClient httpClient = new DefaultHttpClient();
 	List<NameValuePair> userLogin = new ArrayList<NameValuePair>();
-	TwoReturnValues<Integer, String> returnVals = null;
+	TwoReturnValues<Integer, String> returnVals = new TwoReturnValues<Integer, String>();
 	InputStream is = null;
 	String outputString = "";
 	// userLogin.add(new BasicNameValuePair("UserLogin", null));
@@ -154,13 +154,10 @@ public class HttpUtils {
 		entity = new UrlEncodedFormEntity(userLogin, "UTF-8");
 		httpPost.setEntity(entity);
 		HttpResponse response = httpClient.execute(httpPost);
-		int statusCode = 0;
-		try {
-		    statusCode = response.getStatusLine().getStatusCode();
-		    returnVals.firstVal = statusCode;
-		} catch (NumberFormatException nfe) {
-
-		}
+		Integer statusCode = 0;
+		statusCode = response.getStatusLine().getStatusCode();
+		Log.v("Status Code", statusCode.toString());
+		returnVals.firstVal = statusCode;
 		HttpEntity httpEntity = response.getEntity();
 		if (statusCode == 200 && httpEntity != null) {
 		    is = response.getEntity().getContent();

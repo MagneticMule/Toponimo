@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
     android:background="@drawable/blue_to_blue_grad"
     android:gravity="bottom"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    xmlns="http://schemas.android.com/apk/res/android" >
 
     <ImageView
         android:id="@+id/login_activity_logo_iv"
@@ -57,7 +58,7 @@
             android:layout_height="40dip"
             android:layout_weight="1"
             android:background="@drawable/green_button"
-            android:text="@string/login" >
+            android:text="@string/signin" >
         </Button>
 
         <Button
