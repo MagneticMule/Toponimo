@@ -68,6 +68,8 @@ public class ClientWordsProvider extends ContentProvider {
 		Constants.KEY_WORD_LOCATION);
 	wordsProjectionMap.put(Constants.KEY_WORD_DEFINITION,
 		Constants.KEY_WORD_DEFINITION);
+	wordsProjectionMap.put(Constants.KEY_WORD_GLOSS,
+		Constants.KEY_WORD_GLOSS);
 	wordsProjectionMap.put(Constants.KEY_WORD_LOCATION_LAT,
 		Constants.KEY_WORD_LOCATION_LAT);
 	wordsProjectionMap.put(Constants.KEY_WORD_LOCATION_LNG,

@@ -13,5 +13,6 @@
     <color name="list_divider_dark_gray">#aaaaaa</color>
     <color name="list_divider_light_gray">#ffffff</color>
     <color name="yellow">#ffff22</color>
+    <color name="link_blue">#445582</color>
 
 </resources>

@@ -16,9 +16,7 @@ public class ApiKeys {
 
     public static final String FACEBOOK_API_SECRET = "935c7758a9dd88b349b43ce42d31d20b";
 
-    public static final String DICTIONARY_BASE_ADDRESS = "http://en.wiktionary.org/w/api.php?action=query&prop=revisions&titles=%s&rvprop=content&format=json%s";
-
-    public static final String DEFINITION_URL = "http://www.api.toponimo.org/definition.php?word=";
+    public static final String DEFINITION_URL = "http://www.toponimo.org/toponimo/api/wordnetwords/?word=";
 
     public static final String DOWNLOAD_URL = "http://api.toponimo.org?";
 

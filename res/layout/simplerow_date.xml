@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#6f6f6f"
+    android:gravity="left"
+    android:paddingBottom="5dip"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip"
+    android:paddingTop="5dip" >
+
+    <TextView
+        android:id="@+id/label_day"
+        android:layout_width="40dip"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="WED"
+        android:textColor="@color/light_gray"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/label_date"
+        android:layout_width="40dip"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_day"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="23"
+        android:textColor="@color/light_gray"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/label_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/label_date"
+        android:ellipsize="marquee"
+        android:gravity="right"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="Jan &apos;12"
+        android:textColor="@color/light_gray"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+	/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@+id/label_date"
+        android:background="@color/light_gray" >
+    </View>
+
+</RelativeLayout>

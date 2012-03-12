@@ -24,7 +24,9 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase _db) {
 	try {
-	    _db.execSQL(Constants.DATABASE_CREATE);
+	    _db.execSQL(Constants.CREATE_TABLE_MY_WORDS);
+	    _db.execSQL(Constants.CREATE_TABLE_MY_PLACES);
+	    _db.execSQL(Constants.CREATE_TABLE_MY_PICTURES);
 	} catch (SQLiteException e) {
 	    Log.d(TAG, e.getMessage());
 	}
@@ -37,7 +39,10 @@ public class DBHelper extends SQLiteOpenHelper {
 	// TODO: A better method would be to migrate the data from old the old
 	// db (use temp tables).
 	_db.execSQL("DROP TABLE IF EXISTS " + Constants.DATABASE_TABLE_MY_WORDS);
-	_db.execSQL("DROP TABLE IF EXISTS " + Constants.DATABASE_TABLE_PLACES);
+	_db.execSQL("DROP TABLE IF EXISTS "
+		+ Constants.DATABASE_TABLE_MY_PLACES);
+	_db.execSQL("DROP TABLE IF EXISTS "
+		+ Constants.DATABASE_TABLE_MY_PICTURES);
 
 	// create new db
 	onCreate(_db);

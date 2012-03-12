@@ -18,7 +18,8 @@ public class LastLocationRequester {
 
     protected LocationListener locationListener;
     protected LocationManager locationManager;
-    protected Criteria criteria;
+    protected Criteria accurateCriteria;
+    protected Criteria fastCriteria;
     protected Context context;
 
     /**
@@ -32,8 +33,8 @@ public class LastLocationRequester {
     public LastLocationRequester(Context context) {
 	locationManager = (LocationManager) context
 		.getSystemService(Context.LOCATION_SERVICE);
-	criteria = new Criteria();
-	criteria = Constants.fastCriteria();
+	accurateCriteria = Constants.accurateCriteria();
+	fastCriteria = Constants.fastCriteria();
 	this.context = context;
     }
 
@@ -64,7 +65,8 @@ public class LastLocationRequester {
 
 	if ((locationListener != null) && (bestTime > minTime)
 		|| (bestAccuracy > minDistance)) {
-	    String provider = locationManager.getBestProvider(criteria, true);
+	    String provider = locationManager.getBestProvider(accurateCriteria,
+		    true);
 	    if (provider != null) {
 		locationManager.requestLocationUpdates(provider, 0, 0,
 			oneShotLocationListener, context.getMainLooper());

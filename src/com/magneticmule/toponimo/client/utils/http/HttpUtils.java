@@ -147,34 +147,44 @@ public class HttpUtils {
 	userLogin.add(new BasicNameValuePair("UserLogin[rememberme]",
 		rememberMe));
 
-	try {
-	    HttpPost httpPost = new HttpPost(url);
-	    UrlEncodedFormEntity entity = null;
-	    try {
-		entity = new UrlEncodedFormEntity(userLogin, "UTF-8");
-		httpPost.setEntity(entity);
-		HttpResponse response = httpClient.execute(httpPost);
-		Integer statusCode = 0;
-		statusCode = response.getStatusLine().getStatusCode();
-		Log.v("Status Code", statusCode.toString());
-		returnVals.firstVal = statusCode;
-		HttpEntity httpEntity = response.getEntity();
-		if (statusCode == 200 && httpEntity != null) {
-		    is = response.getEntity().getContent();
-		    outputString = convertStreamToString(is);
-		    returnVals.secondVal = outputString;
-		    httpEntity.consumeContent();
-		} else {
-		    outputString = response.getStatusLine().getReasonPhrase();
-		}
-		Log.i("StatusCode", Integer.toString(statusCode));
+	HttpPost httpPost = new HttpPost(url);
+	UrlEncodedFormEntity entity = null;
 
-	    } catch (ClientProtocolException e) {
+	try {
+	    entity = new UrlEncodedFormEntity(userLogin, "UTF-8");
+	} catch (UnsupportedEncodingException e) {
+
+	    e.printStackTrace();
+	}
+	httpPost.setEntity(entity);
+	HttpResponse response = null;
+
+	try {
+	    response = httpClient.execute(httpPost);
+	} catch (ClientProtocolException e) {
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	Integer statusCode = 0;
+	statusCode = response.getStatusLine().getStatusCode();
+	Log.v("Status Code", statusCode.toString());
+	returnVals.firstVal = statusCode;
+	HttpEntity httpEntity = response.getEntity();
+
+	if (httpEntity != null) {
+	    try {
+		is = response.getEntity().getContent();
+		outputString = convertStreamToString(is);
+		returnVals.secondVal = outputString;
+		httpEntity.consumeContent();
+	    } catch (IllegalStateException e) {
 		e.printStackTrace();
 	    } catch (IOException e) {
 		e.printStackTrace();
 	    }
-	} finally {
+
+	    Log.i("StatusCode", Integer.toString(statusCode));
 	}
 
 	return returnVals;

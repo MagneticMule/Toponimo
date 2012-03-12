@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center" >
+
+    <TextView
+        android:id="@+id/label_word"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="20dip"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="Cheesecake"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/label_definition"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_word"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:gravity="center_vertical"
+        android:text="Definition"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/label_gloss"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/label_definition"
+        android:layout_marginBottom="20dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="5dip"
+        android:gravity="left"
+        android:text="gloss"
+        android:textColor="@color/darker_gray"
+        android:textSize="14sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/label_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/label_word"
+        android:layout_alignBottom="@+id/label_word"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dip"
+        android:singleLine="true"
+        android:text="noun (food)"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="300px"
+        android:layout_height="400px"
+        android:layout_below="@+id/label_gloss"
+        android:layout_margin="20dip"
+        android:background="@color/white"
+        android:padding="5dip"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/image_view_location_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/label_location"
+        android:layout_alignLeft="@+id/label_word"
+        android:src="@drawable/map_marker_grey" />
+
+    <TextView
+        android:id="@+id/label_location"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_gloss"
+        android:layout_marginBottom="20dip"
+        android:layout_marginLeft="25dip"
+        android:layout_marginTop="5dip"
+        android:gravity="center_vertical"
+        android:text="location"
+        android:textColor="@color/brown_green"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/label_location"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_gloss"
+        android:layout_marginBottom="20dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="5dip"
+        android:layout_toRightOf="@+id/label_location"
+        android:gravity="right"
+        android:text="+ Picture"
+        android:textColor="@color/link_blue"
+        android:textSize="12sp" />
+	/>
+
+</RelativeLayout>

@@ -44,7 +44,7 @@ public class PlaceListActivity extends Activity {
     protected static final String TAG = "ToponimoActivity";
     private ListView placeListView;
     private ArrayAdapter<Place> placeArrayAdapter;
-    private List<Place> placenameList = new ArrayList<Place>();
+    private final List<Place> placenameList = new ArrayList<Place>();
     private static PlaceListActivity mainActivity;
 
     protected String lat;
@@ -79,8 +79,10 @@ public class PlaceListActivity extends Activity {
 	emptyView = (TextView) findViewById(R.id.emptyView);
 
 	placeListView = (ListView) findViewById(R.id.wordListView);
-	placeListView.setEmptyView(emptyView);
+
 	placeListView.setAdapter(placeArrayAdapter);
+
+	placeListView.setEmptyView(emptyView);
 
 	placeListView.setOnItemClickListener(new OnItemClickListener() {
 	    public void onItemClick(AdapterView<?> a, View v,

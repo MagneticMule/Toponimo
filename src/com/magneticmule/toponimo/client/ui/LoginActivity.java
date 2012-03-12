@@ -54,17 +54,18 @@ public class LoginActivity extends Activity {
 	// Text boxes for user name and password
 	final EditText userNameEditText = (EditText) findViewById(R.id.login_activity_username_et);
 	final EditText passwordEditText = (EditText) findViewById(R.id.login_activity_password_et);
+	final ImageView logoImageView = (ImageView) findViewById(R.id.login_activity_logo_iv);
 
+	logoImageView.setVisibility(2);
 	// Image file used as a button for login via facebook
-	final ImageView facebookLoginButton = (ImageView) findViewById(R.id.login_activity_facebook_img);
+	// final ImageView facebookLoginButton = (ImageView)
+	// findViewById(R.id.login_activity_facebook_img);
 
 	// if the Facebook button is pressed
-	facebookLoginButton.setOnClickListener(new View.OnClickListener() {
-	    public void onClick(View v) {
-		facebookLogin();
-	    }
-	});
-
+	/*
+	 * facebookLoginButton.setOnClickListener(new View.OnClickListener() {
+	 * public void onClick(View v) { facebookLogin(); } });
+	 */
 	// if the Sign in button is pressed
 	final Button loginButton = (Button) findViewById(R.id.login_activity_signin_btn);
 	loginButton.setOnClickListener(new View.OnClickListener() {
@@ -79,30 +80,17 @@ public class LoginActivity extends Activity {
 		    } else {
 			Toast toast = Toast.makeText(LoginActivity.this,
 				"Please supply both your username and pasword",
-				Toast.LENGTH_SHORT);
+				Toast.LENGTH_LONG);
 			toast.show();
 		    }
-		    // Intent i = new Intent(LoginActivity.this,
-		    // PlaceListActivity.class);
-		    // startActivity(i);
+		} else { // if no net connection
+		    Toast toast = Toast.makeText(LoginActivity.this,
+			    R.string.no_connection_message, Toast.LENGTH_LONG);
+		    toast.show();
 		}
 	    }
 	});
 
-	// when the Signup button is pressed
-	final Button signupButton = (Button) findViewById(R.id.login_activity_signup_btn);
-	signupButton.setOnClickListener(new View.OnClickListener() {
-
-	    public void onClick(View v) {
-		Toast toast = Toast.makeText(LoginActivity.this,
-			"Feature pending", Toast.LENGTH_SHORT);
-		toast.show();
-		Intent i = new Intent(LoginActivity.this,
-			PlaceListActivity.class);
-		startActivity(i);
-
-	    }
-	});
     }
 
     @Override
@@ -147,8 +135,22 @@ public class LoginActivity extends Activity {
     }
 
     public void startPlaceListActivity(UserDetails _userDetails) {
-	Intent i = new Intent(LoginActivity.this, PlaceListActivity.class);
-	startActivity(i);
+	switch (_userDetails.getStatus()) {
+	case 1: // user exists and is validated
+	    Intent i = new Intent(LoginActivity.this, PlaceListActivity.class);
+	    startActivity(i);
+	    break;
+	case 2: // user does not exist
+	    Toast toast = Toast.makeText(getApplicationContext(),
+		    "Incorrect user name or password", Toast.LENGTH_LONG);
+	    toast.show();
+	    break;
+	case 3:
+	    break;
+	default:
+
+	}
+
     }
 
     @Override
@@ -181,6 +183,7 @@ public class LoginActivity extends Activity {
 	public ValidateUser(String _username, String _password) {
 	    username = _username;
 	    password = _password;
+
 	}
 
 	@Override
@@ -196,47 +199,40 @@ public class LoginActivity extends Activity {
 	@Override
 	protected UserDetails doInBackground(Object... arg0) {
 	    UserDetails userDetails = null;
-	    try {
-		Gson gson = new Gson();
-		TwoReturnValues<Integer, String> authenticateData = HttpUtils
-			.authenticate(ToponimoApplication.getApp()
-				.getHttpClient(), username, password, "true",
-				ApiKeys.LOGIN_URL);
 
-		int httpCode = authenticateData.getFirstVal();
-		String jsonData = authenticateData.getSecondVal();
+	    Gson gson = new Gson();
+	    TwoReturnValues<Integer, String> authenticateData = HttpUtils
+		    .authenticate(ToponimoApplication.getApp().getHttpClient(),
+			    username, password, "true", ApiKeys.LOGIN_URL);
 
-		if (httpCode == HttpStatus.SC_OK) {
+	    String jsonData = authenticateData.getSecondVal();
+	    userDetails = gson.fromJson(jsonData, UserDetails.class);
+	    // Log.i("Firstname", userDetails.getFirstName().toString());
+	    // Log.i("Lastname", userDetails.getLastName().toString());
+	    // Log.i("ID", userDetails.getUserId().toString());
+	    // Log.i("HTTP CODE", Integer.toString(userDetails.getStatus()));
 
-		    userDetails = gson.fromJson(jsonData, UserDetails.class);
-		    Log.i("Firstname", userDetails.getFirstName().toString());
-		    Log.i("Lastname", userDetails.getLastName().toString());
-		    Log.i("ID", userDetails.getUserId().toString());
-		    application.setUserDetails(userDetails);
+	    int httpCode = authenticateData.getFirstVal();
 
-		    // Write user details to shared preferences file
-		    SharedPreferences userDetailsPrefs = getSharedPreferences(
-			    Constants.USER_DETAILS_PREFS, 0);
-		    SharedPreferences.Editor editor = userDetailsPrefs.edit();
-		    editor.putBoolean(Constants.IS_LOGGED_IN, true);
-		    editor.putString(Constants.FIRST_NAME,
-			    userDetails.getFirstName());
-		    editor.putString(Constants.LAST_NAME,
-			    userDetails.getLastName());
-		    editor.putString(Constants.USER_ID, userDetails.getUserId());
+	    if (httpCode == HttpStatus.SC_OK) {
+		application.setUserDetails(userDetails);
 
-		    editor.commit();
+		// Write user details to shared preferences file
+		SharedPreferences userDetailsPrefs = getSharedPreferences(
+			Constants.USER_DETAILS_PREFS, 0);
+		SharedPreferences.Editor editor = userDetailsPrefs.edit();
+		editor.putBoolean(Constants.IS_LOGGED_IN, true);
+		editor.putString(Constants.FIRST_NAME,
+			userDetails.getFirstName());
+		editor.putString(Constants.LAST_NAME, userDetails.getLastName());
+		editor.putString(Constants.USER_ID, userDetails.getUserId());
 
-		} else {
-		    String errorMessage = HttpUtils
-			    .GetHttpStatusMessage(httpCode);
-		    Log.d(TAG, "Error, server responded with the code: "
-			    + errorMessage);
-		}
+		editor.commit();
 
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    } finally {
+	    } else {
+		String errorMessage = HttpUtils.GetHttpStatusMessage(httpCode);
+		Log.d(TAG, "Error, server responded with the code: "
+			+ errorMessage);
 	    }
 
 	    return userDetails;
@@ -244,10 +240,10 @@ public class LoginActivity extends Activity {
 	}
 
 	@Override
-	protected void onPostExecute(UserDetails result) {
-	    super.onPostExecute(result);
+	protected void onPostExecute(UserDetails userDetails) {
+	    super.onPostExecute(userDetails);
 	    dialog.dismiss();
-	    startPlaceListActivity(result);
+	    startPlaceListActivity(userDetails);
 	}
     }
 }

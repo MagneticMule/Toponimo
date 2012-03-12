@@ -11,5 +11,6 @@
     <string name="login_activity_logo_description">Toponimo logo</string>
     <string name="login_activity_password_et">password</string>
     <string name="login_activity_facebook_description">Login via Facebook</string>
+    <string name="no_connection_message">No connection to internet</string>
 
 </resources>

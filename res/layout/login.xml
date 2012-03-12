@@ -4,19 +4,18 @@
     android:layout_height="fill_parent"
     android:layout_gravity="center"
     android:background="@drawable/blue_to_blue_grad"
-    android:gravity="bottom"
-    android:orientation="vertical"
-    xmlns="http://schemas.android.com/apk/res/android" >
+    android:gravity="top"
+    android:isScrollContainer="true"
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/login_activity_logo_iv"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dip"
-        android:layout_marginTop="20dip"
         android:contentDescription="@string/login_activity_logo_description"
+        android:isScrollContainer="true"
         android:paddingBottom="50dip"
-        android:paddingTop="50dip"
+        android:paddingTop="70dip"
         android:src="@drawable/toponimo_ident_360" />
 
     <EditText
@@ -27,6 +26,7 @@
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
         android:hint="@string/login_activity_username_et"
+        android:isScrollContainer="true"
         android:singleLine="true" >
     </EditText>
 
@@ -38,15 +38,17 @@
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
         android:hint="@string/login_activity_password_et"
-        android:inputType="textPassword" >
+        android:inputType="textPassword"
+        android:isScrollContainer="true" >
     </EditText>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:isScrollContainer="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dip"
+        android:paddingBottom="20dip"
         android:paddingLeft="20dip"
         android:paddingRight="20dip"
         android:paddingTop="10dip" >
@@ -54,23 +56,24 @@
         <Button
             android:id="@+id/login_activity_signin_btn"
             style="@style/ButtonText"
-            android:layout_width="fill_parent"
-            android:layout_height="40dip"
+            android:layout_width="0dip"
+            android:layout_height="50dip"
             android:layout_weight="1"
             android:background="@drawable/green_button"
-            android:text="@string/signin" >
-        </Button>
-
-        <Button
-            android:id="@+id/login_activity_signup_btn"
-            style="@style/ButtonText"
-            android:layout_width="fill_parent"
-            android:layout_height="40dip"
-            android:layout_weight="1"
-            android:background="@drawable/blue_button"
-            android:text="@string/login_activity_signup_btn" >
+            android:text="@string/signin"
+            android:textSize="16sp" >
         </Button>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/login_activity_forgot_password_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingBottom="40dip"
+        android:text="Forgot your Password?"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
     <ImageView
         android:id="@+id/login_activity_facebook_img"
@@ -79,13 +82,7 @@
         android:layout_gravity="center"
         android:clickable="true"
         android:contentDescription="@string/login_activity_facebook_description"
-        android:paddingTop="20dip"
         android:src="@drawable/facebookloginbutton" >
     </ImageView>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="3" />
 
 </LinearLayout>

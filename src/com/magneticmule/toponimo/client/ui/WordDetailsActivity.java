@@ -38,10 +38,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.magneticmule.toponimo.client.ApiKeys;
 import com.magneticmule.toponimo.client.Constants;
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
+import com.magneticmule.toponimo.client.structures.definitionstructure.WordDefinition;
+import com.magneticmule.toponimo.client.structures.placestructure.Place;
 import com.magneticmule.toponimo.client.ui.adapters.WordGalleryAdapter;
 import com.magneticmule.toponimo.client.utils.BitmapUtils;
 import com.magneticmule.toponimo.client.utils.http.HttpUtils;
@@ -55,9 +58,11 @@ public class WordDetailsActivity extends Activity implements
     private ToponimoApplication application;
     private static WordDetailsActivity mainActivity;
     private TextToSpeech tts;
-    private String word;
-    private String definition;
+    private String word = null;
+    private String definition = null;
+    private String gloss = null;
     protected TextView definitionTextView;
+    protected TextView glossTextView;
     private Uri imageOutputURI = null;
 
     private Animation fadein;
@@ -65,8 +70,6 @@ public class WordDetailsActivity extends Activity implements
 
     private Gallery gallery;
     private WordGalleryAdapter galleryAdapter;
-
-    // private List<Pair> images = new ArrayList<Pair>();
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -118,9 +121,10 @@ public class WordDetailsActivity extends Activity implements
 		// Display alert dialog asking to install TTS data
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 			WordDetailsActivity.this);
-		builder.setMessage("Google Text to Speech needs to be installed. Install it?");
-		builder.setPositiveButton("Yes", clickListener);
-		builder.setNegativeButton("No", clickListener);
+		builder.setMessage("Google Text to Speech data needs to be installed "
+			+ "before you can hear pronounciations of words");
+		builder.setPositiveButton("Install", clickListener);
+		builder.setNegativeButton("Skip", clickListener);
 		builder.show();
 
 	    }
@@ -142,6 +146,7 @@ public class WordDetailsActivity extends Activity implements
 	fadein = AnimationUtils.loadAnimation(this, R.anim.fadein);
 
 	definitionTextView = (TextView) findViewById(R.id.word_details_definition);
+	glossTextView = (TextView) findViewById(R.id.word_details_gloss);
 
 	ttsCheck();
 	Intent sender = getIntent();
@@ -213,8 +218,8 @@ public class WordDetailsActivity extends Activity implements
 		String currentLocationID = application.getPlaceResults(
 			application.getCurrentPlaceIndex()).getId();
 
-		addWordToBank(word, definition, currentLocation, currentLat,
-			currentLng, currentLocationID);
+		addWordToBank(word, definition, gloss, currentLocation,
+			currentLat, currentLng, currentLocationID);
 		Toast t = Toast.makeText(WordDetailsActivity.this, "Added '"
 			+ word + "' to Word Store", Toast.LENGTH_SHORT);
 		t.show();
@@ -311,17 +316,19 @@ public class WordDetailsActivity extends Activity implements
      * @param lng
      * @param locationID
      */
-    private void addWordToBank(String word, String definition,
+    private void addWordToBank(String word, String definition, String gloss,
 	    String locationName, Double lat, Double lng, String locationID) {
 	Uri uri = Constants.WORDS_URI;
 	ContentValues cv = new ContentValues();
 	cv.put(Constants.KEY_WORD, word);
 	cv.put(Constants.KEY_WORD_DEFINITION, definition);
+	cv.put(Constants.KEY_WORD_GLOSS, gloss);
 	cv.put(Constants.KEY_WORD_LOCATION, locationName);
 	cv.put(Constants.KEY_WORD_LOCATION_LAT, lat);
 	cv.put(Constants.KEY_WORD_LOCATION_LNG, lng);
 	cv.put(Constants.KEY_WORD_LOCATION_ID, locationID);
 	Uri newWord = getContentResolver().insert(uri, cv);
+
     }
 
     /*
@@ -329,36 +336,70 @@ public class WordDetailsActivity extends Activity implements
      */
     private class DownloadDefinition extends AsyncTask {
 
-	String definition = "";
+	WordDefinition wordDefinitions = null;
+
+	Place place = null;
+
+	// try {
+	// Gson gson = new Gson();
+	// String jsonData = HttpUtils.getJSONData(ToponimoApplication
+	// .getApp().getHttpClient(), urlString);
+	//
+	// if (jsonData != null) {
+	// place = gson.fromJson(jsonData, Place.class);
+	// placenameList.clear();
+	// for (Results p : place.getResults()) {
+	// placenameList.add(place);
+	// }
+	// mainActivity.application.setPlaceResults(placenameList);
+	// }
 
 	@Override
 	protected String doInBackground(Object... params) {
+
+	    String urlString = (ApiKeys.DEFINITION_URL + word);
+
 	    try {
-		String completeUrl = (ApiKeys.DEFINITION_URL + word);
+		Gson gson = new Gson();
 		Log.d("Word", word);
-		definition = HttpUtils.getJSONData(ToponimoApplication.getApp()
-			.getHttpClient(), completeUrl);
-		Log.i("Definition", definition);
+		String jsonData = HttpUtils.getJSONData(ToponimoApplication
+			.getApp().getHttpClient(), urlString);
+		if (jsonData != null) {
+		    wordDefinitions = gson.fromJson(jsonData,
+			    WordDefinition.class);
+		}
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    } finally {
 	    }
 
-	    return definition;
+	    return null;
 
 	}
 
 	@Override
 	protected void onPostExecute(Object result) {
-	    mainActivity.definitionTextView.setText(definition);
+	    if (wordDefinitions.getTotal() > 0) {
+		String definition = wordDefinitions.getSynset().get(0)
+			.getDefinitions().toString();
+		if (definition == null)
+		    definition = "No definition found";
+		mainActivity.definitionTextView.setText(definition);
+		mainActivity.definition = definition;
+
+		String gloss = wordDefinitions.getSynset().get(0).getSample();
+		if (gloss == null)
+		    gloss = " ";
+		mainActivity.glossTextView.setText(gloss);
+		mainActivity.gloss = gloss;
+	    } else {
+		mainActivity.definitionTextView
+			.setText("No definition found for " + word);
+	    }
 	    mainActivity.definitionTextView.startAnimation(fadein);
-	    mainActivity.definition = definition;
+	    // mainActivity.definition = definition;
 	    super.onPostExecute(definition);
 	}
-
-    }
-
-    public void onInit(int arg0) {
 
     }
 
@@ -436,6 +477,11 @@ public class WordDetailsActivity extends Activity implements
 	public void setThumbImagePath(String thumbImagePath) {
 	    this.thumbImagePath = thumbImagePath;
 	}
+
+    }
+
+    public void onInit(int arg0) {
+	// TODO Auto-generated method stub
 
     }
 

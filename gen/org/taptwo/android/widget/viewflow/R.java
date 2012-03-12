@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.facebook.android;
+package org.taptwo.android.widget.viewflow;
 
 public final class R {
     public static final class anim {

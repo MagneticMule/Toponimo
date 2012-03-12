@@ -6,16 +6,37 @@
     android:background="@color/background_gray"
     android:orientation="vertical" >
 
-    <include
-        android:id="@+id/id_bar_place_list"
-        android:layout_height="32dp"
-        android:layout_gravity="center_horizontal"
-        layout="@layout/inc_action_bar" />
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/title_grad"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/word_details_word_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dip"
+            android:text="About This Place"
+            android:textColor="#4f4f4f"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dip"
-        android:background="@drawable/divider_grad" />
+        android:background="#dedede" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="8dip"
+        android:background="@drawable/shadow_grad" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -35,7 +56,7 @@
             android:singleLine="true"
             android:text="The Spire Cafe"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -55,25 +76,59 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/place_details_place_address"
-            android:layout_marginTop="1dip"
+            android:layout_marginTop="4dip"
             android:ellipsize="marquee"
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:text="0.1 miles away"
-            android:textColor="@color/darker_gray"
-            android:textSize="12sp" />
-
-        <CheckBox
-            android:id="@+id/CheckBox1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/place_details_place_distance"
-            android:text="Highlight"
-            android:textColor="#000000" >
-        </CheckBox>
+            android:textColor="@color/brown_green_light"
+            android:textSize="12sp"
+            android:textStyle="bold" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@drawable/divider_grad" />
+
+    <LinearLayout
+        android:id="@+id/place_details_words_buttons_linearlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/place_details_words_label"
+        android:gravity="center_horizontal"
+        android:paddingBottom="5dip"
+        android:paddingLeft="0dip"
+        android:paddingRight="0dip"
+        android:paddingTop="5dip" >
+
+        <Button
+            android:id="@+id/button1"
+            style="@style/ButtonTextGrey"
+            android:layout_width="110dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dip"
+            android:background="@drawable/grey_button_left"
+            android:text="ALL" />
+
+        <Button
+            android:id="@+id/button2"
+            style="@style/ButtonTextGrey"
+            android:layout_width="110dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dip"
+            android:background="@drawable/grey_button_center"
+            android:text="USER" />
+
+        <Button
+            android:id="@+id/button3"
+            style="@style/ButtonTextGrey"
+            android:layout_width="110dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dip"
+            android:background="@drawable/grey_button_right"
+            android:text="DICTIONARY" />
+    </LinearLayout>
 
     <View
         android:layout_width="fill_parent"

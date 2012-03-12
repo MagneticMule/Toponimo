@@ -16,7 +16,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dip"
             android:paddingLeft="10dip"
-            android:text="Nearby Places"
+            android:text="Timeline"
             android:textColor="#4f4f4f"
             android:textSize="22sp" >
         </TextView>

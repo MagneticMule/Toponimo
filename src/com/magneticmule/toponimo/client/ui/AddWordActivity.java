@@ -96,9 +96,10 @@ public class AddWordActivity extends Activity {
 
 	if (!words.equalsIgnoreCase("")) {
 	    if (words.contains("*")) {
-		confirmMessage = "Taboo language is not allowed";
+		confirmMessage = "Oops!!! Those kind of words ";
+
 	    } else {
-		confirmMessage = "Added '" + words + "' to Place";
+		confirmMessage = "Added '" + words + "' to '" + placeName;
 		application.getPlaceResults(application.getCurrentPlaceIndex())
 			.addWord(words);
 		Intent i = new Intent();

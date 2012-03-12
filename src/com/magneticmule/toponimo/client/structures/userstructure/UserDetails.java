@@ -18,24 +18,24 @@ public class UserDetails {
 	return firstName;
     }
 
-    public void setFirstName(String firstName) {
-	this.firstName = firstName;
+    public void setFirstName(String _firstName) {
+	this.firstName = _firstName;
     }
 
     public String getLastName() {
 	return lastName;
     }
 
-    public void setLastName(String lastName) {
-	this.lastName = lastName;
+    public void setLastName(String _lastName) {
+	this.lastName = _lastName;
     }
 
     public String getUserId() {
 	return userId;
     }
 
-    public void setUserId(String userId) {
-	this.userId = userId;
+    public void setUserId(String _userId) {
+	this.userId = _userId;
     }
 
 }

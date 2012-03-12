@@ -45,7 +45,6 @@ public class LoginCheckActivity extends Activity {
 
 	} else { // Start the Login activity
 	    Intent i = new Intent(LoginCheckActivity.this, LoginActivity.class);
-	    i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 	    startActivity(i);
 	}
     }

@@ -1,5 +1,6 @@
 package com.magneticmule.toponimo.client.ui;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,9 +32,13 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
+import com.google.gson.Gson;
 import com.magneticmule.toponimo.client.R;
 import com.magneticmule.toponimo.client.ToponimoApplication;
+import com.magneticmule.toponimo.client.structures.wordstructure.Dictionarywords;
+import com.magneticmule.toponimo.client.structures.wordstructure.Word;
 import com.magneticmule.toponimo.client.ui.adapters.WordListAdapter;
+import com.magneticmule.toponimo.client.utils.http.HttpUtils;
 import com.magneticmule.toponimo.client.utils.location.DistanceCalculator;
 import com.magneticmule.toponimo.client.utils.maps.CustomOverlay;
 
@@ -43,7 +49,7 @@ public class PlaceDetailsActivity extends MapActivity {
     private int currentPlaceIndex;
     private String placeName;
     private String placeAddress;
-    private String extraData = "";
+    private final String extraData = "";
     private String currentPosLat;
     private String currentPosLng;
     private Double targetPosLat;
@@ -59,6 +65,9 @@ public class PlaceDetailsActivity extends MapActivity {
     private View mapViewClickReciever;
     private MapController mapController;
     private GeoPoint targetLocation;
+    private ArrayList<String> wordList;
+
+    private static PlaceDetailsActivity mainActivity;
 
     private LayoutInflater inflater;
 
@@ -83,8 +92,13 @@ public class PlaceDetailsActivity extends MapActivity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.homegrid);
 
+	mainActivity = this;
+
 	Intent sender = getIntent();
 	application = (ToponimoApplication) getApplication();
+	wordList = new ArrayList<String>();
+	wordList.addAll(application.getPlaceResults(
+		application.getCurrentPlaceIndex()).getWords());
 
 	placeName = application.getPlaceResults(
 		application.getCurrentPlaceIndex()).getName();
@@ -110,6 +124,7 @@ public class PlaceDetailsActivity extends MapActivity {
 		Context.LAYOUT_INFLATER_SERVICE);
 
 	initMap();
+	(new GetWords()).execute((Object) null);
 
 	// inflate the second listview header and attach the add word button
 	headerViewWordButton = (LinearLayout) inflater.inflate(
@@ -268,6 +283,67 @@ public class PlaceDetailsActivity extends MapActivity {
     @Override
     protected boolean isRouteDisplayed() {
 	return false;
+    }
+
+    @SuppressWarnings("rawtypes")
+    private class GetWords extends AsyncTask {
+
+	@Override
+	protected void onPreExecute() {
+	    super.onPreExecute();
+	}
+
+	@Override
+	protected Object doInBackground(Object... arg0) {
+	    String currentPlaceId = application.getPlaceResults(
+		    application.getCurrentPlaceIndex()).getId();
+	    String urlString = "http://www.toponimo.org/toponimo/api/words?pid="
+		    + currentPlaceId;
+	    Log.w("URLString", urlString);
+	    Word word = null;
+	    try {
+		Gson gson = new Gson();
+		String jsonData = HttpUtils.getJSONData(ToponimoApplication
+			.getApp().getHttpClient(), urlString);
+
+		if (jsonData != null) {
+		    word = gson.fromJson(jsonData, Word.class);
+
+		    for (Dictionarywords w : word.getDictionarywords()) {
+
+			wordList.add(w.getWord());
+			Log.w("Word", w.getWord());
+		    }
+		    application
+			    .getPlaceResults(application.getCurrentPlaceIndex())
+			    .getWords().addAll(wordList);
+
+		}
+
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    } finally {
+	    }
+	    return null;
+	}
+
+	@Override
+	protected void onPostExecute(Object result) {
+	    super.onPostExecute(result);
+	    mainActivity.wordListArrayAdapter.notifyDataSetChanged();
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
+	 */
+	@Override
+	protected void onProgressUpdate(Object... values) {
+	    super.onProgressUpdate(values);
+	}
+
     }
 
 }

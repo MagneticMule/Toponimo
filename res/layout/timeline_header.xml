@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#3f3f3f"
+    android:gravity="center"
+    android:paddingBottom="10dip"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip"
+    android:paddingTop="10dip" >
+
+    <TextView
+        android:id="@+id/label_user_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/image_profile"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="Thomas Sweeney"
+        android:textColor="@color/light_gray"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/label_user_word_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_user_name"
+        android:layout_marginTop="4dip"
+        android:layout_toRightOf="@+id/image_profile"
+        android:singleLine="true"
+        android:text="12 Words"
+        android:textColor="@color/light_gray"
+        android:textSize="12sp" />
+
+</RelativeLayout>
