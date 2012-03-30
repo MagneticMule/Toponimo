@@ -22,8 +22,8 @@ import android.widget.ImageView;
 import android.widget.ViewSwitcher.ViewFactory;
 
 import com.magneticmule.toponimo.client.R;
-import com.magneticmule.toponimo.client.SimpleGestureFilter;
-import com.magneticmule.toponimo.client.SimpleGestureFilter.SimpleGestureListener;
+import com.magneticmule.toponimo.client.utils.SimpleGestureFilter;
+import com.magneticmule.toponimo.client.utils.SimpleGestureFilter.SimpleGestureListener;
 
 public class ImageViewActivity extends Activity implements
 	SimpleGestureListener, ViewFactory {

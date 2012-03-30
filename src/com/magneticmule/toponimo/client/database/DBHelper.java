@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DbHelper";
 
-    Context context;
+    private Context mContext;
 
     public DBHelper(Context _context, String _name, CursorFactory _factory,
 	    int _version) {

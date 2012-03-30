@@ -38,26 +38,34 @@ public class Constants {
     // local cache of pictures
     public static final String DATABASE_TABLE_MY_PICTURES = "myPicturesTable";
 
-    public static final int DATABASE_VERSION = 16;
+    public static final int DATABASE_VERSION = 24;
 
     // key used for where clauses
     public static final String KEY_ROW_ID = "_id";
 
     // Key and column pairs for the MY_WORDS table
     public static final String KEY_WORD = "word";
-    public static final int KEY_WORD_COLUMN = 1;
+
     public static final String KEY_WORD_LOCATION = "location";
-    public static final int KEY_WORD_LOCATION_COLUMN = 2;
+
     public static final String KEY_WORD_DEFINITION = "definition";
-    public static final int KEY_WORD_DEFINITION_COLUMN = 3;
+
     public static final String KEY_WORD_GLOSS = "gloss";
-    public static final int KEY_WORD_GLOSS_COLUMN = 4;
+
+    public static final String KEY_WORD_TYPE = "type";
+
     public static final String KEY_WORD_LOCATION_LAT = "lat";
-    public static final int KEY_WORD_LOCATION_LAT_COLUMN = 5;
+
     public static final String KEY_WORD_LOCATION_LNG = "lng";
-    public static final int KEY_WORD_LOCATION_LNG_COLUMN = 6;
+
     public static final String KEY_WORD_LOCATION_ID = "locationid";
-    public static final int KEY_WORD_LOCATION_ID_COLUMN = 7;
+
+    public static final String KEY_WORD_TIME = "time";
+
+    public static final String KEY_WORD_ADDITION_TYPE = "addtype";
+
+    public static final int WORD_ADDITION_TYPE_COLLECT = 0;
+    public static final int WORD_ADDITION_TYPE_ADD = 1;
 
     // SQL query to construct words table
     public static final String CREATE_TABLE_MY_WORDS = "CREATE TABLE IF NOT EXISTS "
@@ -73,12 +81,18 @@ public class Constants {
 	    + " text not null, "
 	    + KEY_WORD_GLOSS
 	    + " text, "
+	    + KEY_WORD_TYPE
+	    + " text, "
 	    + KEY_WORD_LOCATION_LAT
 	    + " real not null, "
 	    + KEY_WORD_LOCATION_LNG
 	    + " real not null, "
 	    + KEY_WORD_LOCATION_ID
-	    + " text not null)";
+	    + " text not null, "
+	    + KEY_WORD_TIME
+	    + " integer not null, "
+	    + KEY_WORD_ADDITION_TYPE
+	    + " integer not null)";
 
     /**
      * Definitions for local SQL database to store visited places

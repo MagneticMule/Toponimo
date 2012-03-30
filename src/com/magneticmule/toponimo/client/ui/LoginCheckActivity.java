@@ -35,7 +35,7 @@ public class LoginCheckActivity extends Activity {
 		application.setUserDetails(userDetails);
 
 		Intent i = new Intent(LoginCheckActivity.this,
-			PlaceListActivity.class);
+			WordBankActivity.class);
 
 		Log.v("Firstname", userDetails.getFirstName());
 		Log.v("Lastname", userDetails.getLastName());

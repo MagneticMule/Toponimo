@@ -1,4 +1,4 @@
-package com.magneticmule.toponimo.client;
+package com.magneticmule.toponimo.client.utils;
 
 import android.app.Activity;
 import android.view.GestureDetector;

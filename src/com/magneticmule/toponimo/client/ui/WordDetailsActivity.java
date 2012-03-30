@@ -61,8 +61,11 @@ public class WordDetailsActivity extends Activity implements
     private String word = null;
     private String definition = null;
     private String gloss = null;
+    private String lexType = null;
+    private final String synsetNo = null;
     protected TextView definitionTextView;
     protected TextView glossTextView;
+    protected TextView lexTypeTextView;
     private Uri imageOutputURI = null;
 
     private Animation fadein;
@@ -147,6 +150,7 @@ public class WordDetailsActivity extends Activity implements
 
 	definitionTextView = (TextView) findViewById(R.id.word_details_definition);
 	glossTextView = (TextView) findViewById(R.id.word_details_gloss);
+	lexTypeTextView = (TextView) findViewById(R.id.label_type);
 
 	ttsCheck();
 	Intent sender = getIntent();
@@ -219,10 +223,13 @@ public class WordDetailsActivity extends Activity implements
 			application.getCurrentPlaceIndex()).getId();
 
 		addWordToBank(word, definition, gloss, currentLocation,
-			currentLat, currentLng, currentLocationID);
+			lexType, currentLat, currentLng, currentLocationID);
 		Toast t = Toast.makeText(WordDetailsActivity.this, "Added '"
-			+ word + "' to Word Store", Toast.LENGTH_SHORT);
+			+ word + "' to Timeline", Toast.LENGTH_SHORT);
 		t.show();
+		Intent i = new Intent(WordDetailsActivity.this,
+			WordBankActivity.class);
+		startActivity(i);
 	    }
 	});
     }
@@ -317,16 +324,22 @@ public class WordDetailsActivity extends Activity implements
      * @param locationID
      */
     private void addWordToBank(String word, String definition, String gloss,
-	    String locationName, Double lat, Double lng, String locationID) {
+	    String locationName, String type, Double lat, Double lng,
+	    String locationID) {
+
 	Uri uri = Constants.WORDS_URI;
 	ContentValues cv = new ContentValues();
 	cv.put(Constants.KEY_WORD, word);
 	cv.put(Constants.KEY_WORD_DEFINITION, definition);
 	cv.put(Constants.KEY_WORD_GLOSS, gloss);
 	cv.put(Constants.KEY_WORD_LOCATION, locationName);
+	cv.put(Constants.KEY_WORD_TYPE, type);
 	cv.put(Constants.KEY_WORD_LOCATION_LAT, lat);
 	cv.put(Constants.KEY_WORD_LOCATION_LNG, lng);
 	cv.put(Constants.KEY_WORD_LOCATION_ID, locationID);
+	cv.put(Constants.KEY_WORD_TIME, System.currentTimeMillis());
+	cv.put(Constants.KEY_WORD_ADDITION_TYPE,
+		Constants.WORD_ADDITION_TYPE_COLLECT);
 	Uri newWord = getContentResolver().insert(uri, cv);
 
     }
@@ -379,26 +392,38 @@ public class WordDetailsActivity extends Activity implements
 
 	@Override
 	protected void onPostExecute(Object result) {
-	    if (wordDefinitions.getTotal() > 0) {
-		String definition = wordDefinitions.getSynset().get(0)
-			.getDefinitions().toString();
-		if (definition == null)
-		    definition = "No definition found";
-		mainActivity.definitionTextView.setText(definition);
-		mainActivity.definition = definition;
+	    try {
+		if (wordDefinitions.getTotal() > 0) {
+		    String definition = wordDefinitions.getSynset().get(0)
+			    .getDefinitions();
+		    if (definition == null)
+			definition = "No definition found";
+		    mainActivity.definitionTextView.setText(definition);
+		    mainActivity.definition = definition;
 
-		String gloss = wordDefinitions.getSynset().get(0).getSample();
-		if (gloss == null)
-		    gloss = " ";
-		mainActivity.glossTextView.setText(gloss);
-		mainActivity.gloss = gloss;
-	    } else {
-		mainActivity.definitionTextView
-			.setText("No definition found for " + word);
+		    String gloss = wordDefinitions.getSynset().get(0)
+			    .getSample();
+		    if (gloss == null)
+			gloss = " ";
+		    mainActivity.glossTextView.setText(gloss);
+		    mainActivity.gloss = gloss;
+
+		    String lexType = wordDefinitions.getSynset().get(0)
+			    .getLex();
+		    if (lexType == null)
+			lexType = " ";
+		    // mainActivity.lexTypeTextView.setText(lexType);
+		    mainActivity.lexType = lexType;
+		} else {
+		    mainActivity.definitionTextView
+			    .setText("No definition found for " + word);
+		}
+		mainActivity.definitionTextView.startAnimation(fadein);
+		// mainActivity.definition = definition;
+		super.onPostExecute(definition);
+	    } catch (NullPointerException npe) {
+
 	    }
-	    mainActivity.definitionTextView.startAnimation(fadein);
-	    // mainActivity.definition = definition;
-	    super.onPostExecute(definition);
 	}
 
     }

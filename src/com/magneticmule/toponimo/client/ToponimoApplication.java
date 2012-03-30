@@ -86,7 +86,17 @@ public class ToponimoApplication extends Application {
     }
 
     public UserDetails getUserDetails() {
-	return userDetails;
+	if (this.userDetails == null) {
+	    this.userDetails = new UserDetails();
+	    userDetails.setUserId(userDetailsPrefs.getString(Constants.USER_ID,
+		    null));
+	    userDetails.setFirstName(userDetailsPrefs.getString(
+		    Constants.FIRST_NAME, null));
+	    userDetails.setLastName(userDetailsPrefs.getString(
+		    Constants.LAST_NAME, null));
+	}
+
+	return this.userDetails;
     }
 
     public void setUserDetails(UserDetails userDetails) {

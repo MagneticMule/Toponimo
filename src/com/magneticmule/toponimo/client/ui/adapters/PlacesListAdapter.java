@@ -3,7 +3,6 @@ package com.magneticmule.toponimo.client.ui.adapters;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import com.magneticmule.toponimo.client.structures.placestructure.Place;
 public class PlacesListAdapter extends ArrayAdapter<Place> {
 
     private static List<Place> objects;
-    private Context context;
+    private final Context context;
 
     public PlacesListAdapter(Context _context, int textViewResourceId,
 	    List<Place> _objects) {
@@ -43,11 +42,11 @@ public class PlacesListAdapter extends ArrayAdapter<Place> {
 		tvName.setText(place.getResults().get(position).getName());
 	    }
 
-	    TextView tvAddress = (TextView) view
+	    TextView addressTextView = (TextView) view
 		    .findViewById(R.id.label_address);
-	    tvAddress.setText(place.getResults().get(position).getVicinity());
 
-	    Log.i("PlistAdapter", place.getResults().get(position).getName());
+	    addressTextView.setText(place.getResults().get(position)
+		    .getVicinity());
 
 	    int last = place.getResults().get(position).getTypes().size();
 

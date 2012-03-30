@@ -19,55 +19,61 @@ public class WordGalleryAdapter extends ArrayAdapter<String> {
 
     public static final String TAG = "WordGalleryAdapter";
 
-    private Context context;
+    private final Context mContext;
 
-    private static ArrayList<String> imagePaths;
+    private static ArrayList<String> mImagePathsList;
 
-    int galleryBackground;
+    int mGalleryBackground;
 
+    /**
+     * Constructor: assigns passed values to member variables
+     * 
+     * @param _context
+     * @param _list
+     */
     public WordGalleryAdapter(Context _context, ArrayList<String> _list) {
 	super(_context, 0);
-	context = _context;
-	imagePaths = _list;
-	TypedArray attributes = context
+	mContext = _context;
+	mImagePathsList = _list;
+	TypedArray attributes = mContext
 		.obtainStyledAttributes(R.styleable.WordImageGallery);
-	galleryBackground = attributes.getResourceId(
+	mGalleryBackground = attributes.getResourceId(
 		R.styleable.WordImageGallery_android_galleryItemBackground, 0);
 
     }
 
+    /*
+     * Returns the size of the list containing the paths to the images
+     * (non-Javadoc)
+     * 
+     * @see android.widget.ArrayAdapter#getCount()
+     */
     @Override
     public int getCount() {
-
-	return imagePaths != null ? imagePaths.size() : 0;
+	return mImagePathsList != null ? mImagePathsList.size() : 0;
     }
 
-    public String getItem(String position) {
-
-	return position;
-    }
-
-    @Override
-    public long getItemId(int position) {
-
-	return position;
-    }
-
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.widget.ArrayAdapter#getView(int, android.view.View,
+     * android.view.ViewGroup)
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-	ImageView imageView = new ImageView(context);
-	if (!imagePaths.isEmpty()) {
-	    Bitmap bitmap = BitmapFactory.decodeFile(imagePaths.get(position));
+	ImageView imageView = new ImageView(mContext);
+	if (!mImagePathsList.isEmpty()) {
+	    Bitmap bitmap = BitmapFactory.decodeFile(mImagePathsList
+		    .get(position));
 	    imageView.setImageBitmap(bitmap);
 	    imageView.setLayoutParams(new Gallery.LayoutParams(85, 85));
 	    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-	    // imageView.setBackgroundColor(galleryBackground);
 	    imageView.setBackgroundResource(R.drawable.drop_shadow_patch);
 	    imageView.setPadding(6, 6, 6, 6);
-	    imageView.setAnimation(AnimationUtils.loadAnimation(context,
+	    imageView.setAnimation(AnimationUtils.loadAnimation(mContext,
 		    android.R.anim.fade_in));
 
 	}
-	return imageView;
+	return (imageView);
     }
 }

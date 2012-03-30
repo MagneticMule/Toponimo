@@ -24,21 +24,4 @@
         android:headerDividersEnabled="true"
         android:scrollingCache="true" />
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="10dip"
-        android:layout_weight="0.1"
-        android:background="@color/dark_gray"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/places_infor_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nottingham, UK"
-            android:textSize="9dip" >
-        </TextView>
-    </LinearLayout>
-
 </LinearLayout>

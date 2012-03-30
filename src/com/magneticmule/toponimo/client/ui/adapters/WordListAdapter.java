@@ -3,7 +3,6 @@ package com.magneticmule.toponimo.client.ui.adapters;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ public class WordListAdapter extends ArrayAdapter<String> {
     private static final String TAG = "WordListAdapter";
 
     private static List<String> words;
-    private Context context;
+    private final Context context;
 
     public WordListAdapter(Context _context, int textViewResourceId,
 	    List<String> _words) {
@@ -47,7 +46,6 @@ public class WordListAdapter extends ArrayAdapter<String> {
 	}
 
 	String word = words.get(position);
-	Log.d("Position " + word + " " + TAG, Integer.toString(position));
 	if (word != null) {
 	    TextView tv = (TextView) view.findViewById(R.id.word_row_word_view);
 	    if (tv != null) {
@@ -59,7 +57,7 @@ public class WordListAdapter extends ArrayAdapter<String> {
 
     @Override
     public long getItemId(int position) {
-	// TODO Auto-generated method stub
+
 	return super.getItemId(position);
     }
 

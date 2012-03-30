@@ -22,14 +22,14 @@ public class ClientWordsProvider extends ContentProvider {
 
     private static final String TAG = "ClientWordsProvider";
     private static Uri CONTENT_URI = Constants.WORDS_URI;
-    private Context context;
-    ToponimoApplication application;
+    private Context mContext;
+    private ToponimoApplication mApplication;
     // Instantiate custom DBHelper;
-    private DBHelper dbHelper;
-    private static UriMatcher uriMatcher;
+    private DBHelper mDbHelper;
+    private static UriMatcher sUriMatcher;
 
     // words database projection map
-    private static HashMap<String, String> wordsProjectionMap;
+    private static HashMap<String, String> mWordsProjectionMap;
 
     /**
      * Start by getting a reference to the global application context.
@@ -38,11 +38,11 @@ public class ClientWordsProvider extends ContentProvider {
      */
     @Override
     public boolean onCreate() {
-	context = getContext();
-	dbHelper = new DBHelper(context, Constants.DATABASE_NAME, null,
+	mContext = getContext();
+	mDbHelper = new DBHelper(mContext, Constants.DATABASE_NAME, null,
 		Constants.DATABASE_VERSION);
 	try {
-	    SQLiteDatabase db = dbHelper.getWritableDatabase();
+	    SQLiteDatabase db = mDbHelper.getWritableDatabase();
 	} catch (SQLiteException s) {
 	    Log.d(TAG, s.toString());
 	}
@@ -53,29 +53,36 @@ public class ClientWordsProvider extends ContentProvider {
      * Populate the uriMatcher
      */
     static {
-	uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+	sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
 	// Register pattern for multiple words
-	uriMatcher.addURI(Constants.AUTHORITY, "words", Constants.ALL_ROWS);
+	sUriMatcher.addURI(Constants.AUTHORITY, "words", Constants.ALL_ROWS);
 
 	// Register pattern for Single book
-	uriMatcher.addURI(Constants.AUTHORITY, "words/*", Constants.SINGLE_ROW);
+	sUriMatcher
+		.addURI(Constants.AUTHORITY, "words/*", Constants.SINGLE_ROW);
 
-	wordsProjectionMap = new HashMap<String, String>();
-	wordsProjectionMap.put(Constants.KEY_ROW_ID, Constants.KEY_ROW_ID);
-	wordsProjectionMap.put(Constants.KEY_WORD, Constants.KEY_WORD);
-	wordsProjectionMap.put(Constants.KEY_WORD_LOCATION,
+	mWordsProjectionMap = new HashMap<String, String>();
+	mWordsProjectionMap.put(Constants.KEY_ROW_ID, Constants.KEY_ROW_ID);
+	mWordsProjectionMap.put(Constants.KEY_WORD, Constants.KEY_WORD);
+	mWordsProjectionMap.put(Constants.KEY_WORD_LOCATION,
 		Constants.KEY_WORD_LOCATION);
-	wordsProjectionMap.put(Constants.KEY_WORD_DEFINITION,
+	mWordsProjectionMap.put(Constants.KEY_WORD_DEFINITION,
 		Constants.KEY_WORD_DEFINITION);
-	wordsProjectionMap.put(Constants.KEY_WORD_GLOSS,
+	mWordsProjectionMap.put(Constants.KEY_WORD_GLOSS,
 		Constants.KEY_WORD_GLOSS);
-	wordsProjectionMap.put(Constants.KEY_WORD_LOCATION_LAT,
+	mWordsProjectionMap.put(Constants.KEY_WORD_TYPE,
+		Constants.KEY_WORD_TYPE);
+	mWordsProjectionMap.put(Constants.KEY_WORD_LOCATION_LAT,
 		Constants.KEY_WORD_LOCATION_LAT);
-	wordsProjectionMap.put(Constants.KEY_WORD_LOCATION_LNG,
+	mWordsProjectionMap.put(Constants.KEY_WORD_LOCATION_LNG,
 		Constants.KEY_WORD_LOCATION_LNG);
-	wordsProjectionMap.put(Constants.KEY_WORD_LOCATION_ID,
+	mWordsProjectionMap.put(Constants.KEY_WORD_LOCATION_ID,
 		Constants.KEY_WORD_LOCATION_ID);
+	mWordsProjectionMap.put(Constants.KEY_WORD_TIME,
+		Constants.KEY_WORD_TIME);
+	mWordsProjectionMap.put(Constants.KEY_WORD_ADDITION_TYPE,
+		Constants.KEY_WORD_ADDITION_TYPE);
     }
 
     /**
@@ -83,7 +90,7 @@ public class ClientWordsProvider extends ContentProvider {
 	 */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-	SQLiteDatabase db = dbHelper.getWritableDatabase();
+	SQLiteDatabase db = mDbHelper.getWritableDatabase();
 	return 0;
     }
 
@@ -107,7 +114,7 @@ public class ClientWordsProvider extends ContentProvider {
 		    "Failed to add to the Database due to empty Key Word" + uri);
 	}
 
-	SQLiteDatabase db = dbHelper.getWritableDatabase();
+	SQLiteDatabase db = mDbHelper.getWritableDatabase();
 	long rowID = db.insert(Constants.DATABASE_TABLE_MY_WORDS, null,
 		contentValues);
 
@@ -126,23 +133,23 @@ public class ClientWordsProvider extends ContentProvider {
 
 	SQLiteQueryBuilder sqlBuilder = new SQLiteQueryBuilder();
 
-	switch (uriMatcher.match(uri)) {
+	switch (sUriMatcher.match(uri)) {
 	case Constants.SINGLE_ROW:
 	    sqlBuilder.setTables(Constants.DATABASE_TABLE_MY_WORDS);
-	    sqlBuilder.setProjectionMap(wordsProjectionMap);
+	    sqlBuilder.setProjectionMap(mWordsProjectionMap);
 	    sqlBuilder.appendWhere(Constants.KEY_ROW_ID + "="
 		    + uri.getPathSegments().get(1));
 	    break;
 
 	case Constants.ALL_ROWS:
 	    sqlBuilder.setTables(Constants.DATABASE_TABLE_MY_WORDS);
-	    sqlBuilder.setProjectionMap(wordsProjectionMap);
+	    sqlBuilder.setProjectionMap(mWordsProjectionMap);
 	    break;
 
 	default:
 	    throw new IllegalArgumentException(TAG + " : Unknown URI");
 	}
-	SQLiteDatabase db = dbHelper.getWritableDatabase();
+	SQLiteDatabase db = mDbHelper.getWritableDatabase();
 	Cursor cursor = sqlBuilder.query(db, projection, selection,
 		selectionArgs, null, null, sortOrder);
 	cursor.setNotificationUri(getContext().getContentResolver(), uri);
@@ -152,10 +159,10 @@ public class ClientWordsProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection,
 	    String[] selectionArgs) {
-	SQLiteDatabase db = dbHelper.getWritableDatabase();
+	SQLiteDatabase db = mDbHelper.getWritableDatabase();
 	int count;
 
-	switch (uriMatcher.match(uri)) {
+	switch (sUriMatcher.match(uri)) {
 	case Constants.ALL_ROWS:
 	    count = db.update(Constants.DATABASE_TABLE_MY_WORDS, values,
 		    selection, selectionArgs);

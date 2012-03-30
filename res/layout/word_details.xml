@@ -34,7 +34,11 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="10dip"
             android:background="@drawable/red_button"
-            android:text="SPEAK" />
+            android:drawableLeft="@drawable/chat"
+            android:gravity="right"
+            android:text="SPEAK"
+            android:tint="#ffffff"
+            android:width="76dip" />
     </LinearLayout>
 
     <View
@@ -58,11 +62,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
+            <EditText
                 android:id="@+id/word_details_definition"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dip"
+                android:background="@null"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
                 android:minLines="3"
                 android:text="Definition"
                 android:textColor="#565656"
@@ -81,7 +88,7 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
+                android:gravity="left"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -90,22 +97,10 @@
                     android:layout_height="wrap_content"
                     android:padding="10dip"
                     android:paddingBottom="1dip"
-                    android:text="Relevancy"
-                    android:textColor="#335533"
+                    android:text="EDIT"
+                    android:textColor="#999999"
                     android:textSize="12sp"
                     android:textStyle="bold" />
-
-                <RatingBar
-                    android:id="@+id/ratingBar1"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="73dp"
-                    android:layout_height="wrap_content"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:padding="10dip"
-                    android:paddingTop="1dip"
-                    android:rating="2.5"
-                    android:stepSize="0.5" />
             </LinearLayout>
 
             <View
@@ -260,6 +255,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:background="#3f3f3f" >
 
         <Button
@@ -269,7 +265,7 @@
             android:layout_height="48dip"
             android:layout_margin="10dip"
             android:background="@drawable/blue_button"
-            android:text="ADD TO WORD BANK" />
+            android:text="ADD TO TIMELINE" />
     </LinearLayout>
 
 </LinearLayout>

@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:gravity="center" >
+    android:background="#efefef"
+    android:gravity="center"
+    android:padding="10dip" >
 
     <TextView
         android:id="@+id/label_word"

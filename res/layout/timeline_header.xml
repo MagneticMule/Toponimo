@@ -3,11 +3,13 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="#3f3f3f"
-    android:gravity="center"
-    android:paddingBottom="10dip"
-    android:paddingLeft="10dip"
-    android:paddingRight="10dip"
-    android:paddingTop="10dip" >
+    android:gravity="center" >
+
+    <View
+        android:id="@+id/view_top"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@color/white" />
 
     <TextView
         android:id="@+id/label_user_name"
@@ -15,6 +17,9 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/image_profile"
         android:gravity="center_vertical"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip"
         android:singleLine="true"
         android:text="Thomas Sweeney"
         android:textColor="@color/light_gray"
@@ -28,9 +33,19 @@
         android:layout_below="@id/label_user_name"
         android:layout_marginTop="4dip"
         android:layout_toRightOf="@+id/image_profile"
+        android:paddingBottom="10dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
         android:singleLine="true"
         android:text="12 Words"
         android:textColor="@color/light_gray"
         android:textSize="12sp" />
+
+    <View
+        android:id="@+id/view_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@+id/label_user_word_count"
+        android:background="@color/white" />
 
 </RelativeLayout>

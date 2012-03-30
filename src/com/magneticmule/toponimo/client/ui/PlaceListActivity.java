@@ -11,6 +11,9 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,7 +43,7 @@ import com.magneticmule.toponimo.client.utils.http.HttpUtils;
 import com.magneticmule.toponimo.client.utils.location.LocationGeocoder;
 import com.magneticmule.toponimo.client.utils.location.LocationUpdateService;
 
-public class PlaceListActivity extends Activity {
+public class PlaceListActivity extends Activity implements LocationListener {
 
     protected static final String TAG = "ToponimoActivity";
     private ListView placeListView;
@@ -55,9 +59,11 @@ public class PlaceListActivity extends Activity {
 
     private ImageView refreshButton;
     private ImageView wordBankButton;
-    private TextView emptyView;
-
+    private TextView loadingView;
+    private LinearLayout emptyView;
     private LocationReceiver receiver;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     /** Called when the activity is first created. */
     @Override
@@ -65,6 +71,8 @@ public class PlaceListActivity extends Activity {
 	super.onCreate(savedInstanceState);
 	// Inflate view
 	setContentView(R.layout.listitems);
+
+	locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 	// Get instance to application context
 	application = (ToponimoApplication) getApplicationContext();
@@ -76,13 +84,14 @@ public class PlaceListActivity extends Activity {
 		placenameList);
 
 	refreshBar = (ProgressBar) findViewById(R.id.refresh_progress_bar);
-	emptyView = (TextView) findViewById(R.id.emptyView);
+	emptyView = (LinearLayout) findViewById(R.id.empty_view);
+	loadingView = (TextView) findViewById(R.id.loading_view);
 
 	placeListView = (ListView) findViewById(R.id.wordListView);
 
 	placeListView.setAdapter(placeArrayAdapter);
 
-	placeListView.setEmptyView(emptyView);
+	placeListView.setEmptyView(loadingView);
 
 	placeListView.setOnItemClickListener(new OnItemClickListener() {
 	    public void onItemClick(AdapterView<?> a, View v,
@@ -127,6 +136,15 @@ public class PlaceListActivity extends Activity {
 	});
     }
 
+    public void setEmptyView() {
+	placeListView.setEmptyView(emptyView);
+    }
+
+    public void setLoadingView() {
+	loadingView.setText("Loading Places");
+	placeListView.setEmptyView(loadingView);
+    }
+
     @Override
     protected void onRestart() {
 	super.onRestart();
@@ -142,10 +160,12 @@ public class PlaceListActivity extends Activity {
 
     private void checkNetStatusandRefresh() {
 	if (HttpUtils.isOnline(application.getApplicationContext())) {
+	    setLoadingView();
 	    refreshLocation();
 	} else {
 	    Toast.makeText(mainActivity, "No connection to Toponimo server",
 		    Toast.LENGTH_LONG).show();
+	    loadingView.setText("No connection to Toponimo");
 
 	}
     }
@@ -179,8 +199,8 @@ public class PlaceListActivity extends Activity {
 	    super.onPreExecute();
 	    mainActivity.refreshButton.setVisibility(View.GONE);
 	    mainActivity.refreshBar.setVisibility(View.VISIBLE);
-	    if (mainActivity.emptyView.getVisibility() != View.GONE) {
-		mainActivity.emptyView.setText("Loading Places");
+	    if (mainActivity.loadingView.getVisibility() != View.GONE) {
+		mainActivity.loadingView.setText("Loading Places");
 	    }
 	}
 
@@ -188,24 +208,24 @@ public class PlaceListActivity extends Activity {
 	protected Object doInBackground(Object... arg0) {
 	    String urlString = ApiKeys.DOWNLOAD_URL + "lat=" + lat + "&"
 		    + "lng=" + lng;
+	    Log.d(TAG, urlString);
 	    Place place = null;
 	    try {
 		Gson gson = new Gson();
 		String jsonData = HttpUtils.getJSONData(ToponimoApplication
 			.getApp().getHttpClient(), urlString);
+		Log.d(TAG, jsonData);
 
-		if (jsonData != null) {
-		    place = gson.fromJson(jsonData, Place.class);
-		    placenameList.clear();
-		    for (Results p : place.getResults()) {
-			placenameList.add(place);
-		    }
-		    mainActivity.application.setPlaceResults(placenameList);
+		place = gson.fromJson(jsonData, Place.class);
+		placenameList.clear();
+		for (Results p : place.getResults()) {
+		    placenameList.add(place);
 		}
+		mainActivity.application.setPlaceResults(placenameList);
 
 	    } catch (Exception e) {
 		e.printStackTrace();
-	    } finally {
+
 	    }
 	    return place;
 	}
@@ -219,22 +239,19 @@ public class PlaceListActivity extends Activity {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
-	 */
-	@Override
-	protected void onProgressUpdate(Object... values) {
-	    super.onProgressUpdate(values);
-	}
-
     }
 
     @Override
     protected void onPause() {
 	super.onPause();
 	unregisterLocationReceiver();
+    }
+
+    @Override
+    protected void onResume() {
+	locationManager.requestLocationUpdates(
+		LocationManager.NETWORK_PROVIDER, 0, 0, this);
+	super.onResume();
     }
 
     private void unregisterLocationReceiver() {
@@ -283,6 +300,22 @@ public class PlaceListActivity extends Activity {
 		locationDisplayBar.setText("Near " + result);
 	    }
 	}
+
+    }
+
+    public void onLocationChanged(Location arg0) {
+
+    }
+
+    public void onProviderDisabled(String arg0) {
+
+    }
+
+    public void onProviderEnabled(String arg0) {
+
+    }
+
+    public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 
     }
 

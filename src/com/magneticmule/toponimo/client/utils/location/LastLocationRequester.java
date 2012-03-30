@@ -65,10 +65,10 @@ public class LastLocationRequester {
 
 	if ((locationListener != null) && (bestTime > minTime)
 		|| (bestAccuracy > minDistance)) {
-	    String provider = locationManager.getBestProvider(accurateCriteria,
+	    String provider = locationManager.getBestProvider(fastCriteria,
 		    true);
 	    if (provider != null) {
-		locationManager.requestLocationUpdates(provider, 0, 0,
+		locationManager.requestLocationUpdates(provider, 5, 10,
 			oneShotLocationListener, context.getMainLooper());
 	    }
 

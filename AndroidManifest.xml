@@ -61,7 +61,9 @@
         <activity
             android:name=".ui.WordDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".ui.ImageViewActivity"
             android:configChanges="keyboardHidden|orientation"

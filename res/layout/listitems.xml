@@ -35,7 +35,7 @@
         android:scrollingCache="true" />
 
     <TextView
-        android:id="@+id/emptyView"
+        android:id="@+id/loading_view"
         android:layout_width="fill_parent"
         android:layout_height="300dip"
         android:layout_centerHorizontal="true"
@@ -46,6 +46,18 @@
         android:text="Getting Location"
         android:textSize="20sp"
         android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/empty_view"
+        android:layout_width="fill_parent"
+        android:layout_height="300dip"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_weight="0.8"
+        android:gravity="center"
+        android:visibility="gone" >
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/place_list_bottom_location_bar"
