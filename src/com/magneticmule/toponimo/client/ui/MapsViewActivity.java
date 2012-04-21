@@ -57,7 +57,7 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 
     private void createInfoView(int index) {
 	TextView locationName = (TextView) findViewById(R.id.mapview_place_name);
-	TextView locationAddress = (TextView) findViewById(R.id.mapviews_place_address);
+	TextView locationAddress = (TextView) findViewById(R.id.mapview_place_address);
 
 	locationName.setText(application.getPlaceResults(
 		application.getCurrentPlaceIndex()).getName());

@@ -8,30 +8,59 @@
         android:baselineAligned="false"
         android:orientation="horizontal" >
 
+        <Button
+            android:id="@+id/timeline_add_word_button"
+            style="@style/ButtonTextGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/transparent_button_right"
+            android:text="WORD" />
+
+        <Button
+            android:id="@+id/timeline_add_location_button"
+            style="@style/ButtonTextGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/timeline_add_word_button"
+            android:background="@drawable/transparent_button_right"
+            android:text="LOCATION" />
+
         <TextView
             android:id="@+id/title_text"
             style="@style/ButtonTextBlack"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dip"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
             android:paddingLeft="10dip"
             android:text="Timeline"
             android:textColor="#4f4f4f"
-            android:textSize="22sp" >
-        </TextView>
+            android:textSize="22sp" />
 
-        <Button
-            android:id="@+id/timeline_add_button"
-            style="@style/ButtonTextGrey"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignRight="@+id/title_text"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="10dip"
-            android:background="@drawable/red_button"
-            android:text="ADD" />
+        <View
+            android:id="@+id/vertical_bar_1"
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:layout_toLeftOf="@+id/timeline_add_word_button"
+            android:background="@drawable/shadow_grad" />
+
+        <View
+            android:id="@+id/vertical_bar_2"
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:layout_toLeftOf="@+id/timeline_add_location_button"
+            android:background="@drawable/shadow_grad" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/shadow_grad" />
     </RelativeLayout>
 
 </merge>

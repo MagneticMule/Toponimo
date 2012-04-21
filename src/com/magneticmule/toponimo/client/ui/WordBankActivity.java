@@ -29,9 +29,10 @@ public class WordBankActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
+
 	setContentView(R.layout.word_bank);
 
-	mAddWordButton = (Button) findViewById(R.id.timeline_add_button);
+	mAddWordButton = (Button) findViewById(R.id.timeline_add_location_button);
 	mAddWordButton.setOnClickListener(new View.OnClickListener() {
 
 	    public void onClick(View v) {

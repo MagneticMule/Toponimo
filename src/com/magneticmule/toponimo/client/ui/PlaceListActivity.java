@@ -76,10 +76,7 @@ public class PlaceListActivity extends Activity implements LocationListener {
 
 	// Get instance to application context
 	application = (ToponimoApplication) getApplicationContext();
-	// startInteractionAlarm();
-
 	mainActivity = this;
-
 	placeArrayAdapter = new PlacesListAdapter(this, R.layout.simplerow,
 		placenameList);
 

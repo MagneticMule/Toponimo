@@ -172,6 +172,13 @@ public class LoginActivity extends Activity {
 	window.setFormat(PixelFormat.RGBA_8888);
 	window.addFlags(WindowManager.LayoutParams.FLAG_DITHER);
     }
+    
+    /**
+     * This inner class is responsible for sending the username and password to the server for validation.
+     * The server returns a code 
+     * @author Thomas
+     *
+     */
 
     private class ValidateUser extends AsyncTask<Object, Void, UserDetails> {
 

@@ -13,206 +13,31 @@ public final class R {
         public static final int fadein_controller=0x7f040001;
         public static final int fadein_quick=0x7f040002;
         public static final int fadeout=0x7f040003;
-        public static final int scalein=0x7f040004;
-        public static final int slide_in_left=0x7f040005;
-        public static final int slide_in_right=0x7f040006;
-        public static final int slide_out_left=0x7f040007;
-        public static final int slide_out_right=0x7f040008;
+        public static final int remain_still=0x7f040004;
+        public static final int scalein=0x7f040005;
+        public static final int slide_in_bottom=0x7f040006;
+        public static final int slide_in_left=0x7f040007;
+        public static final int slide_in_right=0x7f040008;
+        public static final int slide_out_bottom=0x7f040009;
+        public static final int slide_out_left=0x7f04000a;
+        public static final int slide_out_right=0x7f04000b;
     }
     public static final class attr {
-        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int activeColor=0x7f010001;
-        /** <p>Must be one or more (separated by '|') of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>stroke</code></td><td>0</td><td></td></tr>
-<tr><td><code>fill</code></td><td>1</td><td></td></tr>
-</table>
-         */
-        public static final int activeType=0x7f010007;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int centered=0x7f010004;
-        /**  Left/right padding of not active view titles. 
-         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int clipPadding=0x7f010009;
-        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int customTypeface=0x7f010012;
-        /** <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int fadeOut=0x7f010005;
-        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int footerColor=0x7f010010;
-        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int footerLineHeight=0x7f01000f;
-        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int footerTriangleHeight=0x7f010011;
-        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int inactiveColor=0x7f010002;
-        /** <p>Must be one or more (separated by '|') of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>stroke</code></td><td>0</td><td></td></tr>
-<tr><td><code>fill</code></td><td>1</td><td></td></tr>
-</table>
-         */
-        public static final int inactiveType=0x7f010006;
-        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int radius=0x7f010003;
-        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int selectedBold=0x7f01000b;
-        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int selectedColor=0x7f01000a;
-        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int selectedSize=0x7f01000c;
-        /** <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int sidebuffer=0x7f010000;
-        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int textColor=0x7f01000d;
-        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int textSize=0x7f01000e;
-        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int titlePadding=0x7f010008;
     }
     public static final class color {
-        public static final int background_gray=0x7f070008;
-        public static final int black=0x7f070001;
-        public static final int brown_green=0x7f070006;
-        public static final int brown_green_light=0x7f070007;
-        public static final int dark_blue=0x7f070005;
-        public static final int dark_gray=0x7f070003;
-        public static final int darker_gray=0x7f070004;
-        public static final int light_gray=0x7f070002;
-        public static final int link_blue=0x7f07000c;
-        public static final int list_divider_dark_gray=0x7f070009;
-        public static final int list_divider_light_gray=0x7f07000a;
-        public static final int white=0x7f070000;
-        public static final int yellow=0x7f07000b;
+        public static final int background_gray=0x7f050008;
+        public static final int black=0x7f050001;
+        public static final int brown_green=0x7f050006;
+        public static final int brown_green_light=0x7f050007;
+        public static final int dark_blue=0x7f050005;
+        public static final int dark_gray=0x7f050003;
+        public static final int darker_gray=0x7f050004;
+        public static final int light_gray=0x7f050002;
+        public static final int link_blue=0x7f05000c;
+        public static final int list_divider_dark_gray=0x7f050009;
+        public static final int list_divider_light_gray=0x7f05000a;
+        public static final int white=0x7f050000;
+        public static final int yellow=0x7f05000b;
     }
     public static final class drawable {
         public static final int arrow_circle_left_24=0x7f020000;
@@ -279,97 +104,94 @@ containing a value of this type.
         public static final int toponimoident100=0x7f02003d;
         public static final int toponimoident300=0x7f02003e;
         public static final int toponimoidentsmall=0x7f02003f;
-        public static final int travelagent=0x7f020040;
-        public static final int tray_full_32=0x7f020041;
-        public static final int university=0x7f020042;
-        public static final int white_to_white_grad=0x7f020043;
+        public static final int transparent_button_right=0x7f020040;
+        public static final int travelagent=0x7f020041;
+        public static final int tray_full_32=0x7f020042;
+        public static final int university=0x7f020043;
+        public static final int white_to_white_grad=0x7f020044;
+        public static final int word_bank_title_grad=0x7f020045;
     }
     public static final class id {
-        public static final int add_word_add_button=0x7f050005;
-        public static final int add_word_add_edit_text=0x7f050003;
-        public static final int add_word_header=0x7f050002;
-        public static final int button1=0x7f050013;
-        public static final int button2=0x7f050014;
-        public static final int button3=0x7f050015;
-        public static final int checkBox1=0x7f050004;
-        public static final int empty_view=0x7f050028;
-        public static final int fill=0x7f050001;
-        public static final int forward=0x7f05003a;
-        public static final int icon=0x7f050008;
-        public static final int id_bar_place_list=0x7f050025;
-        public static final int imageView1=0x7f050042;
-        public static final int image_profile=0x7f050047;
-        public static final int image_view_location_icon=0x7f050043;
-        public static final int image_viewer_activity_image_switcher=0x7f050019;
-        public static final int label=0x7f050009;
-        public static final int label_address=0x7f050038;
-        public static final int label_date=0x7f05003c;
-        public static final int label_day=0x7f05003b;
-        public static final int label_definition=0x7f05003f;
-        public static final int label_gloss=0x7f050040;
-        public static final int label_location=0x7f050044;
-        public static final int label_month=0x7f05003d;
-        public static final int label_type=0x7f050041;
-        public static final int label_user_name=0x7f050046;
-        public static final int label_user_word_count=0x7f050048;
-        public static final int label_word=0x7f05003e;
-        public static final int label_words=0x7f050039;
-        public static final int linearLayout1=0x7f05000c;
-        public static final int loading_view=0x7f050027;
-        public static final int login_activity_facebook_img=0x7f05002f;
-        public static final int login_activity_forgot_password_text_view=0x7f05002e;
-        public static final int login_activity_logo_iv=0x7f05002a;
-        public static final int login_activity_password_et=0x7f05002c;
-        public static final int login_activity_signin_btn=0x7f05002d;
-        public static final int login_activity_username_et=0x7f05002b;
-        public static final int map_button=0x7f050024;
-        public static final int mapview_control=0x7f050032;
-        public static final int mapview_place_address=0x7f050037;
-        public static final int mapview_place_distance=0x7f050036;
-        public static final int mapview_place_name=0x7f050034;
-        public static final int mapviews_place_address=0x7f050035;
-        public static final int nav_bar_mapview=0x7f050033;
-        public static final int place_details_add_image=0x7f05000b;
-        public static final int place_details_add_phrase_button=0x7f050006;
-        public static final int place_details_add_word=0x7f05000a;
-        public static final int place_details_add_word_button=0x7f050007;
-        public static final int place_details_bottom_location_bar=0x7f050017;
-        public static final int place_details_place_address=0x7f05000f;
-        public static final int place_details_place_distance=0x7f050010;
-        public static final int place_details_place_name=0x7f05000e;
-        public static final int place_details_word_listview=0x7f050016;
-        public static final int place_details_words_buttons_linearlayout=0x7f050011;
-        public static final int place_details_words_label=0x7f050012;
-        public static final int place_holder=0x7f05001c;
-        public static final int place_list_activity_click_view=0x7f050031;
-        public static final int place_list_activity_mapview=0x7f050030;
-        public static final int place_list_bottom_location_bar=0x7f050029;
-        public static final int places_info_text=0x7f050018;
-        public static final int rating_bar=0x7f050054;
-        public static final int refresh_button=0x7f05001d;
-        public static final int refresh_progress_bar=0x7f05001e;
-        public static final int relativeLayout1=0x7f05001a;
-        public static final int stroke=0x7f050000;
-        public static final int textView1=0x7f050022;
-        public static final int timeline_add_button=0x7f050021;
-        public static final int title_text=0x7f05001b;
-        public static final int vertical_bar_1=0x7f05001f;
-        public static final int view_bottom=0x7f050049;
-        public static final int view_top=0x7f050045;
-        public static final int wordListView=0x7f050026;
-        public static final int word_bank_button=0x7f050020;
-        public static final int word_details_add_picture=0x7f05004f;
-        public static final int word_details_add_to_word_bank_button=0x7f050052;
-        public static final int word_details_definition=0x7f05004d;
-        public static final int word_details_gallery=0x7f050051;
-        public static final int word_details_gallery_container=0x7f050050;
-        public static final int word_details_gallery_content=0x7f05004c;
-        public static final int word_details_gloss=0x7f05004e;
-        public static final int word_details_scrollview=0x7f05004b;
-        public static final int word_details_speak_button=0x7f05004a;
-        public static final int word_details_word_view=0x7f05000d;
-        public static final int word_row_word_view=0x7f050053;
-        public static final int words_button=0x7f050023;
+        public static final int add_word_add_button=0x7f080003;
+        public static final int add_word_add_edit_text=0x7f080001;
+        public static final int add_word_header=0x7f080000;
+        public static final int button1=0x7f080011;
+        public static final int button2=0x7f080012;
+        public static final int button3=0x7f080013;
+        public static final int checkBox1=0x7f080002;
+        public static final int empty_view=0x7f080025;
+        public static final int forward=0x7f080036;
+        public static final int icon=0x7f080006;
+        public static final int id_bar_place_list=0x7f080022;
+        public static final int imageView1=0x7f08003e;
+        public static final int image_profile=0x7f080042;
+        public static final int image_view_location_icon=0x7f08003f;
+        public static final int image_viewer_activity_image_switcher=0x7f080017;
+        public static final int label=0x7f080007;
+        public static final int label_address=0x7f080034;
+        public static final int label_date=0x7f080038;
+        public static final int label_day=0x7f080037;
+        public static final int label_definition=0x7f08003b;
+        public static final int label_gloss=0x7f08003c;
+        public static final int label_location=0x7f080040;
+        public static final int label_month=0x7f080039;
+        public static final int label_type=0x7f08003d;
+        public static final int label_user_name=0x7f080043;
+        public static final int label_user_word_count=0x7f080044;
+        public static final int label_word=0x7f08003a;
+        public static final int label_words=0x7f080035;
+        public static final int linearLayout1=0x7f08000a;
+        public static final int loading_view=0x7f080024;
+        public static final int login_activity_facebook_img=0x7f08002c;
+        public static final int login_activity_forgot_password_text_view=0x7f08002b;
+        public static final int login_activity_logo_iv=0x7f080027;
+        public static final int login_activity_password_et=0x7f080029;
+        public static final int login_activity_signin_btn=0x7f08002a;
+        public static final int login_activity_username_et=0x7f080028;
+        public static final int mapview_control=0x7f08002f;
+        public static final int mapview_place_address=0x7f080031;
+        public static final int mapview_place_distance=0x7f080032;
+        public static final int mapview_place_name=0x7f080030;
+        public static final int place_details_add_image=0x7f080009;
+        public static final int place_details_add_phrase_button=0x7f080004;
+        public static final int place_details_add_word=0x7f080008;
+        public static final int place_details_add_word_button=0x7f080005;
+        public static final int place_details_bottom_location_bar=0x7f080015;
+        public static final int place_details_place_address=0x7f08000d;
+        public static final int place_details_place_distance=0x7f08000e;
+        public static final int place_details_place_name=0x7f08000c;
+        public static final int place_details_word_listview=0x7f080014;
+        public static final int place_details_words_buttons_linearlayout=0x7f08000f;
+        public static final int place_details_words_label=0x7f080010;
+        public static final int place_holder=0x7f08001a;
+        public static final int place_list_activity_click_view=0x7f08002e;
+        public static final int place_list_activity_mapview=0x7f08002d;
+        public static final int place_list_bottom_location_bar=0x7f080026;
+        public static final int places_info_text=0x7f080016;
+        public static final int refresh_button=0x7f08001b;
+        public static final int refresh_progress_bar=0x7f08001c;
+        public static final int relativeLayout1=0x7f080018;
+        public static final int textView1=0x7f080033;
+        public static final int timeline_add_location_button=0x7f080020;
+        public static final int timeline_add_word_button=0x7f08001f;
+        public static final int title_text=0x7f080019;
+        public static final int vertical_bar_1=0x7f08001d;
+        public static final int vertical_bar_2=0x7f080021;
+        public static final int view_bottom=0x7f080045;
+        public static final int view_top=0x7f080041;
+        public static final int wordListView=0x7f080023;
+        public static final int word_bank_button=0x7f08001e;
+        public static final int word_details_add_picture=0x7f08004b;
+        public static final int word_details_add_to_word_bank_button=0x7f08004e;
+        public static final int word_details_definition=0x7f080049;
+        public static final int word_details_gallery=0x7f08004d;
+        public static final int word_details_gallery_container=0x7f08004c;
+        public static final int word_details_gallery_content=0x7f080048;
+        public static final int word_details_gloss=0x7f08004a;
+        public static final int word_details_scrollview=0x7f080047;
+        public static final int word_details_speak_button=0x7f080046;
+        public static final int word_details_word_view=0x7f08000b;
+        public static final int word_row_word_view=0x7f08004f;
     }
     public static final class layout {
         public static final int add_phrase=0x7f030000;
@@ -383,28 +205,24 @@ containing a value of this type.
         public static final int image_viewer=0x7f030008;
         public static final int inc_action_bar=0x7f030009;
         public static final int inc_action_bar_timeline=0x7f03000a;
-        public static final int inc_blue_bar=0x7f03000b;
-        public static final int inc_nav_bar=0x7f03000c;
-        public static final int info_bar_places=0x7f03000d;
-        public static final int info_bar_word_bank=0x7f03000e;
-        public static final int listitems=0x7f03000f;
-        public static final int login=0x7f030010;
-        public static final int main=0x7f030011;
-        public static final int map_image=0x7f030012;
-        public static final int mapview=0x7f030013;
-        public static final int place_details=0x7f030014;
-        public static final int simplerow=0x7f030015;
-        public static final int simplerow_date=0x7f030016;
-        public static final int simplerow_definition=0x7f030017;
-        public static final int timeline_header=0x7f030018;
-        public static final int word_bank=0x7f030019;
-        public static final int word_details=0x7f03001a;
-        public static final int word_row=0x7f03001b;
-        public static final int word_type_buttons=0x7f03001c;
+        public static final int listitems=0x7f03000b;
+        public static final int login=0x7f03000c;
+        public static final int main=0x7f03000d;
+        public static final int map_image=0x7f03000e;
+        public static final int mapview=0x7f03000f;
+        public static final int place_details=0x7f030010;
+        public static final int simplerow=0x7f030011;
+        public static final int simplerow_date=0x7f030012;
+        public static final int simplerow_definition=0x7f030013;
+        public static final int timeline_header=0x7f030014;
+        public static final int word_bank=0x7f030015;
+        public static final int word_details=0x7f030016;
+        public static final int word_row=0x7f030017;
+        public static final int word_type_buttons=0x7f030018;
     }
     public static final class string {
         public static final int api_key=0x7f060005;
-        public static final int app_name=0x7f060001;
+        public static final int app_name=0x7f060002;
         public static final int hello=0x7f060000;
         public static final int login_activity_facebook_description=0x7f060009;
         public static final int login_activity_logo_description=0x7f060007;
@@ -413,386 +231,19 @@ containing a value of this type.
         public static final int login_activity_username_et=0x7f060006;
         public static final int no_connection_message=0x7f06000a;
         public static final int signin=0x7f060004;
-        public static final int words=0x7f060002;
+        public static final int words=0x7f060001;
     }
     public static final class style {
-        public static final int BaseTopBar=0x7f080000;
-        public static final int ButtonText=0x7f080001;
-        public static final int ButtonTextBlack=0x7f080005;
-        public static final int ButtonTextBlackLarge=0x7f080006;
-        public static final int ButtonTextGrey=0x7f080003;
-        public static final int ButtonTextGreyLarge=0x7f080004;
-        public static final int ButtonTextLarge=0x7f080002;
-        public static final int PageTitle=0x7f080007;
+        public static final int BaseTopBar=0x7f070000;
+        public static final int ButtonText=0x7f070001;
+        public static final int ButtonTextBlack=0x7f070005;
+        public static final int ButtonTextBlackLarge=0x7f070006;
+        public static final int ButtonTextGrey=0x7f070003;
+        public static final int ButtonTextGreyLarge=0x7f070004;
+        public static final int ButtonTextLarge=0x7f070002;
+        public static final int PageTitle=0x7f070007;
     }
     public static final class styleable {
-        /** Attributes that can be used with a CircleFlowIndicator.
-           <p>Includes the following attributes:</p>
-           <table>
-           <colgroup align="left" />
-           <colgroup align="left" />
-           <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #CircleFlowIndicator_activeColor com.magneticmule.toponimo.client:activeColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #CircleFlowIndicator_activeType com.magneticmule.toponimo.client:activeType}</code></td><td></td></tr>
-           <tr><td><code>{@link #CircleFlowIndicator_centered com.magneticmule.toponimo.client:centered}</code></td><td></td></tr>
-           <tr><td><code>{@link #CircleFlowIndicator_fadeOut com.magneticmule.toponimo.client:fadeOut}</code></td><td></td></tr>
-           <tr><td><code>{@link #CircleFlowIndicator_inactiveColor com.magneticmule.toponimo.client:inactiveColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #CircleFlowIndicator_inactiveType com.magneticmule.toponimo.client:inactiveType}</code></td><td></td></tr>
-           <tr><td><code>{@link #CircleFlowIndicator_radius com.magneticmule.toponimo.client:radius}</code></td><td></td></tr>
-           </table>
-           @see #CircleFlowIndicator_activeColor
-           @see #CircleFlowIndicator_activeType
-           @see #CircleFlowIndicator_centered
-           @see #CircleFlowIndicator_fadeOut
-           @see #CircleFlowIndicator_inactiveColor
-           @see #CircleFlowIndicator_inactiveType
-           @see #CircleFlowIndicator_radius
-         */
-        public static final int[] CircleFlowIndicator = {
-            0x7f010001, 0x7f010002, 0x7f010003, 0x7f010004,
-            0x7f010005, 0x7f010006, 0x7f010007
-        };
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#activeColor}
-          attribute's value can be found in the {@link #CircleFlowIndicator} array.
-
-
-          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:activeColor
-        */
-        public static final int CircleFlowIndicator_activeColor = 0;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#activeType}
-          attribute's value can be found in the {@link #CircleFlowIndicator} array.
-
-
-          <p>Must be one or more (separated by '|') of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>stroke</code></td><td>0</td><td></td></tr>
-<tr><td><code>fill</code></td><td>1</td><td></td></tr>
-</table>
-          @attr name android:activeType
-        */
-        public static final int CircleFlowIndicator_activeType = 6;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#centered}
-          attribute's value can be found in the {@link #CircleFlowIndicator} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:centered
-        */
-        public static final int CircleFlowIndicator_centered = 3;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#fadeOut}
-          attribute's value can be found in the {@link #CircleFlowIndicator} array.
-
-
-          <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:fadeOut
-        */
-        public static final int CircleFlowIndicator_fadeOut = 4;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#inactiveColor}
-          attribute's value can be found in the {@link #CircleFlowIndicator} array.
-
-
-          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:inactiveColor
-        */
-        public static final int CircleFlowIndicator_inactiveColor = 1;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#inactiveType}
-          attribute's value can be found in the {@link #CircleFlowIndicator} array.
-
-
-          <p>Must be one or more (separated by '|') of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>stroke</code></td><td>0</td><td></td></tr>
-<tr><td><code>fill</code></td><td>1</td><td></td></tr>
-</table>
-          @attr name android:inactiveType
-        */
-        public static final int CircleFlowIndicator_inactiveType = 5;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#radius}
-          attribute's value can be found in the {@link #CircleFlowIndicator} array.
-
-
-          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:radius
-        */
-        public static final int CircleFlowIndicator_radius = 2;
-        /** Attributes that can be used with a TitleFlowIndicator.
-           <p>Includes the following attributes:</p>
-           <table>
-           <colgroup align="left" />
-           <colgroup align="left" />
-           <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #TitleFlowIndicator_clipPadding com.magneticmule.toponimo.client:clipPadding}</code></td><td> Left/right padding of not active view titles.</td></tr>
-           <tr><td><code>{@link #TitleFlowIndicator_customTypeface com.magneticmule.toponimo.client:customTypeface}</code></td><td></td></tr>
-           <tr><td><code>{@link #TitleFlowIndicator_footerColor com.magneticmule.toponimo.client:footerColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #TitleFlowIndicator_footerLineHeight com.magneticmule.toponimo.client:footerLineHeight}</code></td><td></td></tr>
-           <tr><td><code>{@link #TitleFlowIndicator_footerTriangleHeight com.magneticmule.toponimo.client:footerTriangleHeight}</code></td><td></td></tr>
-           <tr><td><code>{@link #TitleFlowIndicator_selectedBold com.magneticmule.toponimo.client:selectedBold}</code></td><td></td></tr>
-           <tr><td><code>{@link #TitleFlowIndicator_selectedColor com.magneticmule.toponimo.client:selectedColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #TitleFlowIndicator_selectedSize com.magneticmule.toponimo.client:selectedSize}</code></td><td></td></tr>
-           <tr><td><code>{@link #TitleFlowIndicator_textColor com.magneticmule.toponimo.client:textColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #TitleFlowIndicator_textSize com.magneticmule.toponimo.client:textSize}</code></td><td></td></tr>
-           <tr><td><code>{@link #TitleFlowIndicator_titlePadding com.magneticmule.toponimo.client:titlePadding}</code></td><td></td></tr>
-           </table>
-           @see #TitleFlowIndicator_clipPadding
-           @see #TitleFlowIndicator_customTypeface
-           @see #TitleFlowIndicator_footerColor
-           @see #TitleFlowIndicator_footerLineHeight
-           @see #TitleFlowIndicator_footerTriangleHeight
-           @see #TitleFlowIndicator_selectedBold
-           @see #TitleFlowIndicator_selectedColor
-           @see #TitleFlowIndicator_selectedSize
-           @see #TitleFlowIndicator_textColor
-           @see #TitleFlowIndicator_textSize
-           @see #TitleFlowIndicator_titlePadding
-         */
-        public static final int[] TitleFlowIndicator = {
-            0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b,
-            0x7f01000c, 0x7f01000d, 0x7f01000e, 0x7f01000f,
-            0x7f010010, 0x7f010011, 0x7f010012
-        };
-        /**
-          <p>
-          @attr description
-           Left/right padding of not active view titles. 
-
-
-          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          <p>This is a private symbol.
-          @attr name android:clipPadding
-        */
-        public static final int TitleFlowIndicator_clipPadding = 1;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#customTypeface}
-          attribute's value can be found in the {@link #TitleFlowIndicator} array.
-
-
-          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:customTypeface
-        */
-        public static final int TitleFlowIndicator_customTypeface = 10;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#footerColor}
-          attribute's value can be found in the {@link #TitleFlowIndicator} array.
-
-
-          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:footerColor
-        */
-        public static final int TitleFlowIndicator_footerColor = 8;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#footerLineHeight}
-          attribute's value can be found in the {@link #TitleFlowIndicator} array.
-
-
-          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:footerLineHeight
-        */
-        public static final int TitleFlowIndicator_footerLineHeight = 7;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#footerTriangleHeight}
-          attribute's value can be found in the {@link #TitleFlowIndicator} array.
-
-
-          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:footerTriangleHeight
-        */
-        public static final int TitleFlowIndicator_footerTriangleHeight = 9;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#selectedBold}
-          attribute's value can be found in the {@link #TitleFlowIndicator} array.
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:selectedBold
-        */
-        public static final int TitleFlowIndicator_selectedBold = 3;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#selectedColor}
-          attribute's value can be found in the {@link #TitleFlowIndicator} array.
-
-
-          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:selectedColor
-        */
-        public static final int TitleFlowIndicator_selectedColor = 2;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#selectedSize}
-          attribute's value can be found in the {@link #TitleFlowIndicator} array.
-
-
-          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:selectedSize
-        */
-        public static final int TitleFlowIndicator_selectedSize = 4;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#textColor}
-          attribute's value can be found in the {@link #TitleFlowIndicator} array.
-
-
-          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:textColor
-        */
-        public static final int TitleFlowIndicator_textColor = 5;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#textSize}
-          attribute's value can be found in the {@link #TitleFlowIndicator} array.
-
-
-          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:textSize
-        */
-        public static final int TitleFlowIndicator_textSize = 6;
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#titlePadding}
-          attribute's value can be found in the {@link #TitleFlowIndicator} array.
-
-
-          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
-Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
-in (inches), mm (millimeters).
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:titlePadding
-        */
-        public static final int TitleFlowIndicator_titlePadding = 0;
-        /** Attributes that can be used with a ViewFlow.
-           <p>Includes the following attributes:</p>
-           <table>
-           <colgroup align="left" />
-           <colgroup align="left" />
-           <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ViewFlow_sidebuffer com.magneticmule.toponimo.client:sidebuffer}</code></td><td></td></tr>
-           </table>
-           @see #ViewFlow_sidebuffer
-         */
-        public static final int[] ViewFlow = {
-            0x7f010000
-        };
-        /**
-          <p>This symbol is the offset where the {@link com.magneticmule.toponimo.client.R.attr#sidebuffer}
-          attribute's value can be found in the {@link #ViewFlow} array.
-
-
-          <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          @attr name android:sidebuffer
-        */
-        public static final int ViewFlow_sidebuffer = 0;
         /** Attributes that can be used with a WordImageGallery.
            <p>Includes the following attributes:</p>
            <table>

@@ -9,7 +9,6 @@
         android:id="@+id/mapview_control"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/nav_bar_mapview"
         android:apiKey="0fqJRInbccwZDYF2GAcYqg7h0gQ7rSyLtmZbxvw"
         android:clickable="true"
         android:enabled="true" />
@@ -37,7 +36,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/mapviews_place_address"
+            android:id="@+id/mapview_place_address"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/mapview_place_name"
@@ -60,7 +59,6 @@
             android:text=""
             android:textColor="@color/darker_gray"
             android:textSize="12sp" />
-		/>
     </RelativeLayout>
 
 </RelativeLayout>

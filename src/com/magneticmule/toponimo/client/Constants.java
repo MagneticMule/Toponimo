@@ -21,7 +21,6 @@ public class Constants {
     /**
      * Database construction and manipulation
      */
-
     public static final String LOCAL_WORDS_URI = "content://com.magneticmule.provider.words/words";
     public static final Uri WORDS_URI = Uri.parse(LOCAL_WORDS_URI);
 
