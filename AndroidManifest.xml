@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.magneticmule.toponimo.client"
+    package="org.toponimo.client"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -13,14 +13,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".ToponimoApplication"
-        android:debuggable="true"
+        android:name="org.toponimo.client.ToponimoApplication"
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
         <uses-library android:name="com.google.android.maps" />
 
         <activity
-            android:name=".ui.LoginCheckActivity"
+            android:name="org.toponimo.client.ui.LoginCheckActivity"
             android:label="@string/app_name"
             android:noHistory="true"
             android:theme="@android:style/Theme.NoTitleBar" >
@@ -31,50 +30,51 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.LoginActivity"
+            android:name="org.toponimo.client.ui.LoginActivity"
             android:configChanges="keyboardHidden|orientation"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.PlaceListActivity"
+            android:name="org.toponimo.client.ui.PlaceListActivity"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name=".ui.MapsViewActivity"
+            android:name="org.toponimo.client.ui.MapsViewActivity"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name=".ui.PlaceDetailsActivity"
+            android:name="org.toponimo.client.ui.PlaceDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name=".ui.AddWordActivity"
+            android:name="org.toponimo.client.ui.AddWordActivity"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
-            android:name=".ui.WordBankActivity"
+            android:name="org.toponimo.client.ui.WordBankActivity"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name=".ui.WordDetailsActivity"
+            android:name="org.toponimo.client.ui.WordDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
-            android:name=".ui.ImageViewActivity"
+            android:name="org.toponimo.client.ui.ImageViewActivity"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.NoTitleBar" />
 
-        <service android:name=".utils.location.LocationUpdateService" >
+        <service android:name="org.toponimo.client.utils.location.LocationUpdateService" >
+        </service>
+        <service android:name="org.toponimo.client.RestService" >
         </service>
 
         <provider
-            android:name=".database.ClientWordsProvider"
-            android:authorities="com.magneticmule.provider.words"
+            android:name="org.toponimo.client.database.ClientWordsProvider"
+            android:authorities="org.toponimo.provider.words"
             android:multiprocess="true" />
     </application>
 

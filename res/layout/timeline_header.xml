@@ -28,7 +28,7 @@
         android:paddingRight="10dip"
         android:paddingTop="10dip"
         android:singleLine="true"
-        android:text="Thomas Sweeney"
+        android:text=" "
         android:textColor="@color/light_gray"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -44,7 +44,7 @@
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
         android:singleLine="true"
-        android:text="12 Words"
+        android:text="No words"
         android:textColor="@color/light_gray"
         android:textSize="12sp" />
 
