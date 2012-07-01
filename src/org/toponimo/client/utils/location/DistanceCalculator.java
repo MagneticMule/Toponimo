@@ -1,5 +1,7 @@
 package org.toponimo.client.utils.location;
 
+import org.toponimo.client.R;
+
 public class DistanceCalculator {
 
     public static double haverSine(double lat1, double lng1, double lat2,

@@ -3,6 +3,7 @@ package org.toponimo.client.utils.location;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import org.toponimo.client.R;
 
 import android.content.Context;
 import android.location.Address;

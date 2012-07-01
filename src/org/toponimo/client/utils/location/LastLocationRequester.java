@@ -3,6 +3,7 @@ package org.toponimo.client.utils.location;
 import java.util.List;
 
 import org.toponimo.client.Constants;
+import org.toponimo.client.R;
 
 import android.content.Context;
 import android.location.Criteria;

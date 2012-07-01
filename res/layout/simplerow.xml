@@ -16,6 +16,7 @@
         android:ellipsize="marquee"
         android:gravity="center_vertical"
         android:singleLine="true"
+        android:text="Place Name"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -25,12 +26,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/label"
-        android:layout_marginTop="4dip"
+        android:layout_marginTop="2dip"
         android:ellipsize="marquee"
         android:gravity="center_vertical"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="@string/words"
+        android:text="Address"
         android:textColor="@color/darker_gray"
         android:textSize="12sp" />
 
@@ -44,21 +45,8 @@
         android:gravity="center_vertical"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="@string/words"
+        android:text="Place Types"
         android:textColor="#444444"
         android:textSize="10sp" />
-
-    <TextView
-        android:id="@+id/forward"
-        android:layout_width="20dip"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dip"
-        android:text=">"
-        android:textColor="@color/darker_gray"
-        android:textStyle="bold" />
-	/>
 
 </RelativeLayout>

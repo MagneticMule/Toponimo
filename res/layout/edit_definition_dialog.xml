@@ -14,23 +14,14 @@
     <EditText
         android:id="@+id/editDefinitionText"
         android:layout_width="fill_parent"
-        android:layout_height="140dip"
-        android:layout_weight="2.02"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
+        android:layout_height="match_parent"
+        android:ems="10"
+        android:inputType="text" />
 
     <Button
         android:id="@+id/dialogupdate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="ADD DEFINITION" />
-
-    <Button
-        android:id="@+id/dialogdismiss"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="CANCEL" />
+        android:text="@string/save" />
 
 </LinearLayout>

@@ -2,6 +2,7 @@
 package org.toponimo.client.structures.wordstructure;
 
 import java.util.List;
+import org.toponimo.client.R;
 
 public class Userwords{
    	private String _id;

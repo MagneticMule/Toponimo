@@ -3,6 +3,7 @@ package org.toponimo.client.database;
 import java.util.HashMap;
 
 import org.toponimo.client.Constants;
+import org.toponimo.client.R;
 import org.toponimo.client.ToponimoApplication;
 
 import android.content.ContentProvider;

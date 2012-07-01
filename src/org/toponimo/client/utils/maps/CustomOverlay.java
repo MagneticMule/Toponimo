@@ -16,6 +16,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
+import org.toponimo.client.R;
 
 public class CustomOverlay extends Overlay {
 

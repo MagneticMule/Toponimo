@@ -17,73 +17,78 @@ import org.toponimo.client.R;
 
 public class WordBankCursorAdapter extends SimpleCursorAdapter {
 
-    public static final String TAG = "WordBankAdapter";
+	public static final String		TAG	= "WordBankAdapter";
 
-    private final Cursor mCursor;
-    private final Context mContext;
-    private final LayoutInflater mInflater;
+	private final Cursor			mCursor;
+	private final Context			mContext;
+	private final LayoutInflater	mInflater;
 
-    public WordBankCursorAdapter(Context context, int layout, Cursor cursor,
-	    String[] from, int[] to) {
-	super(context, layout, cursor, from, to);
+	public WordBankCursorAdapter(Context context, Cursor cursor, String[] from, int[] to) {
+		super(context, 0, cursor, from, to);
 
-	this.mContext = context;
-	this.mCursor = cursor;
-	this.mInflater = (LayoutInflater) context
-		.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.mContext = context;
+		this.mCursor = cursor;
+		this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-    }
-
-    @Override
-    public int getCount() {
-
-	return super.getCount();
-    }
-
-    @Override
-    public View getView(int position, View view, ViewGroup parent) {
-
-	if (view == null) {
-	    view = mInflater.inflate(R.layout.simplerow_definition, null);
 	}
 
-	mCursor.moveToPosition(position);
+	@Override
+	public int getCount() {
+		return mCursor != null ? mCursor.getCount() : 0;
+	}
 
-	TextView wordView = (TextView) view.findViewById(R.id.label_word);
-	TextView definitionView = (TextView) view
-		.findViewById(R.id.label_definition);
-	TextView glossView = (TextView) view.findViewById(R.id.label_gloss);
-	TextView locationView = (TextView) view
-		.findViewById(R.id.label_location);
-	TextView lexTypeView = (TextView) view.findViewById(R.id.label_type);
+	@Override
+	public View getView(int position, View view, ViewGroup parent) {
 
-	wordView.setText(mCursor.getString(mCursor
-		.getColumnIndex(Constants.KEY_WORD)));
-	definitionView.setText(mCursor.getString(mCursor
-		.getColumnIndex(Constants.KEY_WORD_DEFINITION)));
-	glossView.setText(mCursor.getString(mCursor
-		.getColumnIndex(Constants.KEY_WORD_GLOSS)));
-	locationView.setText(mCursor.getString(mCursor
-		.getColumnIndex(Constants.KEY_WORD_LOCATION)));
-	lexTypeView.setText(mCursor.getString(mCursor
-		.getColumnIndex(Constants.KEY_WORD_TYPE)));
+		/*
+		 * if (view == null) { if (mCursor.isFirst() && mCursor.isLast()) { view
+		 * = mInflater.inflate(R.layout.simplerow_definition_single, null);
+		 * Log.i(TAG, "Cusrsor points to single entry");
+		 * 
+		 * } else if (mCursor.isFirst()) { view =
+		 * mInflater.inflate(R.layout.simplerow_definition_bottom, null);
+		 * Log.i(TAG, "Cusrsor points to first entry"); } else if
+		 * (mCursor.isLast()) { view =
+		 * mInflater.inflate(R.layout.simplerow_definition_top, null);
+		 * Log.i(TAG, "Cusrsor points to last entry"); } else { view =
+		 * mInflater.inflate(R.layout.simplerow_definition_middle, null);
+		 * Log.i(TAG, "Cusrsor points to standard entry"); } }
+		 */
 
-	String theTime = MillisToDate.millisecondsToDate(mCursor
-		.getLong(mCursor.getColumnIndex(Constants.KEY_WORD_TIME)));
+		if (view == null) {
+			view = mInflater.inflate(R.layout.simplerow_definition_single, null);
+		}
 
-	Log.v("Collected at ", theTime);
+		mCursor.moveToPosition(position);
 
-	return view;
-    }
+		TextView wordView = (TextView) view.findViewById(R.id.label_word);
+		TextView definitionView = (TextView) view.findViewById(R.id.label_definition);
+		TextView glossView = (TextView) view.findViewById(R.id.label_gloss);
+		TextView locationView = (TextView) view.findViewById(R.id.label_location);
+		TextView lexTypeView = (TextView) view.findViewById(R.id.label_type);
 
-    private static class ViewHolder {
-	TextView wordView;
-	ImageView imageView;
-	TextView typeView;
-	TextView definitionView;
-	TextView glossView;
-	TextView locationView;
+		wordView.setText(mCursor.getString(mCursor.getColumnIndex(Constants.KEY_WORD)));
+		definitionView.setText(mCursor.getString(mCursor.getColumnIndex(Constants.KEY_WORD_DEFINITION)));
+		glossView.setText(mCursor.getString(mCursor.getColumnIndex(Constants.KEY_WORD_GLOSS)));
+		locationView.setText(mCursor.getString(mCursor.getColumnIndex(Constants.KEY_WORD_LOCATION)));
+		lexTypeView.setText(mCursor.getString(mCursor.getColumnIndex(Constants.KEY_WORD_TYPE)));
 
-    }
+		String theTime = MillisToDate.millisecondsToDate(mCursor.getLong(mCursor
+				.getColumnIndex(Constants.KEY_WORD_TIME)));
+
+		Log.v("Collected at ", theTime);
+
+		return view;
+	}
+
+	private static class ViewHolder {
+		TextView	wordView;
+		ImageView	imageView;
+		TextView	typeView;
+		TextView	definitionView;
+		TextView	glossView;
+		TextView	locationView;
+
+	}
 
 }

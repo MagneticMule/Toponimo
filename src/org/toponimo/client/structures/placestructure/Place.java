@@ -1,6 +1,7 @@
 package org.toponimo.client.structures.placestructure;
 
 import java.util.List;
+import org.toponimo.client.R;
 
 public class Place {
     private List<Results> results;

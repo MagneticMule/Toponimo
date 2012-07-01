@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import org.toponimo.client.R;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

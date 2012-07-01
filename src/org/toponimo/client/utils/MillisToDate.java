@@ -2,6 +2,7 @@ package org.toponimo.client.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.toponimo.client.R;
 
 public class MillisToDate {
 

@@ -7,6 +7,8 @@
 
 package org.toponimo.client.utils;
 
+import org.toponimo.client.R;
+
 public class Base64 {
 
     /* ******** P U B L I C F I E L D S ******** */

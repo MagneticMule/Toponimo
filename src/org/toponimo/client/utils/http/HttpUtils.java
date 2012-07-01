@@ -39,6 +39,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.ByteArrayBuffer;
 import org.apache.http.util.EntityUtils;
 import org.toponimo.client.Constants;
+import org.toponimo.client.R;
 import org.toponimo.client.utils.TwoReturnValues;
 
 import android.content.Context;

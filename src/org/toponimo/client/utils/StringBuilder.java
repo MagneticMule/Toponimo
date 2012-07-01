@@ -1,5 +1,7 @@
 package org.toponimo.client.utils;
 
+import org.toponimo.client.R;
+
 public final class StringBuilder {
 
     public String buildString(String... args) {

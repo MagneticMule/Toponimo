@@ -1,6 +1,7 @@
 package org.toponimo.client.wordstructure;
 
 import java.util.List;
+import org.toponimo.client.R;
 
 public class Definition {
 	private List<Results> results;

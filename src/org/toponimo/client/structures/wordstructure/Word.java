@@ -2,6 +2,7 @@
 package org.toponimo.client.structures.wordstructure;
 
 import java.util.List;
+import org.toponimo.client.R;
 
 public class Word{
    	private List<Dictionarywords> dictionarywords;

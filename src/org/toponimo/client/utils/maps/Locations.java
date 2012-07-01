@@ -2,6 +2,7 @@ package org.toponimo.client.utils.maps;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.toponimo.client.R;
 
 import android.content.Context;
 import android.graphics.Canvas;

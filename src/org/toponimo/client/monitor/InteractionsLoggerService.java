@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 
 import android.os.IBinder;
 import android.util.Log;
+import org.toponimo.client.R;
 
 public class InteractionsLoggerService extends IntentService {
 

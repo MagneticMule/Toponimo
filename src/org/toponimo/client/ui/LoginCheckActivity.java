@@ -1,6 +1,7 @@
 package org.toponimo.client.ui;
 
 import org.toponimo.client.Constants;
+import org.toponimo.client.R;
 import org.toponimo.client.ToponimoApplication;
 
 import android.app.Activity;

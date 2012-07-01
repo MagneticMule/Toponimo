@@ -1,6 +1,7 @@
 package org.toponimo.client.utils.location;
 
 import android.location.LocationManager;
+import org.toponimo.client.R;
 
 public class CurrentLocationRequester {
 

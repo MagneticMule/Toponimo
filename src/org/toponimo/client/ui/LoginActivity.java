@@ -174,7 +174,7 @@ public class LoginActivity extends Activity {
     }
 
     /*
-     * Enable full color support (non-Javadoc)
+     * Enable full colour support (non-Javadoc)
      * 
      * @see android.app.Activity#onAttachedToWindow()
      */
@@ -188,7 +188,8 @@ public class LoginActivity extends Activity {
 
     /**
      * This inner class is responsible for sending the username and password to
-     * the server for validation. The server returns a code
+     * the server for validation. The server returns a code based on whether the user
+     * exists
      * 
      * @author Thomas
      * 

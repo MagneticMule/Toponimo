@@ -1,5 +1,7 @@
 package org.toponimo.client.wordstructure;
 
+import org.toponimo.client.R;
+
 public class Results{
    	private String partOfSpeech;
    	private Number score;

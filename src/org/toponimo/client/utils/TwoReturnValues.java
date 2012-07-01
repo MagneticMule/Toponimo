@@ -1,5 +1,7 @@
 package org.toponimo.client.utils;
 
+import org.toponimo.client.R;
+
 public class TwoReturnValues<F, S> {
 
     public F firstVal;

@@ -1,6 +1,7 @@
 package org.toponimo.client.database;
 
 import org.toponimo.client.Constants;
+import org.toponimo.client.R;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

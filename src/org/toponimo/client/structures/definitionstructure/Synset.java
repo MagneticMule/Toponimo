@@ -1,5 +1,7 @@
 package org.toponimo.client.structures.definitionstructure;
 
+import org.toponimo.client.R;
+
 
 public class Synset {
     private String definitions;

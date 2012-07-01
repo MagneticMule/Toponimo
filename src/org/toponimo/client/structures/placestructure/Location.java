@@ -1,5 +1,7 @@
 package org.toponimo.client.structures.placestructure;
 
+import org.toponimo.client.R;
+
 public class Location {
     private Double lat;
     private Double lng;

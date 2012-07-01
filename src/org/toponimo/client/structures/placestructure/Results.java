@@ -1,6 +1,7 @@
 package org.toponimo.client.structures.placestructure;
 
 import java.util.List;
+import org.toponimo.client.R;
 
 public class Results {
     private String id;
