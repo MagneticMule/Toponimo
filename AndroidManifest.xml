@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.toponimo.client"
+    android:installLocation="preferExternal"
     android:versionCode="010101"
     android:versionName="0.1.1.1" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="8" />
+        android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -18,14 +19,14 @@
         android:name="org.toponimo.client.ToponimoApplication"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Sherlock.Light" >
         <uses-library android:name="com.google.android.maps" />
 
         <activity
             android:name="org.toponimo.client.ui.LoginCheckActivity"
             android:label="@string/app_name"
-            android:noHistory="true"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,38 +38,31 @@
             android:configChanges="keyboardHidden|orientation"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"
+            android:theme="@style/Theme.Sherlock.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="org.toponimo.client.ui.PlaceListActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:configChanges="keyboardHidden|orientation" />
         <activity
             android:name="org.toponimo.client.ui.MapsViewActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:configChanges="keyboardHidden|orientation" />
         <activity
             android:name="org.toponimo.client.ui.PlaceDetailsActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:configChanges="keyboardHidden|orientation" />
         <activity
             android:name="org.toponimo.client.ui.AddWordActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name="org.toponimo.client.ui.WordBankActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:configChanges="keyboardHidden|orientation" />
         <activity
             android:name="org.toponimo.client.ui.WordDetailsActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="org.toponimo.client.ui.ImageViewActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:configChanges="keyboardHidden|orientation" />
 
         <service android:name="org.toponimo.client.utils.location.LocationUpdateService" >
         </service>

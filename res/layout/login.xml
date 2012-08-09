@@ -3,6 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
+    android:animateLayoutChanges="true"
     android:background="@drawable/blue_to_blue_grad"
     android:gravity="bottom"
     android:orientation="vertical" >
@@ -24,7 +25,9 @@
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
         android:hint="@string/login_activity_username_et"
-        android:singleLine="true" >
+        android:inputType="textNoSuggestions"
+        android:singleLine="true"
+        android:textColorHint="@color/white" >
     </EditText>
 
     <EditText
@@ -32,10 +35,13 @@
         android:layout_width="fill_parent"
         android:layout_height="50dip"
         android:layout_gravity="center"
+        android:layout_marginBottom="20dip"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
+        android:layout_marginTop="20dip"
         android:hint="@string/login_activity_password_et"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textColorHint="@color/white" />
 
     <LinearLayout
         android:layout_width="fill_parent"

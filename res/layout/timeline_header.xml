@@ -1,58 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="#3f3f3f"
-    android:gravity="center" >
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/timeline_default_image"
+        android:gravity="bottom" >
+
+        <ImageView
+            android:id="@+id/image_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/label_user_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/image_profile"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:paddingTop="10dip"
+            android:singleLine="true"
+            android:text=" "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/label_user_word_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/label_user_name"
+            android:layout_marginTop="4dip"
+            android:layout_toRightOf="@+id/image_profile"
+            android:paddingBottom="10dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:singleLine="true"
+            android:text="No words"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <View
+            android:id="@+id/view_bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_above="@+id/image_profile"
+            android:layout_alignParentLeft="true"
+            android:background="@color/white" />
+    </RelativeLayout>
 
     <View
-        android:id="@+id/view_top"
         android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="@color/white" />
+        android:layout_height="8dip"
+        android:background="@drawable/shadow_grad_bottom_dark" />
 
-    <ImageView
-        android:id="@+id/image_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true" />
-
-    <TextView
-        android:id="@+id/label_user_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/image_profile"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:paddingTop="10dip"
-        android:singleLine="true"
-        android:text=" "
-        android:textColor="@color/light_gray"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/label_user_word_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label_user_name"
-        android:layout_marginTop="4dip"
-        android:layout_toRightOf="@+id/image_profile"
-        android:paddingBottom="10dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:singleLine="true"
-        android:text="No words"
-        android:textColor="@color/light_gray"
-        android:textSize="12sp" />
-
-    <View
-        android:id="@+id/view_bottom"
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:layout_below="@+id/label_user_word_count"
-        android:background="@color/white" />
-
-</RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,52 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <LinearLayout
+        android:id="@+id/dictionary_entry_actions"
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:background="#11444444"
+        android:baselineAligned="true"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/add_word"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.09"
+            android:contentDescription="@string/add_word"
+            android:src="@drawable/ic_action_add_word" />
+
+        <ImageView
+            android:id="@+id/add_location"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.09"
+            android:contentDescription="Add Location"
+            android:src="@drawable/ic_action_add_location" />
+
+        <ImageView
+            android:id="@+id/add_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.09"
+            android:contentDescription="Add Image"
+            android:src="@drawable/ic_action_add_image" />
+
+        <ImageView
+            android:id="@+id/add_drawing"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.09"
+            android:contentDescription="Add Drawing"
+            android:src="@drawable/ic_action_add_drawing" />
+
+        <ImageView
+            android:id="@+id/add_sound"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.09"
+            android:contentDescription="Add Sound"
+            android:src="@drawable/ic_action_add_sound" />
+    </LinearLayout>
+
+</merge>

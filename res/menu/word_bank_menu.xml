@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/options_menu_support"
+        android:title="Contact support"/>
+    <item
+        android:id="@+id/options_menu_logout"
+        android:title="Logout of Toponimo"/>
+    <item
+        android:id="@+id/options_menu_add"
+        android:icon="@drawable/ic_action_add"
+        android:showAsAction="always|collapseActionView"
+        android:title="Add Word"/>
+    <item
+        android:id="@+id/menu_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="Search"/>
+
+</menu>

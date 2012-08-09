@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -66,6 +67,7 @@ public class WordBankCursorAdapter extends SimpleCursorAdapter {
 		TextView glossView = (TextView) view.findViewById(R.id.label_gloss);
 		TextView locationView = (TextView) view.findViewById(R.id.label_location);
 		TextView lexTypeView = (TextView) view.findViewById(R.id.label_type);
+		
 
 		wordView.setText(mCursor.getString(mCursor.getColumnIndex(Constants.KEY_WORD)));
 		definitionView.setText(mCursor.getString(mCursor.getColumnIndex(Constants.KEY_WORD_DEFINITION)));
@@ -80,6 +82,8 @@ public class WordBankCursorAdapter extends SimpleCursorAdapter {
 
 		return view;
 	}
+	
+
 
 	private static class ViewHolder {
 		TextView	wordView;

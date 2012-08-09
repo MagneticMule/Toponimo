@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<drawable xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item android:state_pressed="true"><shape>
-            <solid android:color="#444444" />
+    <item>
+        <shape>
+            <gradient
+                android:angle="90"
+                android:endColor="#ffffff"
+                android:startColor="#fafafa" />
 
-            <stroke android:width="1dip" android:color="#222222" />
+            <stroke
+                android:width="1px"
+                android:color="#9f9f9f" />
 
-            <corners android:bottomLeftRadius="4dip" android:bottomRightRadius="4dip" android:topLeftRadius="4dip" android:topRightRadius="4dip" />
+            <corners android:radius="4dip" />
+        </shape>
+    </item>
 
-            <padding android:bottom="10dip" android:left="10dip" android:right="10dip" android:top="10dip" />
-        </shape></item>
-    <item><shape>
-            <gradient android:angle="90" android:endColor="#ffffff" android:startColor="#fefefe" />
-
-            <stroke android:width="1px" android:color="#9f9f9f" />
-
-            <corners android:bottomLeftRadius="4dip" android:bottomRightRadius="4dip" android:topLeftRadius="4dip" android:topRightRadius="4dip" />
-
-            <padding android:bottom="10dip" android:left="10dip" android:right="10dip" android:top="10dip" />
-        </shape></item>
-
-</selector>
+</drawable>

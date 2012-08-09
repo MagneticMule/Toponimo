@@ -14,5 +14,8 @@
     <string name="no_connection_message">No connection to internet</string>
     <string name="forgot_your_password">Forgot your Password?</string>
     <string name="save">SAVE</string>
+    <string name="username_password_error">Please supply both your username and password</string>
+    <string name="add_word">Add Word</string>
+    <string name="cheesecake">Cheesecake</string>
 
 </resources>

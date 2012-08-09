@@ -30,7 +30,7 @@ public class Locations extends ItemizedOverlay<OverlayItem> {
      */
     @Override
     public void draw(Canvas canvas, MapView mapView, boolean shadow) {
-	// TODO Auto-generated method stub
+
 	super.draw(canvas, mapView, true);
     }
 

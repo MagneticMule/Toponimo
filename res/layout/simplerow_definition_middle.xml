@@ -3,7 +3,7 @@
     android:id="@+id/background"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="#dedede"
+    android:background="#00000000"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -13,7 +13,7 @@
         android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip"
         android:layout_marginTop="0dip"
-        android:background="@drawable/timeline_background_container_middle"
+        android:background="@drawable/timeline_background_container_single"
         android:gravity="center"
         android:padding="5dip" >
 

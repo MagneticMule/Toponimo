@@ -434,36 +434,6 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 
 	}
 
-	
-
-	private class ImagePair {
-
-		private String	fullImagePath;
-
-		private String	thumbImagePath;
-
-		public ImagePair(String _imagePath, String _thumbPath) {
-			fullImagePath = _imagePath;
-			thumbImagePath = _thumbPath;
-		}
-
-		public String getFullImagePath() {
-			return fullImagePath;
-		}
-
-		public void setFullImagePath(String fullImagePath) {
-			this.fullImagePath = fullImagePath;
-		}
-
-		public String getThumbImagePath() {
-			return thumbImagePath;
-		}
-
-		public void setThumbImagePath(String thumbImagePath) {
-			this.thumbImagePath = thumbImagePath;
-		}
-
-	}
 
 	public void onInit(int arg0) {
 		// TODO Auto-generated method stub

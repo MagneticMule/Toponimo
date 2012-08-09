@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="BaseTopBar">
         <item name="android:layout_width">fill_parent</item>
@@ -69,6 +69,16 @@
 
     <style name="PageTitle" parent="BaseTopBar">
         <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="Theme.Toponimo" parent="Theme.Sherlock.Light">
+        <item name="actionBarStyle">@style/Widget.Toponimo.ActionBar</item>
+        <item name="android:actionBarStyle">@style/Widget.Toponimo.ActionBar</item>
+    </style>
+
+    <style name="Widget.Toponimo.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid">
+        <item name="background">@drawable/actionbar_bg_light</item>
+        <item name="android:background">@drawable/actionbar_bg_light</item>
     </style>
 
 </resources>

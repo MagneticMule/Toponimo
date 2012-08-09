@@ -68,6 +68,8 @@ public class PlaceListActivity extends Activity implements LocationListener {
 	private LocationReceiver			receiver;
 	private LocationManager				locationManager;
 	private LocationListener			locationListener;
+	
+	private Location currentLocation;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -176,6 +178,7 @@ public class PlaceListActivity extends Activity implements LocationListener {
 				LocationUpdateService.class);
 		startService(locationUpdateService);
 	}
+	
 
 	@Override
 	public void onAttachedToWindow() {
@@ -345,5 +348,7 @@ public class PlaceListActivity extends Activity implements LocationListener {
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 
 	}
+	
+	
 
 }

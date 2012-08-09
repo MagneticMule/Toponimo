@@ -4,26 +4,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
-    android:background="@color/background_gray"
-    android:orientation="vertical"
-    tools:context=".ui.WordBankActivity" >
-
-    <include
-        android:id="@+id/id_bar_place_list"
-        android:layout_height="32dp"
-        android:layout_gravity="center_horizontal"
-        layout="@layout/inc_action_bar_timeline" />
+    android:animateLayoutChanges="true"
+    android:background="#ffeeea"
+    android:orientation="vertical" >
 
     <ListView
         android:id="@+id/wordListView"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="0.8"
+        android:animateLayoutChanges="true"
         android:divider="#00000000"
         android:dividerHeight="0dip"
-        android:fadingEdge="horizontal|none"
         android:footerDividersEnabled="true"
-        android:headerDividersEnabled="true"
-        android:scrollingCache="true" />
+        android:headerDividersEnabled="false" />
 
 </LinearLayout>

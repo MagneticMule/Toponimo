@@ -58,7 +58,7 @@ public class ToponimoApplication extends Application {
 		// reference to the user shared preferences file
 		userDetailsPrefs = getSharedPreferences(Constants.USER_DETAILS_PREFS, 0);
 
-		// Httpclient object which will be used throughout the application
+		// single Httpclient object which will be used throughout the application
 		httpClient = new DefaultHttpClient();
 		ClientConnectionManager manager = httpClient.getConnectionManager();
 		HttpParams params = httpClient.getParams();
