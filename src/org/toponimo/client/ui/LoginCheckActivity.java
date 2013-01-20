@@ -23,7 +23,7 @@ public class LoginCheckActivity extends Activity {
 			Log.d("Toponimo: Login", "SUCCESS");
 
 			Intent i = new Intent(LoginCheckActivity.this,
-					WordBankActivity.class);
+					JournalActivity.class);
 			startActivity(i);
 		}
 		else { // Start the Login activity

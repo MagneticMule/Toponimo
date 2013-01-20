@@ -2,7 +2,7 @@ package org.toponimo.client.ui.adapters;
 
 import java.util.List;
 
-import org.toponimo.client.structures.placestructure.Place;
+import org.toponimo.client.models.Place;
 
 import android.content.Context;
 import android.view.LayoutInflater;

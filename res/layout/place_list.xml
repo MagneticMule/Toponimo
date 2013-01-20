@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:background="@color/background_gray"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/wordListView"
+        android:layout_width="fill_parent"
+        android:layout_height="300dip"
+        android:layout_weight="0.8"
+        android:divider="@drawable/divider_grad"
+        android:dividerHeight="2dip"
+        android:fadingEdge="horizontal|none"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true"
+        android:scrollingCache="true" />
+
+    <LinearLayout
+        android:id="@+id/loading_view"
+        android:layout_width="fill_parent"
+        android:layout_height="300dip"
+        android:layout_gravity="center"
+        android:layout_weight="0.8"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/loading_text_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_weight="0.4"
+            android:gravity="center"
+            android:text="Getting Location"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/empty_view"
+        android:layout_width="fill_parent"
+        android:layout_height="300dip"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_weight="0.8"
+        android:gravity="center"
+        android:visibility="gone" >
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@drawable/shadow_grad_bottom" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/place_list_bottom_location_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="10dip"
+        android:layout_weight="0.1"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="0dip" >
+
+        <TextView
+            android:id="@+id/places_info_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/darker_gray"
+            android:textSize="9dip" >
+        </TextView>
+    </LinearLayout>
+
+</LinearLayout>

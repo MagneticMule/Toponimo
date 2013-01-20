@@ -7,7 +7,8 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/timeline_default_image"
+        android:layout_margin="10dip"
+        android:background="@drawable/timeline_background_container_single"
         android:gravity="bottom" >
 
         <ImageView
@@ -27,8 +28,8 @@
             android:paddingRight="10dip"
             android:paddingTop="10dip"
             android:singleLine="true"
-            android:text=" "
-            android:textColor="@color/white"
+            android:text="Not Logged In"
+            android:textColor="@color/darker_gray"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -44,21 +45,8 @@
             android:paddingRight="10dip"
             android:singleLine="true"
             android:text="No words"
-            android:textColor="@color/white"
+            android:textColor="@color/darker_gray"
             android:textSize="12sp" />
-
-        <View
-            android:id="@+id/view_bottom"
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_above="@+id/image_profile"
-            android:layout_alignParentLeft="true"
-            android:background="@color/white" />
     </RelativeLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="8dip"
-        android:background="@drawable/shadow_grad_bottom_dark" />
 
 </LinearLayout>

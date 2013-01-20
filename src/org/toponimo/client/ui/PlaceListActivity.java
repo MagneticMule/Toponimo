@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.toponimo.client.ApiKeys;
 import org.toponimo.client.ToponimoApplication;
-import org.toponimo.client.structures.placestructure.Place;
-import org.toponimo.client.structures.placestructure.Results;
+import org.toponimo.client.models.Place;
+import org.toponimo.client.models.Results;
 import org.toponimo.client.ui.adapters.PlacesListAdapter;
 import org.toponimo.client.utils.http.HttpUtils;
 import org.toponimo.client.utils.location.LocationGeocoder;
@@ -44,10 +44,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.ActionBarSherlock;
+import com.actionbarsherlock.ActionBarSherlock.OnCreateOptionsMenuListener;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+
 import com.google.gson.Gson;
 import org.toponimo.client.R;
 
-public class PlaceListActivity extends Activity implements LocationListener {
+public class PlaceListActivity extends SherlockActivity implements LocationListener {
 
 	protected static final String		TAG				= "ToponimoActivity";
 	private ListView					placeListView;
@@ -59,11 +66,9 @@ public class PlaceListActivity extends Activity implements LocationListener {
 	protected String					lng;
 
 	private ToponimoApplication			application;
-	private ProgressBar					refreshBar;
 
-	private ImageView					refreshButton;
-	private ImageView					wordBankButton;
-	private TextView					loadingView;
+	private TextView					loadingTextView;
+	private LinearLayout				loadingLinearLayout;
 	private LinearLayout				emptyView;
 	private LocationReceiver			receiver;
 	private LocationManager				locationManager;
@@ -75,77 +80,28 @@ public class PlaceListActivity extends Activity implements LocationListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// Inflate view
-		setContentView(R.layout.listitems);
+		setContentView(R.layout.place_list);
+		
+		/*
+		 * get a reference to the activities ActionBar, disable the home icon
+		 * and title and set the title
+		 */
+		getSupportActionBar().setDisplayShowHomeEnabled(false);
+		getSupportActionBar().setTitle("Nearby Places");
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		// Get instance to application context
-		application = (ToponimoApplication) getApplicationContext();
-		mainActivity = this;
-		placeArrayAdapter = new PlacesListAdapter(this, R.layout.simplerow,
-				placenameList);
-
-		refreshBar = (ProgressBar) findViewById(R.id.refresh_progress_bar);
-		emptyView = (LinearLayout) findViewById(R.id.empty_view);
-		loadingView = (TextView) findViewById(R.id.loading_view);
-
-		placeListView = (ListView) findViewById(R.id.wordListView);
-
-		placeListView.setAdapter(placeArrayAdapter);
-
-		placeListView.setEmptyView(loadingView);
-
-		placeListView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> a, View v,
-					int currentPlaceIndex, long id) {
-				TextView textView = (TextView) v.findViewById(R.id.label);
-				String placeName = textView.getText().toString();
-				TextView types = (TextView) v.findViewById(R.id.label_words);
-				application.setCurrentPlaceIndex(currentPlaceIndex);
-				String placeAddress = application
-						.getPlaceResults(application.getCurrentPlaceIndex())
-						.getVicinity().toString();
-				Intent intent = new Intent(PlaceListActivity.this,
-						PlaceDetailsActivity.class);
-				intent.putExtra("position", currentPlaceIndex);
-				intent.putExtra("placeName", placeName);
-				intent.putExtra("placeAddress", placeAddress);
-				intent.putExtra("currentPosLat", lat);
-				intent.putExtra("currentPosLng", lng);
-				startActivity(intent);
-				intent.getExtras();
-			}
-		});
-
-		refreshButton = (ImageView) findViewById(R.id.refresh_button);
-		refreshButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				checkNetStatusandRefresh();
-			}
-		});
-		registerLocationReceiver();
-		checkNetStatusandRefresh();
-
-		wordBankButton = (ImageView) findViewById(R.id.word_bank_button);
-		wordBankButton.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				Intent i = new Intent(PlaceListActivity.this,
-						WordBankActivity.class);
-				startActivity(i);
-
-			}
-		});
 	}
-
+	
+	
+	// display mesage to t
 	public void setEmptyView() {
 		placeListView.setEmptyView(emptyView);
 	}
 
 	public void setLoadingView() {
-		loadingView.setText("Loading Places");
-		placeListView.setEmptyView(loadingView);
+		loadingTextView.setText("Loading Places");
+		placeListView.setEmptyView(loadingLinearLayout);
 	}
 
 	@Override
@@ -168,7 +124,7 @@ public class PlaceListActivity extends Activity implements LocationListener {
 		} else {
 			Toast.makeText(mainActivity, "No connection to Toponimo server",
 					Toast.LENGTH_LONG).show();
-			loadingView.setText("No connection to Toponimo");
+			loadingTextView.setText("No connection to Toponimo");
 
 		}
 	}
@@ -194,6 +150,8 @@ public class PlaceListActivity extends Activity implements LocationListener {
 		super.onConfigurationChanged(newConfig);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
+	
+
 
 	@SuppressWarnings("rawtypes")
 	private class GetPlaceList extends AsyncTask {
@@ -201,11 +159,8 @@ public class PlaceListActivity extends Activity implements LocationListener {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			mainActivity.refreshButton.setVisibility(View.GONE);
-			mainActivity.refreshBar.setVisibility(View.VISIBLE);
-			if (mainActivity.loadingView.getVisibility() != View.GONE) {
-				mainActivity.loadingView.setText("Loading Places");
-			}
+
+
 		}
 
 		@Override
@@ -264,9 +219,6 @@ public class PlaceListActivity extends Activity implements LocationListener {
 		protected void onPostExecute(Object result) {
 			super.onPostExecute(result);
 			mainActivity.placeArrayAdapter.notifyDataSetChanged();
-			mainActivity.refreshButton.setVisibility(View.VISIBLE);
-			mainActivity.refreshBar.setVisibility(View.GONE);
-
 		}
 
 	}
@@ -279,6 +231,52 @@ public class PlaceListActivity extends Activity implements LocationListener {
 
 	@Override
 	protected void onResume() {
+		
+		// Get instance to application context
+		application = (ToponimoApplication) getApplicationContext();
+		mainActivity = this;
+		placeArrayAdapter = new PlacesListAdapter(this, R.layout.simplerow,
+				placenameList);
+		
+		
+
+		emptyView = (LinearLayout) findViewById(R.id.empty_view);
+		loadingLinearLayout = (LinearLayout) findViewById(R.id.loading_view);
+		loadingTextView = (TextView) findViewById(R.id.loading_text_view);
+
+
+
+		placeListView = (ListView) findViewById(R.id.wordListView);
+
+		placeListView.setAdapter(placeArrayAdapter);
+
+		placeListView.setEmptyView(loadingLinearLayout);
+
+		placeListView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> a, View v,
+					int currentPlaceIndex, long id) {
+				TextView textView = (TextView) v.findViewById(R.id.label);
+				String placeName = textView.getText().toString();
+				TextView types = (TextView) v.findViewById(R.id.label_words);
+				application.setCurrentPlaceIndex(currentPlaceIndex);
+				String placeAddress = application
+						.getPlaceResults(application.getCurrentPlaceIndex())
+						.getVicinity().toString();
+				Intent intent = new Intent(PlaceListActivity.this,
+						PlaceDetailsActivity.class);
+				intent.putExtra("position", currentPlaceIndex);
+				intent.putExtra("placeName", placeName);
+				intent.putExtra("placeAddress", placeAddress);
+				intent.putExtra("currentPosLat", lat);
+				intent.putExtra("currentPosLng", lng);
+				startActivity(intent);
+				intent.getExtras();
+			}
+		});
+
+		registerLocationReceiver();
+		checkNetStatusandRefresh();
+		
 		locationManager.requestLocationUpdates(
 				LocationManager.NETWORK_PROVIDER, 0, 0, this);
 		super.onResume();

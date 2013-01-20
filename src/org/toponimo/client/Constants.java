@@ -7,19 +7,24 @@ import org.toponimo.client.R;
 public class Constants {
 
 	// Parameters for passing a bundle to the ImageUploadService
-	public static final String	UPLOAD_IMAGE_NAME				= "UIN";
-	public static final String	UPLOAD_IMAGE_WORD_NAME			= "UIWN";
-	public static final String	UPLOAD_IMAGE_WORD_NUMBER		= "UIWU";
-	public static final String	UPLOAD_IMAGE_SYNSET_NUMBER		= "UISN";
-	public static final String	UPLOAD_IMAGE_USER_ID			= "UIUID";
-	public static final String	UPLOAD_IMAGE_PATH				= "UIP";
-	public static final String	UPLOAD_IMAGE_PLACE_ID			= "UIPID";
+	public static final String	UPLOAD_IMAGE_NAME			= "UIN";
+	public static final String	UPLOAD_IMAGE_WORD_NAME		= "UIWN";
+	public static final String	UPLOAD_IMAGE_WORD_NUMBER	= "UIWU";
+	public static final String	UPLOAD_IMAGE_SYNSET_NUMBER	= "UISN";
+	public static final String	UPLOAD_IMAGE_USER_ID		= "UIUID";
+	public static final String	UPLOAD_IMAGE_PATH			= "UIP";
+	public static final String	UPLOAD_IMAGE_PLACE_ID		= "UIPID";
 
 	// REST verbs
-	public static final int		GET								= 1;
-	public static final int		PUT								= 2;
-	public static final int		POST							= 3;
-	public static final int		DELETE							= 4;
+	// public static final int GET = 1;
+	// public static final int PUT = 2;
+	// public static final int POST = 3;
+	// public static final int DELETE = 4;
+
+	// REST Enum
+	public enum verb {
+		GET, PUT, POST, DELETE
+	};
 
 	// Parameters for passing data to and from the RESTService
 
@@ -64,7 +69,7 @@ public class Constants {
 	// local cache of pictures
 	public static final String	DATABASE_TABLE_MY_PICTURES		= "myPicturesTable";
 
-	public static final int		DATABASE_VERSION				= 25;
+	public static final int		DATABASE_VERSION				= 26;
 
 	// key used for where clauses
 	public static final String	KEY_ROW_ID						= "_id";
@@ -99,26 +104,16 @@ public class Constants {
 																		+ "("
 																		+ KEY_ROW_ID
 																		+ " integer primary key autoincrement not null, "
-																		+ KEY_WORD
-																		+ " text not null, "
-																		+ KEY_WORD_LOCATION
-																		+ " text not null, "
-																		+ KEY_WORD_DEFINITION
-																		+ " text not null, "
-																		+ KEY_WORD_GLOSS
-																		+ " text, "
-																		+ KEY_WORD_TYPE
-																		+ " text, "
-																		+ KEY_WORD_LOCATION_LAT
-																		+ " real not null, "
-																		+ KEY_WORD_LOCATION_LNG
-																		+ " real not null, "
-																		+ KEY_WORD_LOCATION_ID
-																		+ " text not null, "
-																		+ KEY_WORD_TIME
+																		+ KEY_WORD + " text not null, "
+																		+ KEY_WORD_LOCATION + " text not null, "
+																		+ KEY_WORD_DEFINITION + " text not null, "
+																		+ KEY_WORD_GLOSS + " text, " + KEY_WORD_TYPE
+																		+ " text, " + KEY_WORD_LOCATION_LAT
+																		+ " real not null, " + KEY_WORD_LOCATION_LNG
+																		+ " real not null, " + KEY_WORD_LOCATION_ID
+																		+ " text not null, " + KEY_WORD_TIME
 																		+ " integer not null, "
-																		+ KEY_WORD_ADDITION_TYPE
-																		+ " integer not null)";
+																		+ KEY_WORD_ADDITION_TYPE + " integer not null)";
 
 	/**
 	 * Definitions for local SQL database to store visited places
@@ -144,16 +139,11 @@ public class Constants {
 																		+ "("
 																		+ KEY_ROW_ID
 																		+ " integer primary key autoincrement not null, "
-																		+ KEY_PLACE_NAME
-																		+ " text not null, "
-																		+ KEY_PLACE_LAT
-																		+ " real not null, "
-																		+ KEY_PLACE_LNG
-																		+ " real not null, "
-																		+ KEY_PLACE_VICINITY
-																		+ " text not null, "
-																		+ KEY_PLACE_PLACEID
-																		+ " text not null, "
+																		+ KEY_PLACE_NAME + " text not null, "
+																		+ KEY_PLACE_LAT + " real not null, "
+																		+ KEY_PLACE_LNG + " real not null, "
+																		+ KEY_PLACE_VICINITY + " text not null, "
+																		+ KEY_PLACE_PLACEID + " text not null, "
 																		+ KEY_PLACE_TIME
 																		+ " timestamp default CURRENT_TIMESTAMP)";
 
@@ -176,6 +166,8 @@ public class Constants {
 	public static final int		KEY_IMAGE_SYNSET_NUMBER_COLUMN	= 6;
 	public static final String	KEY_IMAGE_TIME					= "time";
 	public static final int		KEY_IMAGE_TIME_COLUMN			= 7;
+	public static final String	KEY_IMAGE_OWNER_ID				= "ownerId";
+	public static final int KEY_IMAGE_OWNER_ID_COLUMN = 8;
 
 	// SQL query to construct pictures table
 	public static final String	CREATE_TABLE_MY_PICTURES		= "CREATE TABLE IF NOT EXISTS "
@@ -183,18 +175,12 @@ public class Constants {
 																		+ "("
 																		+ KEY_ROW_ID
 																		+ " integer primary key autoincrement not null, "
-																		+ KEY_IMAGE_NAME
-																		+ " text not null, "
-																		+ KEY_IMAGE_FILEPATH
-																		+ " text not null, "
-																		+ KEY_IMAGE_PLACEID
-																		+ " text not null, "
-																		+ KEY_IMAGE_WORD
-																		+ " text not null, "
-																		+ KEY_IMAGE_WORD_NUMBER
-																		+ " real not null, "
-																		+ KEY_IMAGE_SYNSET_NUMBER
-																		+ " real not null, "
+																		+ KEY_IMAGE_NAME + " text not null, "
+																		+ KEY_IMAGE_FILEPATH + " text not null, "
+																		+ KEY_IMAGE_PLACEID + " text not null, "
+																		+ KEY_IMAGE_WORD + " text not null, "
+																		+ KEY_IMAGE_WORD_NUMBER + " real not null, "
+																		+ KEY_IMAGE_SYNSET_NUMBER + " real not null, "
 																		+ KEY_IMAGE_TIME
 																		+ " timestamp default CURRENT_TIMESTAMP)";
 

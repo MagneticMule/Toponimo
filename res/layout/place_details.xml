@@ -1,25 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
-    android:background="@drawable/blue_to_blue_grad"
-    android:orientation="vertical"
-    android:paddingTop="3px" >
+    android:background="@color/background_gray"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="50dip"
-        android:background="@drawable/black_to_white_grad"
-        android:baselineAligned="false" >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/title_grad"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#dedede" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="8dip"
+        android:background="@drawable/shadow_grad" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" >
-    </TextView>
+        android:background="@color/dark_gray"
+        android:gravity="center_horizontal"
+        android:paddingBottom="5dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="5dip" >
+
+        <TextView
+            android:id="@+id/place_details_place_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="The Spire Cafe"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/place_details_place_address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/place_details_place_name"
+            android:layout_marginTop="1dip"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="Jubilee Campus"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/place_details_place_distance"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/place_details_place_address"
+            android:layout_marginTop="4dip"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="0.1 miles away"
+            android:textColor="@color/brown_green_light"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@drawable/divider_grad" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@drawable/divider_grad" />
+
+    <ListView
+        android:id="@+id/place_details_word_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="300dip"
+        android:layout_weight="0.8"
+        android:divider="@drawable/divider_grad"
+        android:dividerHeight="2dip"
+        android:fadingEdge="horizontal|none"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true"
+        android:scrollingCache="false" />
+
+    <LinearLayout
+        android:id="@+id/place_details_bottom_location_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="10dip"
+        android:layout_weight="0.1"
+        android:background="@color/dark_gray"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/places_info_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="9dip" >
+        </TextView>
+    </LinearLayout>
 
 </LinearLayout>

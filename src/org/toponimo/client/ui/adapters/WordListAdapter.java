@@ -3,6 +3,8 @@ package org.toponimo.client.ui.adapters;
 import java.util.List;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,5 +68,6 @@ public class WordListAdapter extends ArrayAdapter<String> {
 	// TODO Auto-generated method stub
 	return super.getItem(position);
     }
+
 
 }

@@ -31,7 +31,7 @@ public class RestService extends IntentService {
 
 	private NotificationManager	mNotificationManager;
 
-	// Unique id for notification
+	// Unique id for notification service
 	private static final int	NOTIFICATION_ID	= 28031974;
 
 	/*
@@ -57,7 +57,7 @@ public class RestService extends IntentService {
 			return;
 		}
 		// int action = bundle.getInt(Constants.REST_ACTION);
-		uploadImage(bundle, imagePath);
+		post(bundle);
 	}
 
 	private void RestAction(int _action) {
@@ -77,10 +77,11 @@ public class RestService extends IntentService {
 		notification.icon = R.drawable.ic_stat_notification_icon;
 		notification.tickerText = "Uploading Image";
 		notification.when = System.currentTimeMillis();
-		notification.number+=1;
-		notification.setLatestEventInfo(this, "Toponimo","Uploading Image", PendingIntent.getActivity(getApplicationContext(), 0, new Intent(), 0));
+		notification.number += 1;
+		notification.setLatestEventInfo(this, "Toponimo", "Uploading to Toponimo",
+				PendingIntent.getActivity(getApplicationContext(), 0, new Intent(), 0));
 		mNotificationManager.notify(NOTIFICATION_ID, notification);
-		//this.showNotification();
+		// this.showNotification();
 	}
 
 	@Override
@@ -88,43 +89,51 @@ public class RestService extends IntentService {
 		super.onStart(intent, startId);
 	}
 
-	private void uploadImage(Bundle _bundle, Uri _imagePath) {
+	private Bundle get() {
 
-		String currentPlaceId = (String) _bundle
-				.getString(Constants.UPLOAD_IMAGE_PLACE_ID);
-		String imageName = (String) _bundle
-				.getString(Constants.UPLOAD_IMAGE_NAME);
+		Bundle bundle = new Bundle();
+		return bundle;
 
-		String word = (String) _bundle
-				.getString(Constants.UPLOAD_IMAGE_WORD_NAME);
+	}
+
+	private void put() {
+
+	}
+
+	private void delete() {
+
+	}
+
+	private void post(Bundle _bundle) {
+
+		String currentPlaceId = (String) _bundle.getString(Constants.UPLOAD_IMAGE_PLACE_ID);
+		String imageName = (String) _bundle.getString(Constants.UPLOAD_IMAGE_NAME);
+
+		String word = (String) _bundle.getString(Constants.UPLOAD_IMAGE_WORD_NAME);
 		Log.d("RESTService: WORD", word);
 
-		String wordNo = (String) _bundle
-				.getString(Constants.UPLOAD_IMAGE_WORD_NUMBER);
+		String wordNo = (String) _bundle.getString(Constants.UPLOAD_IMAGE_WORD_NUMBER);
 		Log.d("WORDNO", wordNo);
-		String synsetNo = (String) _bundle
-				.getString(Constants.UPLOAD_IMAGE_SYNSET_NUMBER);
+		
+		String synsetNo = (String) _bundle.getString(Constants.UPLOAD_IMAGE_SYNSET_NUMBER);
 		Log.d("SYNSETNO", synsetNo);
-		String userId = (String) _bundle
-				.getString(Constants.UPLOAD_IMAGE_USER_ID);
+		
+		String userId = (String) _bundle.getString(Constants.UPLOAD_IMAGE_USER_ID);
 		Log.d("USERID", userId);
-
+		
+		Uri destinationPath = (Uri) _bundle.getSerializable(Constants.UPLOAD_IMAGE_PATH);
+		Log.d("IMAGE_PATH", destinationPath.toString());
+		
 		try {
 			List<NameValuePair> postParameters = new ArrayList<NameValuePair>(1);
-			postParameters.add(new BasicNameValuePair("postobject[placeid]",
-					currentPlaceId));
-			postParameters
-					.add(new BasicNameValuePair("postobject[word]", word));
-			postParameters.add(new BasicNameValuePair("postobject[wordno]",
-					"23"));
-			postParameters.add(new BasicNameValuePair("postobject[synsetno]",
-					"7"));
-			postParameters.add(new BasicNameValuePair("postobject[ownerid]",
-					userId));
+			postParameters.add(new BasicNameValuePair("postobject[placeid]", currentPlaceId));
+			postParameters.add(new BasicNameValuePair("postobject[word]", word));
+			postParameters.add(new BasicNameValuePair("postobject[wordno]", "23"));
+			postParameters.add(new BasicNameValuePair("postobject[synsetno]", "7"));
+			postParameters.add(new BasicNameValuePair("postobject[ownerid]", userId));
 
-			HttpUtils.executeHttpMultipartPost(ToponimoApplication.getApp()
-					.getHttpClient(), postParameters,
-					"http://www.toponimo.org/toponimo/api/images/", _imagePath);
+			HttpUtils.executeHttpMultipartPost(ToponimoApplication.getApp().getHttpClient(), postParameters,
+					"http://www.toponimo.org/toponimo/api/images/", destinationPath);
 		} catch (UnsupportedEncodingException uce) {
 			uce.printStackTrace();
 		} catch (IOException e) {
@@ -138,10 +147,9 @@ public class RestService extends IntentService {
 		super.onDestroy();
 		mNotificationManager.cancel(NOTIFICATION_ID);
 	}
-	
-	public void imageResize(String _image){
-		
-	}
 
+	public void imageResize(String _image) {
+
+	}
 
 }

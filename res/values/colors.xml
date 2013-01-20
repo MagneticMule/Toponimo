@@ -14,5 +14,8 @@
     <color name="list_divider_light_gray">#ffffff</color>
     <color name="yellow">#ffff22</color>
     <color name="link_blue">#445582</color>
+    <color name="red">#ff0000</color>
+    <color name="timeline_entry_stroke">#d5d5d4</color>
+    <color name="timeline_background">#ededeb</color>
 
 </resources>

@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_add_location"
+        android:icon="@drawable/ic_action_add_location"
+        android:showAsAction="always"
+        android:title="Location"/>
+    <item
+        android:id="@+id/menu_add_image"
+        android:icon="@drawable/ic_action_add_image"
+        android:showAsAction="always"
+        android:title="Image"/>
+    <item
+        android:id="@+id/menu_add_drawing"
+        android:icon="@drawable/ic_action_add_drawing"
+        android:showAsAction="always"
+        android:title="Drawing"/>
+    <item
+        android:id="@+id/menu_add_sound"
+        android:icon="@drawable/ic_action_add_sound"
+        android:showAsAction="always"
+        android:title="Sound"/>
+
+</menu>

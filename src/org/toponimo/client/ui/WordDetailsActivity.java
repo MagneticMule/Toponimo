@@ -2,6 +2,7 @@ package org.toponimo.client.ui;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,10 @@ import org.toponimo.client.ApiKeys;
 import org.toponimo.client.Constants;
 import org.toponimo.client.RestService;
 import org.toponimo.client.ToponimoApplication;
-import org.toponimo.client.structures.definitionstructure.WordDefinition;
-import org.toponimo.client.structures.placestructure.Place;
+import org.toponimo.client.models.Place;
+import org.toponimo.client.models.Userword;
+import org.toponimo.client.models.Word;
+import org.toponimo.client.models.WordDefinition;
 import org.toponimo.client.ui.adapters.WordGalleryAdapter;
 import org.toponimo.client.utils.BitmapUtils;
 import org.toponimo.client.utils.http.HttpUtils;
@@ -50,10 +53,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.google.gson.Gson;
 import org.toponimo.client.R;
 
-public class WordDetailsActivity extends Activity implements TextToSpeech.OnInitListener {
+public class WordDetailsActivity extends SherlockActivity implements TextToSpeech.OnInitListener {
 
 	protected static final String		TAG							= "WordDetailsActivity";
 	private static final int			TAKE_PICTURE				= 1;
@@ -61,7 +65,7 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 	private static final int			EDIT_DEFINITION_DIALOG_ID	= 1974;
 	private ToponimoApplication			application;
 	private static WordDetailsActivity	mainActivity;
-	private TextToSpeech				tts;
+	private TextToSpeech				tts 						= null;
 	private String						word						= null;
 	private String						definition					= null;
 	private String						gloss						= null;
@@ -71,7 +75,7 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 	protected TextView					definitionTextView;
 	protected TextView					glossTextView;
 	protected TextView					lexTypeTextView;
-	private Uri							imageOutputURI				= null;
+	private Uri							imageOutputUri				= null;
 
 	private Animation					fadein;
 	private final ArrayList<String>		imageList					= new ArrayList<String>();
@@ -92,11 +96,11 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 		}
 
 		if (requestCode == TAKE_PICTURE) {
-			Log.d(TAG, "Got to TAKE PICTURE");
-			if (imageOutputURI != null) {
+			Log.d(TAG, "TAKE PICTURE");
+			if (imageOutputUri != null) {
 				Log.v(TAG, "Data is not NULL");
-				Log.v("BitmapString: ", imageOutputURI.toString());
-				String thumbnailPath = BitmapUtils.createThumbnail(imageOutputURI, 80);
+				Log.v("BitmapString: ", imageOutputUri.toString());
+				String thumbnailPath = BitmapUtils.createThumbnail(imageOutputUri, 240);
 				Log.d(TAG + ": ThumbnailPath=", thumbnailPath);
 
 				imageList.add(thumbnailPath);
@@ -105,32 +109,36 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 				int currentPlaceIndex = application.getCurrentPlaceIndex();
 				String currentPlaceId = application.getPlaceResults(currentPlaceIndex).getId();
 				
-				// Construct new bundle to hold
+				
+				List<NameValuePair> postParameters = new ArrayList<NameValuePair>(1);
+				// Construct new bundle to pass to the restservice
 				Bundle bundle = new Bundle();
+				//bundle.putParcelableArrayList("postParameters", postParameters);
 				bundle.putString(Constants.UPLOAD_IMAGE_PLACE_ID, currentPlaceId);
 				bundle.putString(Constants.UPLOAD_IMAGE_WORD_NAME, word);
 				bundle.putString(Constants.UPLOAD_IMAGE_WORD_NUMBER, "23");
 				bundle.putString(Constants.UPLOAD_IMAGE_SYNSET_NUMBER, "7");
 				bundle.putString(Constants.UPLOAD_IMAGE_USER_ID, application.getUser().getId());
+				bundle.putString(Constants.UPLOAD_IMAGE_PATH, imageOutputUri.toString());
+				bundle.putSerializable(Constants.UPLOAD_IMAGE_PATH, (Serializable) imageOutputUri);
 
 				// Start new REST service to upload image
 				Intent restService = new Intent(WordDetailsActivity.this, RestService.class);
-				restService.setData(imageOutputURI);
+				
+				//restService.setData(imageOutputURI);
 				restService.putExtra(Constants.REST_PARAMS, bundle);
 				startService(restService);
 				// (new ImageUploader()).execute((Object) null);
 			}
 
 		} else if (requestCode == DATA_CHECKSUM) {
+			
 			if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-
 				// if TTS data exists, create a new TTS instance
 				tts = new TextToSpeech(this, this);
 			} else {
-				// TTS data is not installed. Ask user if they would like to
-				// install it.
+				// TTS data is not installed. Ask user if they would like to install it.
 				DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case DialogInterface.BUTTON_POSITIVE:
@@ -141,7 +149,6 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 							startActivity(installIntent);
 							break;
 						}
-
 					}
 				};
 
@@ -244,7 +251,7 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 				Toast t = Toast.makeText(WordDetailsActivity.this, "Added '" + word + "' to Timeline",
 						Toast.LENGTH_SHORT);
 				t.show();
-				Intent i = new Intent(WordDetailsActivity.this, WordBankActivity.class);
+				Intent i = new Intent(WordDetailsActivity.this, JournalActivity.class);
 				startActivity(i);
 			}
 		});
@@ -265,9 +272,9 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 				UUID uuid = UUID.randomUUID();
 
 				File path = new File(Environment.getExternalStorageDirectory(), uuid.toString() + ".jpg");
-				imageOutputURI = Uri.fromFile(path);
-				Log.d(TAG, imageOutputURI.toString());
-				i.putExtra(MediaStore.EXTRA_OUTPUT, imageOutputURI);
+				imageOutputUri = Uri.fromFile(path);
+				Log.d(TAG, imageOutputUri.toString());
+				i.putExtra(MediaStore.EXTRA_OUTPUT, imageOutputUri);
 
 				try {
 					startActivityForResult(i, TAKE_PICTURE);
@@ -355,6 +362,12 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 		Uri newWord = getContentResolver().insert(uri, cv);
 
 	}
+	
+	private TextView addDefinitiontextView(int defNum) {
+		TextView definitionTextView = new TextView(this);
+		return definitionTextView;
+		
+	}
 
 	/*
 	 * download current word definitions
@@ -364,6 +377,7 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 		WordDefinition	wordDefinitions	= null;
 
 		Place			place			= null;
+		
 
 		// try {
 		// Gson gson = new Gson();
@@ -404,9 +418,14 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 		protected void onPostExecute(Object result) {
 			try {
 				if (wordDefinitions.getTotal() > 0) {
-					String definition = wordDefinitions.getSynset().get(0).getDefinitions();
-					if (definition == null)
-						definition = "No definition found";
+					Userword word = new Userword();
+					String definition = "";
+					for (int i = 0; i < wordDefinitions.getSynset().size(); i++) {
+						definition += Integer.toString(i) + ")";
+						
+						definition += wordDefinitions.getSynset().get(i).getDefinitions();
+					}
+					
 					mainActivity.definitionTextView.setText(definition);
 					mainActivity.definition = definition;
 
@@ -440,13 +459,5 @@ public class WordDetailsActivity extends Activity implements TextToSpeech.OnInit
 
 	}
 
-	public class ResponseReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-
-		}
-
-	}
-
+	
 }

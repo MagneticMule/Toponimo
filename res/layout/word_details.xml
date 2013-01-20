@@ -11,7 +11,6 @@
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/title_grad"
         android:baselineAligned="false" >
 
         <TextView
@@ -35,21 +34,10 @@
             android:layout_margin="10dip"
             android:background="@drawable/red_button"
             android:drawableLeft="@drawable/chat"
-            android:gravity="right"
             android:text="SPEAK"
             android:tint="#ffffff"
-            android:width="76dip" />
+            android:width="82dip" />
     </LinearLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="#dedede" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="8dip"
-        android:background="@drawable/shadow_grad" />
 
     <ScrollView
         android:id="@+id/word_details_scrollview"
@@ -90,17 +78,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/word_details_definition_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dip"
-                    android:paddingBottom="1dip"
-                    android:text="EDIT"
-                    android:textColor="#999999"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
             </LinearLayout>
 
             <View
@@ -140,10 +117,9 @@
                     android:layout_margin="10dip"
                     android:background="@drawable/red_button"
                     android:drawableLeft="@drawable/camera"
-                    android:gravity="right"
                     android:text="ADD"
                     android:tint="#ffffff"
-                    android:width="66dip" >
+                    android:width="72dip" >
                 </Button>
             </LinearLayout>
 
@@ -165,25 +141,25 @@
             <LinearLayout
                 android:id="@+id/word_details_gallery_container"
                 android:layout_width="match_parent"
-                android:layout_height="96px"
+                android:layout_height="300px"
                 android:background="#c4c4c4"
                 android:orientation="vertical" >
 
                 <View
                     android:layout_width="fill_parent"
-                    android:layout_height="8px"
+                    android:layout_height="4dp"
                     android:background="@drawable/shadow_grad" />
 
                 <Gallery
                     android:id="@+id/word_details_gallery"
                     android:layout_width="fill_parent"
-                    android:layout_height="80px"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
                     android:spacing="6dip" />
 
                 <View
                     android:layout_width="fill_parent"
-                    android:layout_height="8px" />
+                    android:layout_height="4dp" />
             </LinearLayout>
 
             <View
@@ -249,23 +225,23 @@
                     android:textColor="#5a5a5a"
                     android:textStyle="bold" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#3f3f3f" >
+
+                <Button
+                    android:id="@+id/word_details_add_to_word_bank_button"
+                    style="@style/ButtonTextGreyLarge"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48dip"
+                    android:layout_margin="10dip"
+                    android:background="@drawable/blue_button"
+                    android:text="COLLECT WORD" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="#3f3f3f" >
-
-        <Button
-            android:id="@+id/word_details_add_to_word_bank_button"
-            style="@style/ButtonTextGreyLarge"
-            android:layout_width="fill_parent"
-            android:layout_height="48dip"
-            android:layout_margin="10dip"
-            android:background="@drawable/blue_button"
-            android:text="ADD TO TIMELINE" />
-    </LinearLayout>
 
 </LinearLayout>

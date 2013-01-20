@@ -7,8 +7,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.HttpParams;
 import org.toponimo.client.R;
-import org.toponimo.client.structures.placestructure.Place;
-import org.toponimo.client.structures.placestructure.Results;
+import org.toponimo.client.models.Place;
+import org.toponimo.client.models.Results;
 
 import android.app.Application;
 import android.content.Context;

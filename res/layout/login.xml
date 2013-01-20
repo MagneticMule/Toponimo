@@ -13,27 +13,29 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:contentDescription="@string/login_activity_logo_description"
-        android:paddingBottom="30dip"
+        android:paddingBottom="40dip"
         android:paddingTop="0dip"
         android:src="@drawable/toponimo_ident_360" />
 
     <EditText
         android:id="@+id/login_activity_username_et"
         android:layout_width="fill_parent"
-        android:layout_height="50dip"
+        android:layout_height="40dip"
         android:layout_gravity="center"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
         android:hint="@string/login_activity_username_et"
         android:inputType="textNoSuggestions"
+        android:padding="10dp"
         android:singleLine="true"
-        android:textColorHint="@color/white" >
+        android:textColor="@color/white"
+        android:textColorHint="@color/light_gray" >
     </EditText>
 
     <EditText
         android:id="@+id/login_activity_password_et"
         android:layout_width="fill_parent"
-        android:layout_height="50dip"
+        android:layout_height="40dip"
         android:layout_gravity="center"
         android:layout_marginBottom="20dip"
         android:layout_marginLeft="20dip"
@@ -41,7 +43,9 @@
         android:layout_marginTop="20dip"
         android:hint="@string/login_activity_password_et"
         android:inputType="textPassword"
-        android:textColorHint="@color/white" />
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/light_gray" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -56,11 +60,11 @@
 
         <Button
             android:id="@+id/login_activity_signin_btn"
-            style="@style/ButtonText"
+            style="@style/ButtonTextLarge"
             android:layout_width="0dip"
             android:layout_height="50dip"
             android:layout_weight="1"
-            android:background="@drawable/green_button"
+            android:background="@drawable/blue_button"
             android:text="@string/signin"
             android:textSize="16sp" />
     </LinearLayout>
@@ -73,7 +77,7 @@
         android:paddingBottom="40dip"
         android:paddingTop="10dip"
         android:text="@string/forgot_your_password"
-        android:textColor="@color/white"
+        android:textColor="@color/light_gray"
         android:textSize="16sp" />
 
     <ImageView

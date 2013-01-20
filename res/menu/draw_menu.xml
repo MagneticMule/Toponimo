@@ -1,0 +1,34 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_support"
+        android:title="Contact support"/><item
+                android:id="@+id/menu_add_drawing"
+                android:icon="@drawable/ic_action_add_drawing"
+                android:title="Drawing"/>
+    <item
+        android:id="@+id/menu_add"
+        android:icon="@drawable/ic_action_add"
+        android:showAsAction="always|collapseActionView"
+        android:title="Add">
+        <menu>
+            <item
+                android:id="@+id/menu_add_word"
+                android:icon="@drawable/ic_action_add_word"
+                android:title="Word"/>
+            <item
+                android:id="@+id/menu_add_location"
+                android:icon="@drawable/ic_action_add_location"
+                android:title="Location"/>
+            <item
+                android:id="@+id/menu_add_image"
+                android:icon="@drawable/ic_action_add_image"
+                android:title="Image"/>
+            <item
+                android:id="@+id/menu_add_sound"
+                android:icon="@drawable/ic_action_add_sound"
+                android:title="Sound"/>
+        </menu>
+    </item>
+
+</menu>

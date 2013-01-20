@@ -67,8 +67,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="16dp"
-            android:layout_toLeftOf="@+id/vertical_bar_1"
-            android:src="@drawable/tray_full_32" />
+            android:layout_toLeftOf="@+id/vertical_bar_1" />
     </RelativeLayout>
 
 </merge>

@@ -11,6 +11,11 @@ import org.toponimo.client.R;
 import org.toponimo.client.ToponimoApplication;
 import org.toponimo.client.utils.http.HttpUtils;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +35,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-public class AddWordActivity extends Activity {
+public class AddWordActivity extends SherlockActivity {
 
     private ToponimoApplication application;
 
@@ -44,6 +49,10 @@ public class AddWordActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.add_word);
+	
+	/* get a reference to the activities ActionBar, disable the home icon and title and set the title*/
+	getSupportActionBar().setDisplayShowHomeEnabled(false);
+	getSupportActionBar().setTitle("Add Word");
 
 	application = (ToponimoApplication) this.getApplication();
 	Intent sender = getIntent();
@@ -152,5 +161,18 @@ public class AddWordActivity extends Activity {
 	super.onConfigurationChanged(newConfig);
 	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
+    
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.add_word_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return false;
+		
+	}
 
 }

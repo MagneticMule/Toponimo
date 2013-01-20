@@ -2,7 +2,7 @@ package org.toponimo.client;
 
 import org.toponimo.client.R;
 import org.toponimo.client.ui.LoginCheckActivity;
-import org.toponimo.client.ui.WordBankActivity;
+import org.toponimo.client.ui.JournalActivity;
 
 import android.content.Context;
 import android.content.Intent;
