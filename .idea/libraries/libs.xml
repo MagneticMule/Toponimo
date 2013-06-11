@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/httpcore-4.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/nineoldandroids-2.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/universal-image-loader-1.7.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/httpclient-cache-4.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/actionbarsherlock-plugin-maps-4.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/httpclient-4.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/httpmime-4.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/android-support-v4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
