@@ -15,6 +15,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
 import android.content.Context;
@@ -37,142 +38,149 @@ import android.widget.Toast;
 
 public class AddWordActivity extends SherlockActivity {
 
-    private ToponimoApplication application;
+	private ToponimoApplication	application;
 
-    private int currentPlaceIndex;
-    private String upid = null;
-    private String placeName;
-    private String words = null;
-    InputMethodManager imm;
+	private int					currentPlaceIndex;
+	private String				upid	= null;
+	private String				placeName;
+	private String				words	= null;
+	InputMethodManager			imm;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.add_word);
-	
-	/* get a reference to the activities ActionBar, disable the home icon and title and set the title*/
-	getSupportActionBar().setDisplayShowHomeEnabled(false);
-	getSupportActionBar().setTitle("Add Word");
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.add_word);
 
-	application = (ToponimoApplication) this.getApplication();
-	Intent sender = getIntent();
-	this.currentPlaceIndex = application.getCurrentPlaceIndex();
-	upid = new String(application.getPlaceResults(currentPlaceIndex)
-		.getId());
-	placeName = new String(application.getPlaceResults(currentPlaceIndex)
-		.getName());
-	// placeNameFromCaller = new
-	// String(application.getPlaceResults().get(position).getResults().get(position).getName().toString());
+		/*
+		 * get a reference to the activities ActionBar, disable the home icon
+		 * and title and set the title
+		 */
+		getSupportActionBar().setDisplayShowHomeEnabled(false);
+		getSupportActionBar().setTitle("Add Word");
 
-	Log.i("ID", upid);
-	Log.i("Name", placeName);
+		application = (ToponimoApplication) this.getApplication();
+		Intent sender = getIntent();
+		this.currentPlaceIndex = application.getCurrentPlaceIndex();
+		upid = new String(application.getPlaceResults(currentPlaceIndex).getId());
+		placeName = new String(application.getPlaceResults(currentPlaceIndex).getName());
+		// placeNameFromCaller = new
+		// String(application.getPlaceResults().get(position).getResults().get(position).getName().toString());
 
-	imm = (InputMethodManager) AddWordActivity.this
-		.getSystemService(Context.INPUT_METHOD_SERVICE);
-	if (imm != null) {
-	    // imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-	}
+		Log.i("ID", upid);
+		Log.i("Name", placeName);
 
-	final TextView addWordText = (TextView) findViewById(R.id.add_word_add_edit_text);
-	addWordText.setOnEditorActionListener(new OnEditorActionListener() {
-
-	    public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
-		if (arg1 == EditorInfo.IME_ACTION_GO) {
-		    return true;
-		} else {
-		    return false;
+		imm = (InputMethodManager) AddWordActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (imm != null) {
+			imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 		}
-	    }
 
-	});
+		final TextView addWordText = (TextView) findViewById(R.id.add_word_add_edit_text);
+		addWordText.setOnEditorActionListener(new OnEditorActionListener() {
 
-	final Button addWordButton = (Button) findViewById(R.id.add_word_add_button);
-	addWordButton.setOnClickListener(new View.OnClickListener() {
-
-	    public void onClick(View v) {
-		addWord(addWordText);
-	    }
-
-	});
-
-    }
-
-    public void addWord(final TextView addWordText) {
-	String confirmMessage = "";
-	imm.hideSoftInputFromInputMethod(addWordText.getWindowToken(), 0);
-	words = addWordText.getText().toString();
-
-	if (!words.equalsIgnoreCase("")) {
-	    if (words.contains("*")) {
-		confirmMessage = "Oops!!! Those kind of words ";
-
-	    } else {
-		confirmMessage = "Added '" + words + "' to '" + placeName;
-		application.getPlaceResults(application.getCurrentPlaceIndex())
-			.addWord(words);
-		Intent i = new Intent();
-		i.putExtra("words", words);
-		setResult(RESULT_OK, i);
-
-		new Thread(new Runnable() {
-		    public void run() {
-			try {
-			    List<NameValuePair> wordList = new ArrayList<NameValuePair>(
-				    1);
-			    wordList.add(new BasicNameValuePair(
-				    "postobject[word]", words));
-			    wordList.add(new BasicNameValuePair(
-				    "postobject[placeid]", upid));
-			    wordList.add(new BasicNameValuePair(
-				    "postobject[userid]", "123"));
-
-			    HttpUtils
-				    .executeHttpPost(ToponimoApplication
-					    .getApp().getHttpClient(),
-					    wordList,
-					    "http://www.toponimo.org/toponimo/api/words/");
-			} catch (UnsupportedEncodingException uce) {
-			} catch (IOException e) {
+			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+				if (arg1 == EditorInfo.IME_ACTION_GO) {
+					return true;
+				} else {
+					return false;
+				}
 			}
-		    }
-		}).start();
 
-	    }
-	} else {
-	    confirmMessage = "No words to add";
+		});
+
+		final Button addWordButton = (Button) findViewById(R.id.add_word_add_button);
+		addWordButton.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				addWord(addWordText);
+			}
+
+		});
+
 	}
-	Toast toast = Toast.makeText(AddWordActivity.this, confirmMessage,
-		Toast.LENGTH_SHORT);
-	toast.show();
-	finish();
 
-    }
+	public void addWord(final TextView addWordText) {
+		String confirmMessage = "";
+		imm.hideSoftInputFromInputMethod(addWordText.getWindowToken(), 0);
+		words = addWordText.getText().toString();
 
-    @Override
-    public void onAttachedToWindow() {
-	super.onAttachedToWindow();
-	Window window = getWindow();
-	window.setFormat(PixelFormat.RGBA_8888);
-	window.addFlags(WindowManager.LayoutParams.FLAG_DITHER);
-    }
+		if (!words.equalsIgnoreCase("")) {
+			if (words.contains("*")) {
+				confirmMessage = "Oops!!! Those kind of words ";
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-	super.onConfigurationChanged(newConfig);
-	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    }
-    
+			} else {
+				confirmMessage = "Added '" + words + "' to '" + placeName;
+				application.getPlaceResults(application.getCurrentPlaceIndex()).addWord(words);
+				Intent i = new Intent();
+				i.putExtra("words", words);
+				setResult(RESULT_OK, i);
+
+				new Thread(new Runnable() {
+					public void run() {
+						try {
+							List<NameValuePair> wordList = new ArrayList<NameValuePair>(1);
+							wordList.add(new BasicNameValuePair("postobject[word]", words));
+							wordList.add(new BasicNameValuePair("postobject[placeid]", upid));
+							wordList.add(new BasicNameValuePair("postobject[userid]", "123"));
+
+							HttpUtils.executeHttpPost(ToponimoApplication.getApp().getHttpClient(), wordList,
+									"http://www.toponimo.org/toponimo/api/words/");
+						} catch (UnsupportedEncodingException uce) {
+						} catch (IOException e) {
+						}
+					}
+				}).start();
+
+			}
+		} else {
+			confirmMessage = "No words to add";
+		}
+		Toast toast = Toast.makeText(AddWordActivity.this, confirmMessage, Toast.LENGTH_SHORT);
+		toast.show();
+		finish();
+
+	}
+
+	@Override
+	public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		Window window = getWindow();
+		window.setFormat(PixelFormat.RGBA_8888);
+		window.addFlags(WindowManager.LayoutParams.FLAG_DITHER);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.add_word_menu, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		return false;
-		
+
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// start analytics tracking
+		EasyTracker.getInstance().activityStart(this);
+
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// stop analytics tracking
+		EasyTracker.getInstance().activityStop(this);
+
 	}
 
 }

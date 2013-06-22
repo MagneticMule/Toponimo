@@ -3,103 +3,115 @@
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
-    android:background="@color/background_gray"
+    android:background="@color/timeline_background"
     android:orientation="vertical" >
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/title_grad"
-        android:baselineAligned="false"
-        android:orientation="horizontal" >
-    </LinearLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="#dedede" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="8dip"
-        android:background="@drawable/shadow_grad" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/dark_gray"
-        android:gravity="center_horizontal"
-        android:paddingBottom="5dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:paddingTop="5dip" >
+        android:layout_height="0dp"
+        android:layout_weight=".3"
+        android:background="@drawable/timeline_background_container_single"
+        android:gravity="center_horizontal" >
+
+        <fragment
+            android:id="@+id/place_details_map_fragment"
+            android:name="org.toponimo.client.utils.maps.MapFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="160dp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:alpha=".6"
+            android:background="@drawable/place_details_map_overlay_grad" />
 
         <TextView
             android:id="@+id/place_details_place_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"
+            android:layout_above="@+id/place_details_place_address"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:paddingBottom="0dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:paddingTop="10dip"
+            android:shadowColor="@color/black"
+            android:shadowDy="-1"
+            android:shadowRadius="1"
             android:singleLine="true"
             android:text="The Spire Cafe"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/place_details_place_address"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/place_details_place_name"
-            android:layout_marginTop="1dip"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
+            android:layout_alignBottom="@+id/place_details_map_fragment"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:paddingBottom="5dip"
+            android:paddingLeft="0dip"
+            android:paddingRight="0dip"
+            android:paddingTop="0dip"
             android:text="Jubilee Campus"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/place_details_place_distance"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/place_details_place_address"
-            android:layout_marginTop="4dip"
-            android:ellipsize="marquee"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:paddingBottom="5dip"
+            android:paddingLeft="0dip"
+            android:paddingRight="0dip"
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:text="0.1 miles away"
-            android:textColor="@color/brown_green_light"
+            android:textAllCaps="false"
+            android:textColor="@color/light_gray"
             android:textSize="12sp"
             android:textStyle="bold" />
+
+        <View
+            android:id="@+id/map_inner_shadow"
+            android:layout_width="fill_parent"
+            android:layout_height="8dip"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/place_details_place_distance"
+            android:background="@drawable/image_grad_overlay" />
     </RelativeLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="@drawable/divider_grad" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="@drawable/divider_grad" />
 
     <ListView
         android:id="@+id/place_details_word_listview"
         android:layout_width="fill_parent"
-        android:layout_height="300dip"
-        android:layout_weight="0.8"
-        android:divider="@drawable/divider_grad"
-        android:dividerHeight="2dip"
+        android:layout_height="0dp"
+        android:layout_weight="0.63"
+        android:cacheColorHint="@color/white"
+        android:divider="@color/dark_gray"
+        android:dividerHeight="1dp"
         android:fadingEdge="horizontal|none"
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="true"
-        android:scrollingCache="false" />
+        android:padding="10dp"
+        android:scrollingCache="true" />
 
     <LinearLayout
         android:id="@+id/place_details_bottom_location_bar"
         android:layout_width="fill_parent"
-        android:layout_height="10dip"
-        android:layout_weight="0.1"
+        android:layout_height="0dp"
+        android:layout_weight=".07"
         android:background="@color/dark_gray"
         android:gravity="center"
         android:orientation="horizontal" >
@@ -108,9 +120,9 @@
             android:id="@+id/places_info_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="Near"
             android:textColor="@color/black"
-            android:textSize="9dip" >
+            android:textSize="13sp" >
         </TextView>
     </LinearLayout>
 

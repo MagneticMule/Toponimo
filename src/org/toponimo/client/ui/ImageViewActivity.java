@@ -26,6 +26,8 @@ import android.widget.ViewSwitcher.ViewFactory;
 
 import org.toponimo.client.R;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 public class ImageViewActivity extends Activity implements
 	SimpleGestureListener, ViewFactory {
 
@@ -172,5 +174,21 @@ public class ImageViewActivity extends Activity implements
     public void onDoubleTap() {
 
     }
+    
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// start analytics tracking
+		EasyTracker.getInstance().activityStart(this);
+		
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// stop analytics tracking
+		EasyTracker.getInstance().activityStop(this);
+
+	}
 
 }

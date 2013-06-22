@@ -9,201 +9,229 @@ import org.apache.http.params.HttpParams;
 import org.toponimo.client.R;
 import org.toponimo.client.models.Place;
 import org.toponimo.client.models.Results;
+import org.toponimo.client.utils.http.ToponimoVolley;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.support.v4.util.LruCache;
 import android.util.Log;
 
 public class ToponimoApplication extends Application {
 
-	public static final String			APP_NAME			= "ToponimoApplication";
-	public static final String			TAG					= "ToponimoApplication";
+    public static final String             TAG               = "ToponimoApplication";
 
-	private SharedPreferences			userDetailsPrefs;
+    private static SharedPreferences       userDetailsPrefs;
 
-	private User						user;
+    private static User                    user;
 
-	/**
-	 * Store a reference to the application object
-	 */
-	private static ToponimoApplication	app					= null;
+    /**
+     * Store a reference to the application object
+     */
+    private static ToponimoApplication     app               = null;
+    private static Context                 context;
+    private DefaultHttpClient              httpClient;
 
-	private static Context				context;
-	private DefaultHttpClient			httpClient;
+    private final LruCache<String, Bitmap> mImageCache       = new LruCache<String, Bitmap>(20);
 
-	/**
-	 * placeResults holds a global reference to the PlaceStructure data. This
-	 * allows each class to access the placeResults without resorting to passing
-	 * values via bundled extras.
-	 */
-	private List<Place>					placeResults		= null;
+    /**
+     * placeResults holds a global reference to the PlaceStructure data. This
+     * allows each class to access the placeResults without resorting to passing
+     * values via bundled extras. // note passing data via bundles would be a
+     * more 'correct' way to approach the problem.
+     */
+    private static List<Place>             placeResults      = null;
 
-	private String						currentPlaceId		= null;
+    private static String                  currentPlaceId    = null;
 
-	private int							currentPlaceIndex	= 0;
+    private static int                     currentPlaceIndex = 0;
 
-	public ToponimoApplication() {
-		super();
+    // using this is ugly but having no luck with accessing the returned URI
+    // from the camera intent
+    private Uri                            newImageLocation;
 
-	}
+    public ToponimoApplication() {
+        super();
 
-	@Override
-	public void onCreate() {
-		// checkInstance();
-		super.onCreate();
-		ToponimoApplication.context = getApplicationContext();
-		ToponimoApplication.app = this;
+    }
 
-		// reference to the user shared preferences file
-		userDetailsPrefs = getSharedPreferences(Constants.USER_DETAILS_PREFS, 0);
+    @Override
+    public void onCreate() {
+        // checkInstance();
+        super.onCreate();
+        ToponimoApplication.context = getApplicationContext();
+        app = this;
 
-		// single Httpclient object which will be used throughout the application
-		httpClient = new DefaultHttpClient();
-		ClientConnectionManager manager = httpClient.getConnectionManager();
-		HttpParams params = httpClient.getParams();
-		httpClient = new DefaultHttpClient(new ThreadSafeClientConnManager(
-				params, manager.getSchemeRegistry()), params);
-		Log.i(TAG, "Tooponimo app started");
+        // init volley lib
+        ToponimoVolley.init(this);
 
-	}
+        // reference to the user shared preferences file
+        userDetailsPrefs = getSharedPreferences(Constants.USER_DETAILS_PREFS, 0);
 
-	public User getUser() {
-		if (this.user == null) {
-			this.user = new User();
-			user.setId(userDetailsPrefs.getString(Constants.USER_ID, null));
-			user.setFirstName(userDetailsPrefs.getString(Constants.FIRST_NAME,
-					null));
-			user.setLastName(userDetailsPrefs.getString(Constants.LAST_NAME,
-					null));
-		}
-		return this.user;
-	}
+        // single Httpclient object which will be used throughout the
+        // application
+        httpClient = new DefaultHttpClient();
+        ClientConnectionManager manager = httpClient.getConnectionManager();
+        HttpParams params = httpClient.getParams();
+        httpClient = new DefaultHttpClient(new ThreadSafeClientConnManager(
+                params, manager.getSchemeRegistry()), params);
+        Log.d(TAG, "Tooponimo app started");
 
-	public void setUser(User _user) {
-		this.user = _user;
-	}
+    }
 
-	@Override
-	public void onTerminate() {
-		super.onTerminate();
-		if (httpClient != null) {
-			httpClient.getConnectionManager().shutdown();
-		}
-		Log.i(TAG, "Tooponimo application ended.");
-	}
+    public User getUser() {
+        if (this.user == null) {
+            this.user = new User();
+            user.setId(userDetailsPrefs.getString(Constants.USER_ID, null));
+            user.setFirstName(userDetailsPrefs.getString(Constants.FIRST_NAME,
+                    null));
+            user.setLastName(userDetailsPrefs.getString(Constants.LAST_NAME,
+                    null));
+        }
+        return this.user;
+    }
 
-	public DefaultHttpClient getHttpClient() {
-		return httpClient;
-	}
+    public void setUser(User _user) {
+        this.user = _user;
+    }
 
-	public void setHttpClient(DefaultHttpClient httpClient) {
-		this.httpClient = httpClient;
-	}
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        if (httpClient != null) {
+            httpClient.getConnectionManager().shutdown();
+        }
+        Log.i(TAG, "Tooponimo application ended.");
+    }
 
-	public void setPlaceResults(List<Place> placeResults) {
-		checkInstance();
-		this.placeResults = placeResults;
-	}
+    public DefaultHttpClient getHttpClient() {
+        return httpClient;
+    }
 
-	public Results getPlaceResults(int position) {
-		checkInstance();
-		return placeResults.get(position).getResults().get(position);
+    public void setHttpClient(DefaultHttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
-	}
+    public void setPlaceResults(List<Place> placeResults) {
+        checkInstance();
+        this.placeResults = placeResults;
+    }
 
-	public int getCurrentPlaceIndex() {
-		checkInstance();
-		return currentPlaceIndex;
-	}
+    public Results getPlaceResults(int position) {
+        checkInstance();
+        return placeResults.get(position).getResults().get(position);
 
-	public String getCurrentPlaceId() {
-		checkInstance();
-		return currentPlaceId;
-	}
+    }
 
-	public void setCurrentPlaceId(String currentPlaceId) {
-		checkInstance();
-		this.currentPlaceId = currentPlaceId;
-	}
+    public int getCurrentPlaceIndex() {
+        checkInstance();
+        return currentPlaceIndex;
+    }
 
-	public void setCurrentPlaceIndex(int currentPlaceIndex) {
-		checkInstance();
-		this.currentPlaceIndex = currentPlaceIndex;
-	}
+    public String getCurrentPlaceId() {
+        checkInstance();
+        return currentPlaceId;
+    }
 
-	public static Context getGlobalContext() {
-		checkInstance();
-		return ToponimoApplication.context;
-	}
+    public void setCurrentPlaceId(String currentPlaceId) {
+        checkInstance();
+        this.currentPlaceId = currentPlaceId;
+    }
 
-	public static ToponimoApplication getApp() {
-		checkInstance();
-		return app;
+    public void setCurrentPlaceIndex(int currentPlaceIndex) {
+        checkInstance();
+        this.currentPlaceIndex = currentPlaceIndex;
+    }
 
-	}
+    public static Context getGlobalContext() {
+        checkInstance();
+        return ToponimoApplication.context;
+    }
 
-	public SharedPreferences getUserDetailsPrefs() {
-		return userDetailsPrefs;
-	}
+    public static ToponimoApplication getApp() {
+        checkInstance();
+        return app;
 
-	public static void checkInstance() {
-		if (app == null) {
-			throw new IllegalStateException(
-					"Application has not been initialized : " + TAG);
-		}
-	}
+    }
 
-	public boolean isLoggedIn() {
-		checkInstance();
-		SharedPreferences sp = getSharedPreferences(
-				Constants.USER_DETAILS_PREFS, 0);
-		if ((sp.contains(Constants.USER_ID) && (sp
-				.contains(Constants.FIRST_NAME) && (sp
-				.contains(Constants.LAST_NAME))))) {
-			return true;
-		} else {
-			return false;
-		}
+    public SharedPreferences getUserDetailsPrefs() {
+        return userDetailsPrefs;
+    }
 
-	}
+    public static void checkInstance() {
+        if (app == null) {
+            throw new IllegalStateException(
+                    "Application has not been initialized : " + TAG);
+        }
+    }
 
-	public User loadDetails() {
-		
-		User _user = new User();
-		// set global user details
-		SharedPreferences sp = getSharedPreferences(
-				Constants.USER_DETAILS_PREFS, 0);
-		_user.setId(sp.getString(Constants.USER_ID, null));
-		_user.setFirstName(sp.getString(Constants.FIRST_NAME, null));
-		_user.setLastName(sp.getString(Constants.LAST_NAME, null));
+    public boolean isLoggedIn() {
+        checkInstance();
+        SharedPreferences sp = getSharedPreferences(
+                Constants.USER_DETAILS_PREFS, 0);
+        if ((sp.contains(Constants.USER_ID) && (sp
+                .contains(Constants.FIRST_NAME) && (sp
+                .contains(Constants.LAST_NAME))))) {
+            return true;
+        } else {
+            return false;
+        }
 
-		Log.v("Firstname", user.getFirstName());
-		Log.v("Lastname", user.getLastName());
-		return _user;
-	}
+    }
 
-	public void saveDetails(User _user) {
+    public User loadDetails() {
 
-		// Write user details to shared preferences file
+        User _user = new User();
+        // set global user details
+        SharedPreferences sp = getSharedPreferences(
+                Constants.USER_DETAILS_PREFS, 0);
+        _user.setId(sp.getString(Constants.USER_ID, null));
+        _user.setFirstName(sp.getString(Constants.FIRST_NAME, null));
+        _user.setLastName(sp.getString(Constants.LAST_NAME, null));
 
-		SharedPreferences sp = getSharedPreferences(
-				Constants.USER_DETAILS_PREFS, 0);
-		SharedPreferences.Editor editor;
-		editor = sp.edit();
-		editor.putBoolean(Constants.IS_LOGGED_IN, true);
-		editor.putString(Constants.FIRST_NAME, _user.getFirstName());
-		editor.putString(Constants.LAST_NAME, _user.getLastName());
-		editor.putString(Constants.USER_ID, _user.getId());
-		editor.commit();
-	}
+        Log.v("Firstname", user.getFirstName());
+        Log.v("Lastname", user.getLastName());
+        return _user;
+    }
 
-	public void deleteDetails() {
-		SharedPreferences sp = getSharedPreferences(
-				Constants.USER_DETAILS_PREFS, 0);
-		SharedPreferences.Editor editor = sp.edit();
-		editor.clear();
-		editor.commit();
-	}
+    public void saveDetails(User _user) {
+
+        // Write user details to shared preferences file
+
+        SharedPreferences sp = getSharedPreferences(
+                Constants.USER_DETAILS_PREFS, 0);
+        SharedPreferences.Editor editor;
+        editor = sp.edit();
+        editor.putBoolean(Constants.IS_LOGGED_IN, true);
+        editor.putString(Constants.FIRST_NAME, _user.getFirstName());
+        editor.putString(Constants.LAST_NAME, _user.getLastName());
+        editor.putString(Constants.USER_ID, _user.getId());
+        editor.commit();
+    }
+
+    public void deleteDetails() {
+        SharedPreferences sp = getSharedPreferences(
+                Constants.USER_DETAILS_PREFS, 0);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.clear();
+        editor.commit();
+    }
+
+    /**
+     * @return the newImageLocation
+     */
+    public Uri getNewImageLocation() {
+        return this.newImageLocation;
+    }
+
+    /**
+     * @param newImageLocation
+     *            the newImageLocation to set
+     */
+    public void setNewImageLocation(Uri newImageLocation) {
+        this.newImageLocation = newImageLocation;
+    }
 
 }

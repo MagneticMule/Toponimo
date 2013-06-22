@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="80dip"
-    android:background="@color/dark_gray"
     android:padding="10dip" >
 
     <TextView
@@ -10,11 +9,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:ellipsize="marquee"
+        android:ellipsize="end"
         android:gravity="center_vertical"
         android:scrollHorizontally="true"
         android:singleLine="true"
+        android:text="TEST"
         android:textColor="@color/black"
-        android:textSize="18dip" />
+        android:textSize="18sp" />
 
 </RelativeLayout>

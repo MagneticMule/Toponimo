@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.apache.http.NameValuePair;
@@ -15,449 +14,527 @@ import org.toponimo.client.Constants;
 import org.toponimo.client.RestService;
 import org.toponimo.client.ToponimoApplication;
 import org.toponimo.client.models.Place;
+import org.toponimo.client.models.Results;
 import org.toponimo.client.models.Userword;
-import org.toponimo.client.models.Word;
-import org.toponimo.client.models.WordDefinition;
+
+import org.toponimo.client.models.webster.Definition;
+import org.toponimo.client.models.webster.WebsterEntries;
 import org.toponimo.client.ui.adapters.WordGalleryAdapter;
 import org.toponimo.client.utils.BitmapUtils;
 import org.toponimo.client.utils.http.HttpUtils;
+import org.toponimo.client.utils.http.ToponimoVolley;
 
+import android.animation.LayoutTransition;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.OperationApplicationException;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
 import com.actionbarsherlock.app.SherlockActivity;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+
 import org.toponimo.client.R;
 
+@SuppressLint("NewApi")
 public class WordDetailsActivity extends SherlockActivity implements TextToSpeech.OnInitListener {
 
-	protected static final String		TAG							= "WordDetailsActivity";
-	private static final int			TAKE_PICTURE				= 1;
-	private static final int			DATA_CHECKSUM				= 28031974;
-	private static final int			EDIT_DEFINITION_DIALOG_ID	= 1974;
-	private ToponimoApplication			application;
-	private static WordDetailsActivity	mainActivity;
-	private TextToSpeech				tts 						= null;
-	private String						word						= null;
-	private String						definition					= null;
-	private String						gloss						= null;
-	private String						lexType						= null;
-	private final String				synsetNo					= null;
+    protected static final String      TAG                       = "WordDetailsActivity";
+    private static final int           TAKE_PICTURE              = 1;
+    private static final int           DATA_CHECKSUM             = 28031974;
+    private static final int           EDIT_DEFINITION_DIALOG_ID = 1974;
+    private ToponimoApplication        application;
+    private static WordDetailsActivity mainActivity;
+    private TextToSpeech               tts                       = null;
+    private String                     lemma                     = null;
+    private String                     definition                = null;
 
-	protected TextView					definitionTextView;
-	protected TextView					glossTextView;
-	protected TextView					lexTypeTextView;
-	private Uri							imageOutputUri				= null;
+    WebsterEntries                     websterEntries            = null;
 
-	private Animation					fadein;
-	private final ArrayList<String>		imageList					= new ArrayList<String>();
+    protected TextView                 ipaTextView;
+    protected TextView                 posTextView;
+    protected TextView                 lexTypeTextView;
 
-	private Gallery						gallery;
-	private WordGalleryAdapter			galleryAdapter;
+    protected ProgressBar              progressBar;
+    private Uri                        imageOutputUri            = null;
 
-	// Editdefinition dialog controls
-	EditText							editDefinitionText;
-	
+    private ArrayList<String>          imageList                 = new ArrayList<String>();
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+    private Gallery                    gallery;
+    private WordGalleryAdapter         galleryAdapter;
 
-		if (resultCode == RESULT_CANCELED) {
-			return;
-		}
+    LinearLayout                       rootLinearLayout;
+    LinearLayout                       defContainer;
 
-		if (requestCode == TAKE_PICTURE) {
-			Log.d(TAG, "TAKE PICTURE");
-			if (imageOutputUri != null) {
-				Log.v(TAG, "Data is not NULL");
-				Log.v("BitmapString: ", imageOutputUri.toString());
-				String thumbnailPath = BitmapUtils.createThumbnail(imageOutputUri, 240);
-				Log.d(TAG + ": ThumbnailPath=", thumbnailPath);
+    // Editdefinition dialog controls
+    EditText                           editDefinitionText;
 
-				imageList.add(thumbnailPath);
-				galleryAdapter.notifyDataSetChanged();
+    Cursor                             mCursor                   = null;
 
-				int currentPlaceIndex = application.getCurrentPlaceIndex();
-				String currentPlaceId = application.getPlaceResults(currentPlaceIndex).getId();
-				
-				
-				List<NameValuePair> postParameters = new ArrayList<NameValuePair>(1);
-				// Construct new bundle to pass to the restservice
-				Bundle bundle = new Bundle();
-				//bundle.putParcelableArrayList("postParameters", postParameters);
-				bundle.putString(Constants.UPLOAD_IMAGE_PLACE_ID, currentPlaceId);
-				bundle.putString(Constants.UPLOAD_IMAGE_WORD_NAME, word);
-				bundle.putString(Constants.UPLOAD_IMAGE_WORD_NUMBER, "23");
-				bundle.putString(Constants.UPLOAD_IMAGE_SYNSET_NUMBER, "7");
-				bundle.putString(Constants.UPLOAD_IMAGE_USER_ID, application.getUser().getId());
-				bundle.putString(Constants.UPLOAD_IMAGE_PATH, imageOutputUri.toString());
-				bundle.putSerializable(Constants.UPLOAD_IMAGE_PATH, (Serializable) imageOutputUri);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-				// Start new REST service to upload image
-				Intent restService = new Intent(WordDetailsActivity.this, RestService.class);
-				
-				//restService.setData(imageOutputURI);
-				restService.putExtra(Constants.REST_PARAMS, bundle);
-				startService(restService);
-				// (new ImageUploader()).execute((Object) null);
-			}
+        if (resultCode == RESULT_CANCELED) {
+            return;
+        }
 
-		} else if (requestCode == DATA_CHECKSUM) {
-			
-			if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-				// if TTS data exists, create a new TTS instance
-				tts = new TextToSpeech(this, this);
-			} else {
-				// TTS data is not installed. Ask user if they would like to install it.
-				DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						switch (which) {
-						case DialogInterface.BUTTON_POSITIVE:
+        if (requestCode == TAKE_PICTURE) {
+            Log.d(TAG, "TAKE PICTURE");
+            if (imageOutputUri != null) {
+                Log.v(TAG, "Data is not NULL");
+                Log.v("BitmapString: ", imageOutputUri.toString());
+                String thumbnailPath = BitmapUtils.createThumbnail(imageOutputUri, 240);
+                Log.d(TAG + ": ThumbnailPath=", thumbnailPath);
 
-							// install TTS data
-							Intent installIntent = new Intent();
-							installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-							startActivity(installIntent);
-							break;
-						}
-					}
-				};
+                imageList.add(thumbnailPath);
+                galleryAdapter.notifyDataSetChanged();
 
-				// Display alert dialog asking to install TTS data
-				AlertDialog.Builder builder = new AlertDialog.Builder(WordDetailsActivity.this);
-				builder.setMessage("Google Text to Speech data needs to be installed "
-						+ "before you can hear pronounciations of words");
-				builder.setPositiveButton("Install", clickListener);
-				builder.setNegativeButton("Skip", clickListener);
-				builder.show();
+                int currentPlaceIndex = application.getCurrentPlaceIndex();
+                String currentPlaceId = application.getPlaceResults(currentPlaceIndex).getId();
 
-			}
-		}
+                // TODO: Refactor image upload code. Move to contentprovider
+                ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>(1);
+                // Construct new bundle to pass to the restservice
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.UPLOAD_IMAGE_PLACE_ID, currentPlaceId);
+                bundle.putString(Constants.UPLOAD_IMAGE_WORD_NAME, lemma);
+                bundle.putString(Constants.UPLOAD_IMAGE_WORD_NUMBER, "23");
+                bundle.putString(Constants.UPLOAD_IMAGE_SYNSET_NUMBER, "7");
+                bundle.putString(Constants.UPLOAD_IMAGE_USER_ID, application.getUser().getId());
+                bundle.putString(Constants.UPLOAD_IMAGE_PATH, imageOutputUri.toString());
+                bundle.putSerializable(Constants.UPLOAD_IMAGE_PATH, (Serializable) imageOutputUri);
 
-	}
+                // Start new REST service to upload image
+                // Intent restService = new Intent(WordDetailsActivity.this,
+                // RestService.class);
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.word_details);
-		application = (ToponimoApplication) this.getApplication();
-		mainActivity = this;
+                // restService.setData(imageOutputURI);
+                // restService.putExtra(Constants.REST_PARAMS, bundle);
+                // startService(restService);
+                // (new ImageUploader()).execute((Object) null);
+            }
 
-		LinearLayout galleryContainer = (LinearLayout) findViewById(R.id.word_details_gallery_container);
+        } else if (requestCode == DATA_CHECKSUM) {
 
-		galleryAdapter = new WordGalleryAdapter(this, imageList);
+            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                // if TTS data exists, create a new TTS instance
+                tts = new TextToSpeech(this, this);
+            } else {
+                // TTS data is not installed. Ask user to install
+                DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
 
-		fadein = AnimationUtils.loadAnimation(this, R.anim.fadein);
+                                // install TTS data
+                                Intent installIntent = new Intent();
+                                installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                                startActivity(installIntent);
+                                break;
+                        }
+                    }
+                };
 
-		definitionTextView = (TextView) findViewById(R.id.word_details_definition);
-		glossTextView = (TextView) findViewById(R.id.word_details_gloss);
-		lexTypeTextView = (TextView) findViewById(R.id.label_type);
+                // Display alert dialog asking to install TTS data
+                AlertDialog.Builder builder = new AlertDialog.Builder(WordDetailsActivity.this);
+                builder.setMessage("Google Text to Speech data needs to be installed "
+                        + "before you can hear pronounciations of words");
+                builder.setPositiveButton("Install", clickListener);
+                builder.setNegativeButton("Skip", clickListener);
+                builder.show();
 
-		ttsCheck();
-		Intent sender = getIntent();
-		word = sender.getExtras().getString("word");
-		word = word.trim();
-		TextView wordTextView = (TextView) findViewById(R.id.word_details_word_view);
-		wordTextView.setText(word);
-		(new DownloadDefinition()).execute((Object) null);
+            }
+        }
 
-		createSpeakButton();
-		createAddPictureButton();
-		createGallery();
-		createAddToWordBankButton();
+    }
 
-		galleryContainer.startAnimation(fadein);
+    @SuppressLint("NewApi")
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.word_details);
 
-	}
+        com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(actionBar.DISPLAY_SHOW_HOME | actionBar.DISPLAY_SHOW_CUSTOM
+                | actionBar.DISPLAY_SHOW_TITLE);
+        actionBar.setTitle("Toponimo");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setSubtitle("Dictionary");
+        actionBar.setHomeButtonEnabled(true);
 
-	private void createGallery() {
-		gallery = (Gallery) findViewById(R.id.word_details_gallery);
-		gallery.setAdapter(galleryAdapter);
-		gallery.setOnItemClickListener(new OnItemClickListener() {
+        application = (ToponimoApplication) this.getApplication();
+        mainActivity = this;
 
-			public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
-				Bundle bundle = new Bundle();
-				bundle.putStringArrayList("images", imageList);
-				bundle.putInt("currentIndex", position);
-				Intent i = new Intent(WordDetailsActivity.this, ImageViewActivity.class);
-				i.putExtra("imageArrayList", bundle);
-				startActivity(i);
+        LinearLayout galleryContainer = (LinearLayout) findViewById(R.id.word_details_gallery_container);
 
-			}
+        galleryAdapter = new WordGalleryAdapter(this, imageList);
 
-		});
-	}
+        ipaTextView = (TextView) findViewById(R.id.word_details_ipa_text_view);
+        lexTypeTextView = (TextView) findViewById(R.id.label_type);
+        posTextView = (TextView) findViewById(R.id.word_details_pos_text_view);
 
-	/**
-	 * Checks if the tts data has been installed. If not, a new activity is
-	 * launched to install the tts data.
-	 */
-	private void ttsCheck() {
-		// check for tts data
-		Intent checkIntent = new Intent();
-		checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-		startActivityForResult(checkIntent, DATA_CHECKSUM);
-	}
+        progressBar = (ProgressBar) findViewById(R.id.word_details_progress_bar);
 
-	/**
-	 * Attaches the button from the xml source then assigns a new
-	 * onClickListener to the button. If pressed, the current place details are
-	 * retrieved from the application cache and added to the local database
-	 * along with the current word.
-	 */
-	private void createAddToWordBankButton() {
-		Button addToWordbank = (Button) findViewById(R.id.word_details_add_to_word_bank_button);
-		addToWordbank.setOnClickListener(new View.OnClickListener() {
+        ttsCheck();
+        Intent sender = getIntent();
+        lemma = sender.getExtras().getString("word");
+        lemma = lemma.trim();
+        TextView wordTextView = (TextView) findViewById(R.id.word_details_word_view);
+        wordTextView.setText(lemma);
+        createSpeakButton();
+        createAddPictureButton();
+        createGallery();
+        createAddToWordBankButton();
 
-			public void onClick(View v) {
-				String currentLocation = application.getPlaceResults(application.getCurrentPlaceIndex()).getName();
-				double currentLat = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation()
-						.getLat();
-				double currentLng = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation()
-						.getLng();
-				String currentLocationID = application.getPlaceResults(application.getCurrentPlaceIndex()).getId();
+        rootLinearLayout = (LinearLayout) findViewById(R.id.word_details_top_linear_layout);
+        LayoutTransition rootTransition = rootLinearLayout.getLayoutTransition();
+        rootTransition.enableTransitionType(LayoutTransition.CHANGING);
 
-				addWordToBank(word, definition, gloss, currentLocation, lexType, currentLat, currentLng,
-						currentLocationID);
-				Toast t = Toast.makeText(WordDetailsActivity.this, "Added '" + word + "' to Timeline",
-						Toast.LENGTH_SHORT);
-				t.show();
-				Intent i = new Intent(WordDetailsActivity.this, JournalActivity.class);
-				startActivity(i);
-			}
-		});
-	}
+        defContainer = (LinearLayout) findViewById(R.id.word_details_def_holder);
 
-	/**
-	 * Attaches the button from the xml source then assigns a new
-	 * onClickListener to the button. If pressed, a new intent is fired to take
-	 * a picture from the in built camera. The resulting image is stored in the
-	 * applications solid state cache.
-	 */
-	private void createAddPictureButton() {
-		Button addPictureButton = (Button) findViewById(R.id.word_details_add_picture);
-		addPictureButton.setOnClickListener(new View.OnClickListener() {
+        RequestQueue queue = ToponimoVolley.getRequestQueue();
+        // StringRequest request = new StringRequest(Method.GET,
+        // ApiKeys.DEFINITION_URL + lemma, successListener(),
+        // errorListener());
+        // request.setShouldCache(true);
+        // queue.add(request);
+        String[] wordProjection = { "W." + Constants.KEY_ROW_ID, "W." + Constants.KEY_WORD_ID,
+                Constants.KEY_WORD_LEMMA,
+                Constants.KEY_WORD_SYLLABLES, Constants.KEY_WORD_PRONOUNCIATION, Constants.KEY_WORD_POS,
+                Constants.KEY_WORD_FORMS, Constants.KEY_DEFINITION, Constants.KEY_IMAGE_FILEPATH,
+                Constants.KEY_WORD_LOCATION, Constants.KEY_WORD_LOCATION_LAT, Constants.KEY_WORD_LOCATION_LNG,
+                Constants.KEY_WORD_LOCATION_ID, Constants.KEY_WORD_TIME, Constants.KEY_WORD_ADDITION_TYPE };
 
-			public void onClick(View v) {
-				Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				UUID uuid = UUID.randomUUID();
+        // sort by time added, newest first
+        final String sortOrder = Constants.KEY_WORD_TIME + " DESC";
+        mCursor = getContentResolver().query(Constants.WORDS_URI, wordProjection,"W.lemma = " + lemma, null,null);
+        String w = mCursor.getString(mCursor.getColumnIndex(Constants.KEY_WORD_LEMMA));
+        Log.d("WORD", w);
+        // mCursor.close();
 
-				File path = new File(Environment.getExternalStorageDirectory(), uuid.toString() + ".jpg");
-				imageOutputUri = Uri.fromFile(path);
-				Log.d(TAG, imageOutputUri.toString());
-				i.putExtra(MediaStore.EXTRA_OUTPUT, imageOutputUri);
+    }
 
-				try {
-					startActivityForResult(i, TAKE_PICTURE);
-				} catch (Exception e) {
-					Log.d(TAG, e.toString());
-				}
-			}
-		});
-	}
+    private void createGallery() {
+        gallery = (Gallery) findViewById(R.id.word_details_gallery);
+        gallery.setAdapter(galleryAdapter);
+        gallery.setOnItemClickListener(new OnItemClickListener() {
 
-	/**
-	 * Attaches the button from the xml source then assigns a new
-	 * onClickListener to the button. If pressed, the current word is spoken via
-	 * tts.
-	 */
-	private void createSpeakButton() {
-		Button speakButton = (Button) findViewById(R.id.word_details_speak_button);
-		speakButton.setOnClickListener(new View.OnClickListener() {
+            public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("images", imageList);
+                bundle.putInt("currentIndex", position);
+                Intent i = new Intent(WordDetailsActivity.this, ImageViewActivity.class);
+                i.putExtra("imageArrayList", bundle);
+                startActivity(i);
 
-			public void onClick(View v) {
-				TextView wordTextView = (TextView) findViewById(R.id.word_details_word_view);
-				tts.speak(wordTextView.getText().toString() + ".", TextToSpeech.QUEUE_FLUSH, null);
-			}
-		});
-	}
+            }
 
-	/**
-	 * Enable full colour support.
-	 */
-	@Override
-	public void onAttachedToWindow() {
-		super.onAttachedToWindow();
-		Window window = getWindow();
-		window.setFormat(PixelFormat.RGBA_8888);
-		window.addFlags(WindowManager.LayoutParams.FLAG_DITHER);
-	}
+        });
+    }
 
-	/**
-	 * prevents the view from switching from portrait to landscape when the
-	 * phone is rotated.
-	 */
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	}
+    /**
+     * Checks if the tts data has been installed. If not, a new activity is
+     * launched to install the tts data.
+     */
+    private void ttsCheck() {
+        // check for tts data
+        Intent checkIntent = new Intent();
+        checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        startActivityForResult(checkIntent, DATA_CHECKSUM);
+    }
 
-	/**
-	 * Kills the current tts instance when the intent is destroyed
-	 */
-	@Override
-	protected void onDestroy() {
-		if (tts != null) {
-			tts.stop();
-			tts.shutdown();
-		}
-		super.onDestroy();
-	}
+    /**
+     * Attaches the button from the xml source then assigns a new
+     * onClickListener to the button. If pressed, the current place details are
+     * retrieved from the application cache and added to the local database
+     * along with the current word.
+     */
+    private void createAddToWordBankButton() {
+        Button addToWordbank = (Button) findViewById(R.id.word_details_add_to_word_bank_button);
+        addToWordbank.setOnClickListener(new View.OnClickListener() {
 
-	/**
-	 * adds the current word and associated data to the local database
-	 * 
-	 * @param word
-	 * @param definition
-	 * @param locationName
-	 * @param lat
-	 * @param lng
-	 * @param locationID
-	 */
-	private void addWordToBank(String word, String definition, String gloss, String locationName, String type,
-			Double lat, Double lng, String locationID) {
+            public void onClick(View v) {
+                String currentLocation = application.getPlaceResults(application.getCurrentPlaceIndex()).getName();
+                double currentLat = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation()
+                        .getLat();
+                double currentLng = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation()
+                        .getLng();
+                String currentLocationID = application.getPlaceResults(application.getCurrentPlaceIndex()).getId();
 
-		Uri uri = Constants.WORDS_URI;
-		ContentValues cv = new ContentValues();
-		cv.put(Constants.KEY_WORD, word);
-		cv.put(Constants.KEY_WORD_DEFINITION, definition);
-		cv.put(Constants.KEY_WORD_GLOSS, gloss);
-		cv.put(Constants.KEY_WORD_LOCATION, locationName);
-		cv.put(Constants.KEY_WORD_TYPE, type);
-		cv.put(Constants.KEY_WORD_LOCATION_LAT, lat);
-		cv.put(Constants.KEY_WORD_LOCATION_LNG, lng);
-		cv.put(Constants.KEY_WORD_LOCATION_ID, locationID);
-		cv.put(Constants.KEY_WORD_TIME, System.currentTimeMillis());
-		cv.put(Constants.KEY_WORD_ADDITION_TYPE, Constants.WORD_ADDITION_TYPE_COLLECT);
-		Uri newWord = getContentResolver().insert(uri, cv);
+                String syllables = websterEntries.getWords().get(0).getSyllables();
+                String pronounciation = websterEntries.getWords().get(0).getPronounciation();
+                String pos = websterEntries.getWords().get(0).getPart_of_speach();
+                String forms = websterEntries.getWords().get(0).getInflected_forms();
+                String wordId = websterEntries.getWords().get(0).get_id();
+                ArrayList<Definition> definitions = websterEntries.getWords().get(0).getDefinitions();
+                // TODO: Change this ya cunt
+                addWordToJournal(lemma, wordId, definitions, syllables, pronounciation, pos, forms, currentLocation,
+                        currentLat, currentLng, currentLocationID);
 
-	}
-	
-	private TextView addDefinitiontextView(int defNum) {
-		TextView definitionTextView = new TextView(this);
-		return definitionTextView;
-		
-	}
+                Toast t = Toast.makeText(WordDetailsActivity.this, "Added '" + lemma + "' to Timeline",
+                        Toast.LENGTH_SHORT);
+                t.show();
+                Intent i = new Intent(WordDetailsActivity.this, JournalActivity.class);
+            }
+        });
+    }
 
-	/*
-	 * download current word definitions
-	 */
-	private class DownloadDefinition extends AsyncTask {
+    /**
+     * Attaches the button from the xml source then assigns a new
+     * onClickListener to the button. If pressed, a new intent is fired to take
+     * a picture from the in built camera. The resulting image is stored in the
+     * applications solid state cache.
+     */
+    private void createAddPictureButton() {
+        Button addPictureButton = (Button) findViewById(R.id.word_details_add_picture);
+        addPictureButton.setOnClickListener(new View.OnClickListener() {
 
-		WordDefinition	wordDefinitions	= null;
+            public void onClick(View v) {
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                UUID uuid = UUID.randomUUID();
+                File path = new File(Environment.getExternalStorageDirectory(), uuid.toString() + ".jpg");
+                imageOutputUri = Uri.fromFile(path);
+                Log.d(TAG, imageOutputUri.toString());
+                i.putExtra(MediaStore.EXTRA_OUTPUT, imageOutputUri);
 
-		Place			place			= null;
-		
+                try {
+                    startActivityForResult(i, TAKE_PICTURE);
+                } catch (Exception e) {
+                    Log.d(TAG, " Starting camera activity failed: " + e.toString());
+                }
+            }
+        });
+    }
 
-		// try {
-		// Gson gson = new Gson();
-		// String jsonData = HttpUtils.getJSONData(ToponimoApplication
-		// .getApp().getHttpClient(), urlString);
-		//
-		// if (jsonData != null) {
-		// place = gson.fromJson(jsonData, Place.class);
-		// placenameList.clear();
-		// for (Results p : place.getResults()) {
-		// placenameList.add(place);
-		// }
-		// mainActivity.application.setPlaceResults(placenameList);
-		// }
+    /**
+     * Attaches the button from the xml source then assigns a new
+     * onClickListener to the button. If pressed, the current word is spoken via
+     * tts.
+     */
+    private void createSpeakButton() {
+        Button speakButton = (Button) findViewById(R.id.word_details_speak_button);
+        speakButton.setOnClickListener(new View.OnClickListener() {
 
-		@Override
-		protected String doInBackground(Object... params) {
+            public void onClick(View v) {
+                TextView wordTextView = (TextView) findViewById(R.id.word_details_word_view);
+                tts.speak(wordTextView.getText().toString() + ".", TextToSpeech.QUEUE_FLUSH, null);
+            }
+        });
+    }
 
-			String urlString = (ApiKeys.DEFINITION_URL + word);
+    /**
+     * Enable full colour support.
+     */
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Window window = getWindow();
+        window.setFormat(PixelFormat.RGBA_8888);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DITHER);
+    }
 
-			try {
-				Gson gson = new Gson();
-				Log.d("Word", word);
-				String jsonData = HttpUtils.getJSONData(ToponimoApplication.getApp().getHttpClient(), urlString);
-				if (jsonData != null) {
-					wordDefinitions = gson.fromJson(jsonData, WordDefinition.class);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-			}
+    /**
+     * prevents the view from switching from portrait to landscape when the
+     * phone is rotated.
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
 
-			return null;
+    /**
+     * Kills the current tts instance when the intent is destroyed
+     */
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
+    }
 
-		}
+    /**
+     * adds the current word and associated data to the local database
+     * 
+     * @param word
+     * @param definition
+     * @param syllables
+     * @param pronounciation
+     * @param pos
+     * @param forms
+     * @param locationName
+     * @param lat
+     * @param lng
+     * @param locationID
+     */
+    private void addWordToJournal(String word, String wordId, ArrayList<Definition> definitions, String syllables,
+            String pronounciation, String pos, String forms, String locationName, Double lat, Double lng,
+            String locationID) {
 
-		@Override
-		protected void onPostExecute(Object result) {
-			try {
-				if (wordDefinitions.getTotal() > 0) {
-					Userword word = new Userword();
-					String definition = "";
-					for (int i = 0; i < wordDefinitions.getSynset().size(); i++) {
-						definition += Integer.toString(i) + ")";
-						
-						definition += wordDefinitions.getSynset().get(i).getDefinitions();
-					}
-					
-					mainActivity.definitionTextView.setText(definition);
-					mainActivity.definition = definition;
+        Uri wordsUri = Constants.WORDS_URI;
+        ContentValues wordCv = new ContentValues();
+        wordCv.put(Constants.KEY_WORD_LEMMA, word);
+        wordCv.put(Constants.KEY_WORD_ID, wordId);
+        wordCv.put(Constants.KEY_WORD_SYLLABLES, syllables);
+        wordCv.put(Constants.KEY_WORD_PRONOUNCIATION, pronounciation);
+        wordCv.put(Constants.KEY_WORD_POS, pos);
+        wordCv.put(Constants.KEY_WORD_FORMS, forms);
+        wordCv.put(Constants.KEY_WORD_LOCATION, locationName);
+        wordCv.put(Constants.KEY_WORD_LOCATION_LAT, lat);
+        wordCv.put(Constants.KEY_WORD_LOCATION_LNG, lng);
+        wordCv.put(Constants.KEY_WORD_LOCATION_ID, locationID);
+        wordCv.put(Constants.KEY_WORD_TIME, System.currentTimeMillis());
+        wordCv.put(Constants.KEY_WORD_ADDITION_TYPE, Constants.WORD_ADDITION_TYPE_COLLECT);
+        Uri newWord = getContentResolver().insert(wordsUri, wordCv);
 
-					String gloss = wordDefinitions.getSynset().get(0).getSample();
-					if (gloss == null)
-						gloss = " ";
-					mainActivity.glossTextView.setText(gloss);
-					mainActivity.gloss = gloss;
+        // Construct definition batch
+        Uri defsUri = Constants.DEFINITIONS_URI;
+        ArrayList<ContentProviderOperation> defsOperation = new ArrayList<ContentProviderOperation>();
 
-					String lexType = wordDefinitions.getSynset().get(0).getLex();
-					if (lexType == null)
-						lexType = " ";
-					// mainActivity.lexTypeTextView.setText(lexType);
-					mainActivity.lexType = lexType;
-				} else {
-					mainActivity.definitionTextView.setText("No definition found for " + word);
-				}
-				mainActivity.definitionTextView.startAnimation(fadein);
-				// mainActivity.definition = definition;
-				super.onPostExecute(definition);
-			} catch (NullPointerException npe) {
+        // Create a set of insert ContentProviderOperations
+        for (int i = 0; i < definitions.size(); i++) {
+            defsOperation.add(ContentProviderOperation.newInsert(defsUri)
+                    .withValue(Constants.KEY_DEFINITION, definitions.get(i).getDefinition())
+                    .withValue(Constants.KEY_WORD_ID, wordId)
+                    .build());
 
-			}
-		}
+        }
 
-	}
+        try {
+            ContentProviderResult[] defsResult = getContentResolver().applyBatch(Constants.AUTHORITY, defsOperation);
+        } catch (RemoteException e) {
+            Log.d(TAG, "Error inserting batch values");
+            e.printStackTrace();
+        } catch (OperationApplicationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
+    private Response.Listener<String> successListener() {
+        return new Response.Listener<String>() {
 
-	public void onInit(int arg0) {
-		// TODO Auto-generated method stub
+            public void onResponse(String response) {
+                Gson gson = new Gson();
 
-	}
+                try {
+                    websterEntries = gson.fromJson(response, WebsterEntries.class);
+                } catch (JsonSyntaxException jse) {
+                    Log.d(TAG, "JSON Syntax Error", jse);
+                    Log.d(TAG + "response", response);
+                } catch (JsonIOException jioe) {
+                    Log.d(TAG, "JSON IO Exception", jioe);
+                }
 
-	
+                ipaTextView.setText(websterEntries.getWords().get(0).getPronounciation());
+                posTextView.setText(websterEntries.getWords().get(0).getPart_of_speach());
+
+                int totalDefs = websterEntries.getWords().get(0).getDefinitions().size();
+
+                TextView[] defViews = new TextView[totalDefs];
+
+                for (int i = 0; i < totalDefs; i++) {
+                    defViews[i] = (TextView) getLayoutInflater().inflate(R.layout.definition_textview, defContainer,
+                            false);
+                    defViews[i]
+                            .setText(websterEntries.getWords().get(0).getDefinitions().get(i).getSpannedDefinition());
+                    defContainer.addView(defViews[i]);
+
+                }
+
+                progressBar.setVisibility(View.GONE);
+                defContainer.setVisibility(View.VISIBLE);
+
+                Log.d(TAG, websterEntries.getWords().get(0).getDefinitions().get(0).getSpannedDefinition().toString());
+
+            }
+
+        };
+    }
+
+    private Response.ErrorListener errorListener() {
+        return new Response.ErrorListener() {
+
+            public void onErrorResponse(VolleyError error) {
+                // definitionTextView.setText("No definition found for " +
+                // lemma.toString());
+                // Log.d(TAG, "Error downloading definitions " +
+                // error.toString());
+
+            }
+        };
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Start analytics tracking
+        EasyTracker.getInstance().activityStart(this);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Stop analytics tracking
+        mCursor.close();
+        EasyTracker.getInstance().activityStop(this);
+    }
+
+    public void onInit(int status) {
+        // TODO Auto-generated method stub
+
+    }
+
 }

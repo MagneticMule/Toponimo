@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
+    <issue id="NewApi">
+        <ignore path="AndroidManifest.xml" />
+        <ignore path="res/drawable/add_sound_dialog_background.xml" />
+        <ignore path="res/values/styles.xml" />
+    </issue>
     <issue id="Proguard">
         <ignore path="proguard.cfg" />
     </issue>

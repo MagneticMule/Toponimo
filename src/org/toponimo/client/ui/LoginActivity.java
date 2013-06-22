@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.gson.Gson;
 import org.toponimo.client.R;
 
@@ -134,7 +135,7 @@ public class LoginActivity extends Activity {
 	
 	*/
 
-	public void startPlaceListActivity(User _user) {
+	public void StartJournalActivity(User _user) {
 		Toast toast = new Toast(this.getApplicationContext());
 		toast.setGravity(Gravity.TOP, 0, 0);
 		switch (_user.getStatus()) {
@@ -177,7 +178,8 @@ public class LoginActivity extends Activity {
 		super.onAttachedToWindow();
 		Window window = getWindow();
 		window.setFormat(PixelFormat.RGBA_8888);
-		window.addFlags(WindowManager.LayoutParams.FLAG_DITHER);
+		window.setFlags(WindowManager.LayoutParams.FLAG_DITHER,WindowManager.LayoutParams.FLAG_DITHER);
+		
 	}
 
 	/**
@@ -243,8 +245,23 @@ public class LoginActivity extends Activity {
 		@Override
 		protected void onPostExecute(User user) {
 			super.onPostExecute(user);
-			dialog.dismiss();
-			startPlaceListActivity(user);
+			if (dialog != null) dialog.dismiss();
+			StartJournalActivity(user);
 		}
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// Start analytics tracking
+		EasyTracker.getInstance().activityStart(this);
+		
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// Stop analytics tracking
+		EasyTracker.getInstance().activityStop(this);
 	}
 }

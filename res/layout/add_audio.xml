@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="60dp" >
+
+    <ImageView
+        android:id="@+id/micView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dip"
+        android:background="@drawable/mic_default"
+        android:clickable="true"
+        android:onClick="onRecord" >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/recordStatusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Record Audio"
+        android:textAppearance="?android:attr/textAppearance" />
+
+    <ImageView
+        android:id="@+id/playView"
+        style="@style/ButtonTextBlackLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dip"
+        android:background="@drawable/ic_action_play"
+        android:clickable="true"
+        android:onClick="onPlay" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </LinearLayout>
+
+</LinearLayout>

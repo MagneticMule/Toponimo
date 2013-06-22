@@ -12,6 +12,7 @@ import org.toponimo.client.ToponimoApplication;
 import org.toponimo.client.utils.http.HttpUtils;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
 import android.content.Context;
@@ -159,5 +160,22 @@ public class AddWordLocalActivity extends SherlockActivity {
 	super.onConfigurationChanged(newConfig);
 	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
+    
+    
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// start analytics tracking
+		EasyTracker.getInstance().activityStart(this);
+		
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// stop analytics tracking
+		EasyTracker.getInstance().activityStop(this);
+
+	}
 
 }

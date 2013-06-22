@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.toponimo.client.drawing;
+package org.toponimo.client.controls;
 
 import android.content.Context;
 import android.graphics.Bitmap;

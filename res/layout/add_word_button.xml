@@ -11,10 +11,13 @@
         android:layout_width="fill_parent"
         android:layout_height="46dip"
         android:layout_gravity="center"
-        android:background="@drawable/blue_button"
+        android:background="@drawable/green_button"
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
-        android:text="ADD WORD HERE" >
+        android:shadowDy="-1"
+        android:text="@string/add_word_here"
+        android:textAllCaps="true"
+        android:textColor="@color/white" >
     </Button>
 
 </LinearLayout>

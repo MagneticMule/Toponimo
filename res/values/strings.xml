@@ -17,5 +17,6 @@
     <string name="username_password_error">Please supply both your username and password</string>
     <string name="add_word">Add Word</string>
     <string name="cheesecake">Cheesecake</string>
+    <string name="add_word_here">ADD WORD HERE</string>
 
 </resources>

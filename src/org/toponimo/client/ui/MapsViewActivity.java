@@ -18,6 +18,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -87,30 +88,7 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 	super.onBackPressed();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.Activity#onStart()
-     */
-    @Override
-    protected void onStart() {
-	// TODO Auto-generated method stub
-	super.onStart();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.Activity#onStop()
-     */
-    @Override
-    protected void onStop() {
-	// TODO Auto-generated method stub
-	super.onStop();
-	locationManager.removeUpdates(this);
-    }
-
-    public void onProviderEnabled(String arg0) {
+     public void onProviderEnabled(String arg0) {
 	// GPS on
 
     }
@@ -264,5 +242,22 @@ public class MapsViewActivity extends MapActivity implements LocationListener {
 		Constants.MIN_TIME, Constants.MIN_DISTANCE, this);
 	myLocationOverlay.enableMyLocation();
     }
+    
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// Start analytics tracking
+		EasyTracker.getInstance().activityStart(this);
+		
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// remove location updates
+		locationManager.removeUpdates(this);
+		// stop analytics tracking
+		EasyTracker.getInstance().activityStop(this);
+	}
 
 }

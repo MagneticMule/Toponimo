@@ -3,21 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:animateLayoutChanges="true"
     android:background="@color/timeline_background"
     android:orientation="vertical" >
 
-    <ListView
+    <com.fortysevendeg.android.swipelistview.SwipeListView
+        xmlns:swipe="http://schemas.android.com/apk/res-auto"
         android:id="@+id/wordListView"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.8"
+        android:layout_height="fill_parent"
         android:animateLayoutChanges="true"
-        android:divider="#00000000"
-        android:dividerHeight="0dip"
-        android:fadingEdge="none"
-        android:fastScrollEnabled="false"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:scrollingCache="true" />
+        android:divider="@null"
+        android:listSelector="#00000000"
+        swipe:swipeActionLeft="dismiss"
+        swipe:swipeActionRight="reveal"
+        swipe:swipeBackView="@+id/back"
+        swipe:swipeCloseAllItemsWhenMoveList="true"
+        swipe:swipeFrontView="@+id/front"
+        swipe:swipeMode="right"
+        swipe:swipeOffsetRight="310dp"
+        swipe:swipeOpenOnLongPress="false" />
+
+    <ImageView
+        android:id="@+id/journal_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/no_words"
+        android:visibility="gone" />
 
 </LinearLayout>

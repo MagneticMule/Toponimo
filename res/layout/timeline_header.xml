@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:layout_height="fill_parent" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -44,7 +43,7 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:singleLine="true"
-            android:text="No words"
+            android:text="No words yet"
             android:textColor="@color/darker_gray"
             android:textSize="12sp" />
     </RelativeLayout>

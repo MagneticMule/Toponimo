@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="80dip"
-    android:background="@drawable/place_list_item_background"
     android:gravity="center"
     android:paddingBottom="5dip"
     android:paddingLeft="10dip"
@@ -13,11 +12,11 @@
         android:id="@+id/label"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="marquee"
+        android:ellipsize="end"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:text="Place Name"
-        android:textColor="@color/black"
+        android:textColor="#383838"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -27,12 +26,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/label"
         android:layout_marginTop="2dip"
-        android:ellipsize="marquee"
+        android:ellipsize="end"
         android:gravity="center_vertical"
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="Address"
-        android:textColor="@color/darker_gray"
+        android:textColor="#484844"
         android:textSize="12sp" />
 
     <TextView
@@ -41,12 +40,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/label_address"
         android:layout_marginTop="4dip"
-        android:ellipsize="marquee"
         android:gravity="center_vertical"
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="Place Types"
-        android:textColor="#444444"
+        android:textColor="#787877"
         android:textSize="10sp" />
 
 </RelativeLayout>

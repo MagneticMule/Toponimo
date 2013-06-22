@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ToponimoAndroid.iml" filepath="$PROJECT_DIR$/ToponimoAndroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ToponimoClient.iml" filepath="$PROJECT_DIR$/ToponimoClient.iml" />
+      <module fileurl="file://$USER_HOME$/Dropbox/Android Libraries/actionbarsherlock/actionbarsherlock.iml" filepath="$USER_HOME$/Dropbox/Android Libraries/actionbarsherlock/actionbarsherlock.iml" />
     </modules>
   </component>
 </project>

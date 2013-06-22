@@ -40,6 +40,7 @@ import org.apache.http.util.ByteArrayBuffer;
 import org.apache.http.util.EntityUtils;
 import org.toponimo.client.Constants;
 import org.toponimo.client.R;
+import org.toponimo.client.ToponimoApplication;
 import org.toponimo.client.utils.TwoReturnValues;
 
 import android.content.Context;
@@ -313,7 +314,7 @@ public class HttpUtils {
 	 * @return Bitmap
 	 */
 	public static File getWebImage(String url, String filename) {
-		final String PATH = Constants.LOCAL_IMAGE_STORE;
+		final String PATH = ToponimoApplication.getGlobalContext().getExternalCacheDir().toString();
 		String completedFilename = new String(PATH.concat(filename));
 		File file = null;
 
@@ -341,10 +342,10 @@ public class HttpUtils {
 			fileOutStream.close();
 			Log.d("HttpUtils.class", "Image read in" + ((System.currentTimeMillis() - startTime / 1000) + " sec"));
 		} catch (MalformedURLException e) {
-			Log.d("MalformedURLException", "when trying to download image @ Webstransaction.class, StackTrace follows:");
+			Log.d("MalformedURLException", " when trying to download image, StackTrace follows:");
 			e.printStackTrace();
 		} catch (IOException e) {
-			Log.d("IOException", " when trying to download image @ Webstransaction.class, StackTrace follows:");
+			Log.d("IOException", " when trying to download image, StackTrace follows:");
 			e.printStackTrace();
 		}
 

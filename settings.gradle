@@ -1,0 +1,2 @@
+include ':ToponimoClient', ':libs:ActionBarSherlock:actionbarsherlock'
+include ':google-play-services_lib'

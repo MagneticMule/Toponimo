@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:animationCache="true"
-    android:orientation="vertical" >
+    android:layout_height="fill_parent" >
 
     <RelativeLayout
         android:id="@+id/dictionary_entry_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:layout_marginTop="10dip"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/timeline_background_container_single"
         android:gravity="center"
         android:orientation="vertical" >
@@ -31,7 +29,7 @@
         <View
             android:id="@+id/image_gradient_overlay"
             android:layout_width="fill_parent"
-            android:layout_height="200dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="0dip"
             android:layout_marginLeft="0dip"
             android:layout_marginRight="0dip"
@@ -126,6 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/label_definition"
             android:layout_below="@+id/label_definition"
+            android:layout_marginBottom="20dip"
             android:gravity="left"
             android:text="gloss"
             android:textColor="@color/brown_green"

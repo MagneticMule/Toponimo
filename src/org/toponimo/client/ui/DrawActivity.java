@@ -38,6 +38,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
+import com.google.analytics.tracking.android.EasyTracker;
+
 import org.toponimo.client.R;
 
 public class DrawActivity extends SherlockActivity {
@@ -54,13 +56,20 @@ public class DrawActivity extends SherlockActivity {
 		setContentView(R.layout.draw);
 
 		mApplication = (ToponimoApplication) this.getApplication();
+		String activityTitle = "Draw";
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			Log.d(TAG, "Title=" + extras.getString("TITLE"));
+			activityTitle = activityTitle + (" '" + extras.getString("TITLE") + "'");
+		}
+		
 		
 		/*
 		 * get a reference to the activities ActionBar, disable the home icon
 		 * and title and set the title
 		 */
 		getSupportActionBar().setDisplayShowHomeEnabled(false);
-		getSupportActionBar().setTitle("Draw 'Asprin'");
+		getSupportActionBar().setTitle(activityTitle);
 	}
 
 	@Override
@@ -87,6 +96,22 @@ public class DrawActivity extends SherlockActivity {
 		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.draw_menu, menu);
 		return true;
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// start analytics tracking
+		EasyTracker.getInstance().activityStart(this);
+		
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// stop analytics tracking
+		EasyTracker.getInstance().activityStop(this);
+
 	}
 
 }

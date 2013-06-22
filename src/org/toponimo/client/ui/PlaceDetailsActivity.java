@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.toponimo.client.R;
 import org.toponimo.client.ToponimoApplication;
-import org.toponimo.client.models.Dictionaryword;
-import org.toponimo.client.models.Word;
 import org.toponimo.client.ui.adapters.WordListAdapter;
 import org.toponimo.client.utils.http.HttpUtils;
 import org.toponimo.client.utils.location.DistanceCalculator;
 import org.toponimo.client.utils.maps.CustomOverlay;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -20,7 +20,6 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,310 +35,286 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockMapActivity;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.gson.Gson;
-import org.toponimo.client.R;
 
-public class PlaceDetailsActivity extends SherlockMapActivity {
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-	protected static final String		TAG				= "PlaceDetailsActivity";
-	private static int					TAKE_PICTURE	= 1;
-	private int							currentPlaceIndex;
-	private String						placeName;
-	private String						placeAddress;
-	private final String				extraData		= "";
-	private String						currentPosLat;
-	private String						currentPosLng;
-	private Double						targetPosLat;
-	private Double						targetPosLng;
-	private ListView					wordListView;
-	private ArrayAdapter<String>		wordListArrayAdapter;
-	private ToponimoApplication			application;
-	private ImageView					mapImage;
-	private RelativeLayout				headerViewMap;
-	private LinearLayout				headerViewWordButton;
-	private Button						addWordButton;
-	private MapView						mapView;
-	private View						mapViewClickReciever;
-	private MapController				mapController;
-	private GeoPoint					targetLocation;
-	private ArrayList<String>			wordList;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
 
-	private static PlaceDetailsActivity	mainActivity;
+import android.support.v4.view.ViewPager;
 
-	private LayoutInflater				inflater;
+public class PlaceDetailsActivity extends SherlockFragmentActivity {
 
-	private static final short			ZOOM_LEVEL		= 18;						// mapview
+    protected static final String       TAG          = "PlaceDetailsActivity";
+    private static int                  TAKE_PICTURE = 1;
+    private int                         currentPlaceIndex;
+    private String                      placeName;
+    private String                      placeAddress;
+    private final String                extraData    = "";
+    private String                      currentPosLat;
+    private String                      currentPosLng;
+    private Double                      targetPosLat;
+    private Double                      targetPosLng;
+    private ListView                    wordListView;
+    private ArrayAdapter<String>        wordListArrayAdapter;
+    private ToponimoApplication         application;
+    private ImageView                   mapImage;
+    private RelativeLayout              headerViewMap;
+    private LinearLayout                headerViewWordButton;
+    private Button                      addWordButton;
+    private MapView                     mapView;
+    private View                        mapViewClickReceiver;
+    private MapController               mapController;
+    private GeoPoint                    targetLocation;
+    private ArrayList<String>           wordList;
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+    private static PlaceDetailsActivity mainActivity;
 
-		if (data != null) {
-			// extraData = data.getStringExtra("words");
+    private LayoutInflater              inflater;
 
-			// application.getPlaceResults(application.getCurrentPlaceIndex())
-			// .getWords().add(extraData + " *");
-			wordListArrayAdapter.notifyDataSetChanged();
-		}
+    private GoogleMap                   mMap;
 
-	}
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.place_details);
-		
-		/*
-		 * get a reference to the activities ActionBar, disable the home icon
-		 * and title and set the title
-		 */
-		getSupportActionBar().setDisplayShowHomeEnabled(false);
-		getSupportActionBar().setTitle("About this Place");
+        if (data != null) {
+            // extraData = data.getStringExtra("words");
 
-		mainActivity = this;
-		
-		Intent sender = getIntent();
-		application = (ToponimoApplication) getApplication();
-		wordList = new ArrayList<String>();
-		wordList.addAll(application.getPlaceResults(application.getCurrentPlaceIndex()).getWords());
+            // application.getPlaceResults(application.getCurrentPlaceIndex())
+            // .getWords().add(extraData + " *");
+            wordListArrayAdapter.notifyDataSetChanged();
+        }
 
-		placeName = application.getPlaceResults(application.getCurrentPlaceIndex()).getName();
-		placeAddress = application.getPlaceResults(application.getCurrentPlaceIndex()).getVicinity();
-		currentPosLat = sender.getExtras().getString("currentPosLat");
-		currentPosLng = sender.getExtras().getString("currentPosLng");
+    }
 
-		targetPosLat = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLat();
-		targetPosLng = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLng();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.place_details);
 
-		wordListView = (ListView) findViewById(R.id.place_details_word_listview);
+        if (mMap == null) {
+            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.place_details_map_fragment))
+                    .getMap();
+            mMap.getUiSettings().setZoomControlsEnabled(false);
+        }
 
-		wordListArrayAdapter = new WordListAdapter(this, R.layout.word_row, application.getPlaceResults(
-				application.getCurrentPlaceIndex()).getWords());
+        /*
+         * get a reference to the activities ActionBar and add custom add words
+         * button
+         */
+        com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(actionBar.DISPLAY_SHOW_HOME | actionBar.DISPLAY_SHOW_CUSTOM
+                | actionBar.DISPLAY_SHOW_TITLE);
+        actionBar.setTitle("Toponimo");
+        actionBar.setSubtitle("About this Place");
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-		inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mainActivity = this;
 
-		initMap();
-		(new GetWords()).execute((Object) null);
+        Intent sender = getIntent();
+        application = (ToponimoApplication) getApplication();
+        wordList = new ArrayList<String>();
+        // wordList.addAll(application.getPlaceResults(application.getCurrentPlaceIndex()).getWords());
 
-		// inflate the second listview header and attach the add word button
-		headerViewWordButton = (LinearLayout) inflater.inflate(R.layout.add_word_button, null);
-		addWordButton = (Button) headerViewWordButton.findViewById(R.id.place_details_add_word_button);
+        placeName = application.getPlaceResults(application.getCurrentPlaceIndex()).getName();
+        placeAddress = application.getPlaceResults(application.getCurrentPlaceIndex()).getVicinity();
+        currentPosLat = sender.getExtras().getString("currentPosLat");
+        currentPosLng = sender.getExtras().getString("currentPosLng");
 
-		try {
-			wordListView.addHeaderView(headerViewMap);
-			wordListView.addHeaderView(headerViewWordButton);
-			wordListView.setAdapter(wordListArrayAdapter);
-			if (!(wordListView.getCount() < 1)) {
-				TextView wordInfoTextView = (TextView) findViewById(R.id.places_info_text);
-				wordInfoTextView.setText(Integer.toString(application
-						.getPlaceResults(application.getCurrentPlaceIndex()).getWords().size())
-						+ " words at this location");
-			}
-		} catch (Exception e) {
+        targetPosLat = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLat();
+        targetPosLng = application.getPlaceResults(application.getCurrentPlaceIndex()).getLocation().getLng();
 
-		}
+        wordListView = (ListView) findViewById(R.id.place_details_word_listview);
 
-		wordListView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				// TextView wordView = (TextView)
-				// v.findViewById(R.id.word_row_word_view);
-				Intent intent = new Intent(PlaceDetailsActivity.this, WordDetailsActivity.class);
-				Log.d("position", Integer.toString(position));
-				Log.d("ID", Long.toString(id));
-				String word = application.getPlaceResults(application.getCurrentPlaceIndex()).getWords().get((int) id);
+        wordListArrayAdapter = new WordListAdapter(this, R.layout.word_row, application.getPlaceResults(
+                application.getCurrentPlaceIndex()).getWords());
 
-				if (word != null || word.length() != 0) {
-					intent.putExtra("word", word);
-					startActivity(intent);
-				}
-			}
-		});
+        inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		// Set header textviews with appropriate information
-		TextView placeTitleView = (TextView) findViewById(R.id.place_details_place_name);
-		placeTitleView.setText(placeName);
-		TextView placeAddressView = (TextView) findViewById(R.id.place_details_place_address);
-		placeAddressView.setText(placeAddress);
-		TextView placeDistanceView = (TextView) findViewById(R.id.place_details_place_distance);
+        targetLocation = new GeoPoint((int) (targetPosLat * 1e6), ((int) (targetPosLng * 1e6)));
 
-		double lat = Double.parseDouble(currentPosLat);
-		double lng = Double.parseDouble(currentPosLng);
-		double distance = DistanceCalculator.haverSine(lat, lng, targetPosLat, targetPosLng);
+        if (mMap != null) {
+            LatLng location = new LatLng(targetPosLat, targetPosLng);
+            mMap.addMarker(new MarkerOptions().position(location).title(placeName)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red)));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+            // map.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        }
 
-		String distanceIndicator = " Kilometers from here";
-		Double d = (double) Math.round(distance * 1000);
-		if (distance < 0.5) {
-			distanceIndicator = " Meters from here";
-		} else {
-			distanceIndicator = " Kilometers from here";
-			d /= 1000;
-		}
-		int roundedDistance = d.intValue();
+        // initMap();
 
-		placeDistanceView.setText(Integer.toString(roundedDistance) + distanceIndicator);
+        // inflate the second listview header and attach the add word button
+        headerViewWordButton = (LinearLayout) inflater.inflate(R.layout.add_word_button, null);
+        addWordButton = (Button) headerViewWordButton.findViewById(R.id.place_details_add_word_button);
 
-		addWordButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				Intent intent = new Intent(PlaceDetailsActivity.this, AddWordActivity.class);
-				intent.putExtra("position", currentPlaceIndex);
-				intent.putExtra("name", placeName);
-				final int result = 1;
-				startActivityForResult(intent, result);
-			}
-		});
+        try {
 
-		mapViewClickReciever.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				Intent intent = new Intent(PlaceDetailsActivity.this, MapsViewActivity.class);
-				intent.putExtra("targetPosLat", targetPosLat);
-				intent.putExtra("targetPosLng", targetPosLng);
-				startActivity(intent);
-				Log.i(TAG, "MAP PRESSED");
+            wordListView.addHeaderView(headerViewWordButton);
+            wordListView.setAdapter(wordListArrayAdapter);
+            if (!(wordListView.getCount() < 1)) {
+                TextView wordInfoTextView = (TextView) findViewById(R.id.places_info_text);
+                wordInfoTextView.setText(Integer.toString(application
+                        .getPlaceResults(application.getCurrentPlaceIndex()).getWords().size())
+                        + " words at this location");
+            }
+        } catch (Exception e) {
 
-			}
-		});
-	}
+        }
 
-	private void initMap() {
-		// inflate the first listview header view then find and attach the
-		// mapview
-		headerViewMap = (RelativeLayout) inflater.inflate(R.layout.map_image, null);
-		mapView = (MapView) headerViewMap.findViewById(R.id.place_list_activity_mapview);
+        wordListView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                // TextView wordView = (TextView)
+                // v.findViewById(R.id.word_row_word_view);
+                Intent intent = new Intent(PlaceDetailsActivity.this, WordDetailsActivity.class);
+                Log.d("position", Integer.toString(position));
+                Log.d("ID", Long.toString(id));
+                String word = application.getPlaceResults(application.getCurrentPlaceIndex()).getWords().get((int) id);
 
-		mapViewClickReciever = headerViewMap.findViewById(R.id.place_list_activity_click_view);
+                if (word != null || word.length() != 0) {
+                    intent.putExtra("word", word);
+                    startActivity(intent);
+                }
+            }
+        });
 
-		mapController = mapView.getController();
-		mapController.setZoom(ZOOM_LEVEL);
+        // Set header textviews with appropriate information
+        TextView placeTitleView = (TextView) findViewById(R.id.place_details_place_name);
+        placeTitleView.setText(placeName);
+        TextView placeAddressView = (TextView) findViewById(R.id.place_details_place_address);
+        placeAddressView.setText(placeAddress);
+        TextView placeDistanceView = (TextView) findViewById(R.id.place_details_place_distance);
 
-		List<Overlay> placeOverlays = mapView.getOverlays();
-		placeOverlays.clear();
-		mapView.invalidate();
+        double lat = Double.parseDouble(currentPosLat);
+        double lng = Double.parseDouble(currentPosLng);
+        double distance = DistanceCalculator.haverSine(lat, lng, targetPosLat, targetPosLng);
 
-		targetLocation = new GeoPoint((int) (targetPosLat * 1e6), ((int) (targetPosLng * 1e6)));
+        String distanceIndicator = " Kilometers from here";
+        Double d = (double) Math.round(distance * 1000);
+        if (distance < 0.5) {
+            distanceIndicator = " Meters from here";
+        } else {
+            distanceIndicator = " Kilometers from here";
+            d /= 1000;
+        }
+        int roundedDistance = d.intValue();
 
-		Drawable drawable = this.getResources().getDrawable(R.drawable.marker_red);
+        placeDistanceView.setText(Integer.toString(roundedDistance) + distanceIndicator);
 
-		List<Overlay> overlays = mapView.getOverlays();
+        addWordButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(PlaceDetailsActivity.this, AddWordActivity.class);
+                intent.putExtra("position", currentPlaceIndex);
+                intent.putExtra("name", placeName);
+                final int result = 1;
+                startActivityForResult(intent, result);
+            }
+        });
+    }
 
-		// remove old overlays
-		if (overlays.size() > 0) {
-			for (Iterator<Overlay> it = overlays.iterator(); it.hasNext();) {
-				it.next();
-				it.remove();
-			}
-		}
+    /**
+     * mapViewClickReceiver.setOnClickListener(new View.OnClickListener() {
+     * public void onClick(View v) { Intent intent = new
+     * Intent(PlaceDetailsActivity.this, MapsViewActivity.class);
+     * intent.putExtra("targetPosLat", targetPosLat);
+     * intent.putExtra("targetPosLng", targetPosLng); startActivity(intent);
+     * Log.i(TAG, "MAP PRESSED");
+     * 
+     * } }); }
+     */
 
-		overlays.add(new CustomOverlay(this, targetLocation, R.drawable.marker_red));
-		mapView.postInvalidate();
+    private void initMap() {
+        // inflate the first listview header view then find and attach the
+        // mapview
+        headerViewMap = (RelativeLayout) inflater.inflate(R.layout.map_image, null);
+        mapView = (MapView) headerViewMap.findViewById(R.id.place_list_activity_mapview);
 
-	}
+        mapViewClickReceiver = headerViewMap.findViewById(R.id.place_list_activity_click_view);
 
-	@Override
-	protected void onResume() {
-		wordListArrayAdapter.notifyDataSetChanged();
-		mapController.setZoom(ZOOM_LEVEL);
-		mapController.animateTo(targetLocation);
-		super.onResume();
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.actionbarsherlock.app.SherlockActivity#onCreateOptionsMenu(android
-	 * .view.Menu)
-	 */
+        mapController = mapView.getController();
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.place_details_menu, menu);
-		return true;
-	}
+        List<Overlay> placeOverlays = mapView.getOverlays();
+        placeOverlays.clear();
+        mapView.invalidate();
 
-	@Override
-	public void onAttachedToWindow() {
-		super.onAttachedToWindow();
-		Window window = getWindow();
-		window.setFormat(PixelFormat.RGBA_8888);
-		window.addFlags(WindowManager.LayoutParams.FLAG_DITHER);
-	}
+        targetLocation = new GeoPoint((int) (targetPosLat * 1e6), ((int) (targetPosLng * 1e6)));
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	}
+        Drawable drawable = this.getResources().getDrawable(R.drawable.marker_red);
 
-	@Override
-	protected boolean isRouteDisplayed() {
-		return false;
-	}
+        List<Overlay> overlays = mapView.getOverlays();
 
-	@SuppressWarnings("rawtypes")
-	private class GetWords extends AsyncTask {
+        // remove old overlays
+        if (overlays.size() > 0) {
+            for (Iterator<Overlay> it = overlays.iterator(); it.hasNext();) {
+                it.next();
+                it.remove();
+            }
+        }
 
-		@Override
-		protected void onPreExecute() {
+        overlays.add(new CustomOverlay(this, targetLocation, R.drawable.marker_red));
+        mapView.postInvalidate();
 
-			super.onPreExecute();
-		}
+    }
 
-		@Override
-		protected Object doInBackground(Object... arg0) {
-			String currentPlaceId = application.getPlaceResults(application.getCurrentPlaceIndex()).getId();
-			String urlString = "http://www.toponimo.org/toponimo/api/words?pid=" + currentPlaceId;
-			Log.w("URLString", urlString);
-			Word word = null;
-			try {
-				Gson gson = new Gson();
-				String jsonData = HttpUtils.getJSONData(ToponimoApplication.getApp().getHttpClient(), urlString);
+    @Override
+    protected void onResume() {
+        wordListArrayAdapter.notifyDataSetChanged();
+        super.onResume();
+    }
 
-				if (jsonData != null) {
-					word = gson.fromJson(jsonData, Word.class);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.place_details_menu, menu);
+        return true;
+    }
 
-					for (Dictionaryword w : word.getDictionarywords()) {
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Window window = getWindow();
+        window.setFormat(PixelFormat.RGBA_8888);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DITHER);
+    }
 
-						wordList.add(w.getWord());
-						Log.w("Word", w.getWord());
-					}
-					application.getPlaceResults(application.getCurrentPlaceIndex()).getWords().addAll(wordList);
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
 
-				}
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Start analytics tracking
+        EasyTracker.getInstance().activityStart(this);
 
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-			}
-			return null;
-		}
+    }
 
-		@Override
-		protected void onPostExecute(Object result) {
-			super.onPostExecute(result);
-			
-			mainActivity.wordListArrayAdapter.notifyDataSetChanged();
-
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
-		 */
-		@Override
-		protected void onProgressUpdate(Object... values) {
-			super.onProgressUpdate(values);
-		}
-
-	}
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Stop analytics tracking
+        EasyTracker.getInstance().activityStop(this);
+    }
 
 }

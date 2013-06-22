@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:bottom="1dp">
+        <nine-patch android:src="@android:drawable/dialog_holo_dark_frame" >
+            <corners android:radius="7dp" >
+            </corners>
+        </nine-patch>
+    </item>
+    <item>
+        <shape android:shape="rectangle" >
+            <gradient
+                android:angle="270"
+                android:endColor="#2a2a24"
+                android:gradientRadius="300"
+                android:startColor="#4a4d45"
+                android:type="radial" />
+
+            <corners android:radius="7dp" />
+        </shape>
+    </item>
+
+</layer-list>
